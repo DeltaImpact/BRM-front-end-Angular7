@@ -11,5 +11,6 @@ export const AppConfig: any = {
   topHeroesLimit: 4,
   snackBarDuration: 3000,
   repositoryURL: 'https://github.com/ismaestro/angular7-example-app',
-  sentryDSN: 'https://38434a1b115f41d3a31e356cdc496c06@sentry.io/1315526'
+  sentryDSN: 'https://38434a1b115f41d3a31e356cdc496c06@sentry.io/1315526',
+  apiUrl: 'https://localhost:5001'
 };

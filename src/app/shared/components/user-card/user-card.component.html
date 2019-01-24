@@ -1,0 +1,29 @@
+<mat-card class="hero-card" *ngIf="user">
+  <mat-card-header>
+    <div
+      mat-card-avatar
+      class="hero-header__image"
+      [ngStyle]="{
+        'background-image': 'url(assets/images/heroes/default.png)'
+      }"
+    ></div>
+
+    <mat-card-title>{{ user.userName }}</mat-card-title>
+    <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
+
+    <!-- <div class="hero-actions">ID: {{ user.id }}</div> -->
+  </mat-card-header>
+  <div>
+    <div id="left">
+      <mat-card-title>Permissions:</mat-card-title>
+      {{ user.permissions | json }}
+    </div>
+    <div id="right">
+      <mat-card-title>Roles:</mat-card-title>
+      {{ user.roles | json }}
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <!-- <img (click)="seeHeroDetails(user)" mat-card-image src="{{hero.avatarUrl}}"> -->
+</mat-card>
