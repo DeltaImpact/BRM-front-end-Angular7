@@ -7,12 +7,12 @@ import { _ } from "@biesbjerg/ngx-translate-extract/dist/utils/utils";
 import { LoggerService } from "../../../core/services/logger.service";
 import { AppConfig } from "../../../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { Role } from "./role.model";
+import { Permission } from "./permission.model";
 
 @Injectable({
   providedIn: "root"
 })
-export class RoleService {
+export class PermissionService {
   constructor(
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
@@ -32,19 +32,19 @@ export class RoleService {
     };
   }
 
-  getRoles(): Observable<Role[]> {
-    return <Observable<Role[]>>(
-      this.http.get(`${AppConfig.apiUrl}/role/roles`).pipe(
-        tap(() => LoggerService.log(`fetched roles`)),
-        catchError(RoleService.handleError("getRoles", []))
+  getPermissions(): Observable<Permission[]> {
+    return <Observable<Permission[]>>(
+      this.http.get(`${AppConfig.apiUrl}/permission/permissions`).pipe(
+        tap(() => LoggerService.log(`fetched permissions`)),
+        catchError(PermissionService.handleError("getPermissions", []))
       )
     );
   }
 
-  AddRole(role: Role) {
+  AddPermission(role: Permission) {
     console.log(role);
     let promise = new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/AddRole`;
+      let Url = `${AppConfig.apiUrl}/permission/addPermission`;
       const headers = {
         headers: new HttpHeaders({
           "Content-Type": "application/json"
@@ -55,9 +55,6 @@ export class RoleService {
         .post(
           Url,
           role.name,
-          // {
-          //   roleName: role.name
-          // },
           headers
         )
         .toPromise()

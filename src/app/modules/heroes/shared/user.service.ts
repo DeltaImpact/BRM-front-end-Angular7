@@ -79,8 +79,8 @@ export class UserService {
         .toPromise()
         .then(
           res => {
-            console.log(res);
-            debugger;
+            // console.log(res);
+            // debugger;
             resolve(res);
           },
           err => {

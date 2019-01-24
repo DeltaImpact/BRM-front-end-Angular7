@@ -1,18 +1,18 @@
 <div fxLayout="row">
   <div fxFlex="10" fxFlex.gt-sm="20"></div>
   <div fxFlex="90" fxFlex.gt-sm="80">
-    <h1 class="header__title">{{ "topHeroes" | translate }}</h1>
-    <app-hero-loading *ngIf="usersLoading"></app-hero-loading>
-    <div id="heroes-list" *ngIf="heroes" [@fadeInOut]>
+    <!-- <app-hero-loading *ngIf="usersLoading"></app-hero-loading> -->
+    <!-- <div id="heroes-list" *ngIf="heroes" [@fadeInOut]>
       <ng-container *ngFor="let hero of heroes">
         <app-hero-card [hero]="hero"></app-hero-card>
       </ng-container>
-    </div>
+    </div> -->
 
     <!-- <div *ngIf="users" [@fadeInOut]>{{ users | json }}</div> -->
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxFlex="30">
+        <h1 class="header__title">{{ "topHeroes" | translate }}</h1>
         <mat-card class="hero-card">
           <mat-card-header>
             <div
@@ -25,10 +25,10 @@
 
             <div>
               <form
-                [formGroup]="newHeroForm"
+                [formGroup]="newUserForm"
                 #form="ngForm"
                 ngxScrollToFirstInvalid
-                (ngSubmit)="createNewHero(newHeroForm.value)"
+                (ngSubmit)="createNewUser(newUserForm.value)"
                 autocomplete="on"
               >
                 <mat-form-field class="input-container">
@@ -40,7 +40,7 @@
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newHeroForm.controls.name.valid && form.submitted"
+                    *ngIf="!newUserForm.controls.name.valid && form.submitted"
                   >
                     {{ "nameRequired" | translate }}
                   </mat-error>
@@ -48,7 +48,7 @@
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newHeroForm.valid"
+                  [disabled]="form.submitted && !newUserForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
@@ -77,10 +77,10 @@
 
             <div>
               <form
-                [formGroup]="newHeroForm"
+                [formGroup]="newRoleForm"
                 #form="ngForm"
                 ngxScrollToFirstInvalid
-                (ngSubmit)="createNewHero(newHeroForm.value)"
+                (ngSubmit)="createNewRole(newRoleForm.value)"
                 autocomplete="on"
               >
                 <mat-form-field class="input-container">
@@ -92,7 +92,7 @@
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newHeroForm.controls.name.valid && form.submitted"
+                    *ngIf="!newRoleForm.controls.name.valid && form.submitted"
                   >
                     {{ "nameRequired" | translate }}
                   </mat-error>
@@ -100,7 +100,7 @@
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newHeroForm.valid"
+                  [disabled]="form.submitted && !newRoleForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
@@ -112,7 +112,7 @@
 
         <div *ngIf="users">
           <ng-container *ngFor="let role of roles">
-            <app-user-card [user]="role"></app-user-card>
+            <app-role-permission-card [item]="role"></app-role-permission-card>
           </ng-container>
         </div>
       </div>
@@ -129,10 +129,10 @@
 
             <div>
               <form
-                [formGroup]="newHeroForm"
+                [formGroup]="newPermissionForm"
                 #form="ngForm"
                 ngxScrollToFirstInvalid
-                (ngSubmit)="createNewHero(newHeroForm.value)"
+                (ngSubmit)="createNewPermission(newPermissionForm.value)"
                 autocomplete="on"
               >
                 <mat-form-field class="input-container">
@@ -144,7 +144,9 @@
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newHeroForm.controls.name.valid && form.submitted"
+                    *ngIf="
+                      !newPermissionForm.controls.name.valid && form.submitted
+                    "
                   >
                     {{ "nameRequired" | translate }}
                   </mat-error>
@@ -152,7 +154,7 @@
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newHeroForm.valid"
+                  [disabled]="form.submitted && !newPermissionForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
@@ -162,11 +164,11 @@
           </mat-card-header>
         </mat-card>
 
-        <!-- <div *ngIf="users">
-          <ng-container *ngFor="let user of users">
-            <app-user-card [user]="user"></app-user-card>
-          </ng-container>
-        </div> -->
+        <div *ngIf="permissions">
+            <ng-container *ngFor="let permission of permissions">
+              <app-role-permission-card [item]="permission"></app-role-permission-card>
+            </ng-container>
+          </div>
       </div>
     </div>
   </div>

@@ -13,6 +13,7 @@ import {HomePageComponent} from './pages/home-page/home-page.component';
 import {Error404PageComponent} from './pages/error404-page/error404-page.component';
 import {HeroCardComponent} from './components/hero-card/hero-card.component';
 import {UserCardComponent} from './components/user-card/user-card.component';
+import {RoleAndPermissionCardComponent} from './components/role-permission-card/role-permission-card.component';
 import {NgxExampleLibraryModule} from '@ismaestro/ngx-example-library';
 import {WebStorageModule} from 'ngx-store';
 import {HeroLoadingComponent} from './components/hero-loading/hero-loading.component';
@@ -40,6 +41,7 @@ import {LoadingPlaceholderComponent} from './components/loading-placeholder/load
     SpinnerComponent,
     HeroCardComponent,
     UserCardComponent,
+    RoleAndPermissionCardComponent,
     HeroLoadingComponent,
     LoadingPlaceholderComponent
   ],
@@ -56,6 +58,7 @@ import {LoadingPlaceholderComponent} from './components/loading-placeholder/load
     SpinnerComponent,
     HeroCardComponent,
     UserCardComponent,
+    RoleAndPermissionCardComponent,
     HeroLoadingComponent,
     NgxScrollToFirstInvalidModule,
     LoadingPlaceholderComponent
