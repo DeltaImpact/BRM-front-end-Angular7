@@ -19,7 +19,7 @@
             <div>
               <form
                 [formGroup]="newUserForm"
-                #form="ngForm"
+                #userForm="ngForm"
                 ngxScrollToFirstInvalid
                 (ngSubmit)="createNewUser(newUserForm.value)"
                 autocomplete="on"
@@ -29,19 +29,19 @@
                     matInput
                     name="hname"
                     type="text"
-                    placeholder="{{ 'nameWithPalindrome' | translate }}"
+                    placeholder="{{ 'UsersName' | translate }}"
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newUserForm.controls.name.valid && form.submitted"
+                    *ngIf="!newUserForm.controls.name.valid && userForm.submitted"
                   >
-                    {{ "nameRequired" | translate }}
+                    {{ "fieldRequired" | translate }}
                   </mat-error>
                 </mat-form-field>
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newUserForm.valid"
+                  [disabled]="userForm.submitted && !newUserForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
@@ -50,32 +50,6 @@
             </div>
           </mat-card-header>
         </mat-card>
-
-        <!-- 
-        {{ all | json }}
-        <div CdkDropList>
-          <div class="example-box" cdkDrag>I'm Draggable</div>
-          <div class="example-box" cdkDrag>I'm Draggable</div>
-
-        </div>
-        {{ all | json }}
-        <div
-          id="all"
-          cdkDropList
-          cdkDropListConnectedTo="even"
-          class="example-list"
-        >
-          <div class="example-box" *ngFor="let number of all" cdkDrag>
-            {{ number }}
-          </div>
-        </div>
-        {{ all | json }}
-        <div id="usersDroplist" cdkDropList *ngIf="users">
-          <ng-container *ngFor="let user of users" cdkDrag>
-            <app-user-card [user]="user"></app-user-card>
-          </ng-container>
-        </div> -->
-
         <div *ngIf="users">
           <ng-container *ngFor="let user of users">
             <app-user-card
@@ -102,7 +76,7 @@
             <div>
               <form
                 [formGroup]="newRoleForm"
-                #form="ngForm"
+                #roleForm="ngForm"
                 ngxScrollToFirstInvalid
                 (ngSubmit)="createNewRole(newRoleForm.value)"
                 autocomplete="on"
@@ -112,19 +86,19 @@
                     matInput
                     name="hname"
                     type="text"
-                    placeholder="{{ 'nameWithPalindrome' | translate }}"
+                    placeholder="{{ 'RolesName' | translate }}"
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newRoleForm.controls.name.valid && form.submitted"
+                    *ngIf="!newRoleForm.controls.name.valid && roleForm.submitted"
                   >
-                    {{ "nameRequired" | translate }}
+                    {{ "fieldRequired" | translate }}
                   </mat-error>
                 </mat-form-field>
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newRoleForm.valid"
+                  [disabled]="roleForm.submitted && !newRoleForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
@@ -161,7 +135,7 @@
             <div>
               <form
                 [formGroup]="newPermissionForm"
-                #form="ngForm"
+                #permissionForm="ngForm"
                 ngxScrollToFirstInvalid
                 (ngSubmit)="createNewPermission(newPermissionForm.value)"
                 autocomplete="on"
@@ -171,21 +145,21 @@
                     matInput
                     name="hname"
                     type="text"
-                    placeholder="{{ 'nameWithPalindrome' | translate }}"
+                    placeholder="{{ 'PermissionsName' | translate }}"
                     formControlName="name"
                   />
                   <mat-error
                     *ngIf="
-                      !newPermissionForm.controls.name.valid && form.submitted
+                      !newPermissionForm.controls.name.valid && permissionForm.submitted
                     "
                   >
-                    {{ "nameRequired" | translate }}
+                    {{ "fieldRequired" | translate }}
                   </mat-error>
                 </mat-form-field>
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="form.submitted && !newPermissionForm.valid"
+                  [disabled]="permissionForm.submitted && !newPermissionForm.valid"
                 >
                   {{ "create" | translate }}
                 </button>
