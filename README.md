@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://angular.io/">
-    <img src="https://www.angularexampleapp.com/assets/images/angular.svg" alt="Logo" width=72 height=72>
+    <img src="https://www.angularBRMApp.com/assets/images/angular.svg" alt="Logo" width=72 height=72>
   </a>
 
   <h3 align="center">Angular Example App</h3>
@@ -11,9 +11,9 @@
     Base project made with much  :heart: . Contains CRUD, patterns, generated library, and much more!
     <br>
     <br>
-    <a href="https://www.angularexampleapp.com/">LIVE DEMO</a>
+    <a href="https://www.angularBRMApp.com/">LIVE DEMO</a>
     <br>
-    <a href="https://www.angularexampleapp.com/">
+    <a href="https://www.angularBRMApp.com/">
       <img src="https://media.giphy.com/media/ce28l1P13CVK56OyCN/giphy.gif" alt="Demo example"/>
     </a>
     <br>
@@ -65,7 +65,7 @@
 [![dependency Status](https://david-dm.org/ismaestro/angular7-example-app.svg)](https://david-dm.org/ismaestro/angular7-example-app#info=dependencies)
 [![devDependency Status](https://david-dm.org/ismaestro/angular7-example-app/dev-status.svg)](https://david-dm.org/ismaestro/angular7-example-app#info=devDependencies)
 [![peerDependencies Status](https://david-dm.org/ismaestro/angular7-example-app/peer-status.svg)](https://david-dm.org/ismaestro/angular7-example-app?type=peer)
-[![npm](https://img.shields.io/badge/demo-online-brightgreen.svg)](http://angularexampleapp.com/)
+[![npm](https://img.shields.io/badge/demo-online-brightgreen.svg)](http://angularBRMApp.com/)
 
 [![GitHub stars](https://img.shields.io/github/stars/ismaestro/angular7-example-app.svg?style=social&label=Star)](https://github.com/ismaestro/angular7-example-app)
 [![GitHub forks](https://img.shields.io/github/forks/ismaestro/angular7-example-app.svg?style=social&label=Fork)](https://github.com/ismaestro/angular7-example-app/fork)
@@ -128,9 +128,9 @@ This repo is using Firebase. We use Cloud Firestore and Cloud Storage to handle 
 
 You can build the image and run the container with Docker. The configuration is in the nginx folder if you want to change it.
 
-`docker build -t angularexampleapp .`
+`docker build -t angularBRMApp .`
 
-`docker run -d -p 4200:80 angularexampleapp`
+`docker run -d -p 4200:80 angularBRMApp`
 
 ### Travis CI
 

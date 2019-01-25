@@ -1,19 +1,37 @@
-<mat-card class="hero-card" *ngIf="item">
+<mat-card
+  class="hero-card"
+  *ngIf="item"
+
+>
   <mat-card-header>
     <div
+      *ngIf="typeOfItem == 'permission'"
       mat-card-avatar
       class="hero-header__image"
       [ngStyle]="{
-        'background-image': 'url(assets/images/heroes/default.png)'
+        'background-image': 'url(assets/images/letters/letter-p.png)'
+      }"
+    ></div>
+    <div
+      *ngIf="typeOfItem == 'role'"
+      mat-card-avatar
+      class="hero-header__image"
+      [ngStyle]="{
+        'background-image': 'url(assets/images/letters/letter-r.png)'
       }"
     ></div>
 
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ item.id }}</mat-card-subtitle>
+    <div class="hero-actions">
+      {{ "addToUser" | translate }}
+      <mat-icon class="icon__like--green" (click)="addToUser()">add </mat-icon>
+    </div>
+    <!-- <mat-card-subtitle>Type: {{ typeOfItem | json}}</mat-card-subtitle> -->
 
-    <!-- <div class="hero-actions">ID: {{ item.id }}</div> -->
+    <!-- <div class="hero-actions">{{ typeOfItem }}</div> -->
   </mat-card-header>
-  <!-- {{ item | json }} -->
+  <!-- {{ typeOfItem | json }} -->
 
   <!-- <img (click)="seeHeroDetails(item)" mat-card-image src="{{hero.avatarUrl}}"> -->
 </mat-card>

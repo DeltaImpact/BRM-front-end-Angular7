@@ -1,5 +1,5 @@
 {
-  "name": "angular-example-app",
+  "name": "angular-brm-app",
   "version": "7.0.0",
   "license": "MIT",
   "scripts": {
@@ -17,7 +17,7 @@
     "bundle-report": "ng build --prod --stats-json && webpack-bundle-analyzer dist/stats.json",
     "release:minor": "standard-version --release-as minor && git push --follow-tags origin master",
     "release:major": "standard-version --release-as major && git push --follow-tags origin master",
-    "docker": "docker build -t angularexampleapp . && docker run -d -p 4200:80 angularexampleapp",
+    "docker": "docker build -t angularBRMApp . && docker run -d -p 4200:80 angularBRMApp",
     "update": "ng update --all --force",
     "deploy": "bash scripts/deploy.sh"
   },

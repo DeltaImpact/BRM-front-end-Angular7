@@ -1,7 +1,7 @@
 {
   "alert": "Alert",
   "anchorToHero": "Anchor the hero",
-  "angularBRMApp": "Angular BRM App",
+  "angularBRMApp": "Angular BRM",
   "areYouSure": "Are you sure?",
   "back": "Back",
   "canVote": "Can vote :)",
@@ -18,23 +18,17 @@
   "findHero": "Look for a hero",
   "firstTwoHeroesById": "Heroes (1-2)",
   "goBack": "Go back",
-  "hero-create-new": {
-    "newHero": "New hero"
-  },
-  "hero-top": {
-    "title": "Top Heroes"
-  },
   "heroCreated": "Hero created!",
-  "chooseUserError": "Choose user.",
-  "addToUser": "add to user",
-  "chooseUser": "choose user",
-  "userAlreadyHaveRole": "User already have role.",
-  "UserAlreadyExist": "User already exist.",
-  "PermissionAlreadyExist": "Permission already exist.",
-  "RoleAlreadyExist": "Role already exist.",
-  "UsersList": "List of users:",
-  "RolesList": "List of roles:",
-  "PermissionsList": "List of permissions:",
+  "chooseUserError": "Выберите пользователя.",
+  "addToUser": "добавить пользователю",
+  "chooseUser": "выбрать пользователя",
+  "userAlreadyHaveRole": "Пользователь уже имеет роль.",
+  "UserAlreadyExist": "Пользователь уже существует.",
+  "PermissionAlreadyExist": "Право уже существует.",
+  "RoleAlreadyExist": "Роль уже существует.",
+  "UsersList": "Список пользователей:",
+  "RolesList": "Список ролей:",
+  "PermissionsList": "Список прав:",
 
 
 

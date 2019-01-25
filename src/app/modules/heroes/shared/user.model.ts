@@ -3,7 +3,7 @@ import { Role } from "./role.model";
 import { Permission } from "./permission.model";
 
 export class User implements Deserializable {
-  id: string;
+  id: number;
   name: string;
   permissions: Permission[] = [];
   roles: Role[] = [];
@@ -14,6 +14,10 @@ export class User implements Deserializable {
     this.permissions = user.permissions || "";
     this.roles = user.roles || "";
   }
+
+  // ngOnInit() {
+  //   debugger;
+  // }
 
   deserialize(input: any) {
     Object.assign(this, input);

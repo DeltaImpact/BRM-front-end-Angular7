@@ -12,7 +12,7 @@
 
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxFlex="30">
-        <h1 class="header__title">{{ "topHeroes" | translate }}</h1>
+        <h1 class="header__title">{{ "UsersList" | translate }}</h1>
         <mat-card class="hero-card">
           <mat-card-header>
             <div
@@ -58,13 +58,44 @@
           </mat-card-header>
         </mat-card>
 
+        <!-- 
+        {{ all | json }}
+        <div CdkDropList>
+          <div class="example-box" cdkDrag>I'm Draggable</div>
+          <div class="example-box" cdkDrag>I'm Draggable</div>
+
+        </div>
+        {{ all | json }}
+        <div
+          id="all"
+          cdkDropList
+          cdkDropListConnectedTo="even"
+          class="example-list"
+        >
+          <div class="example-box" *ngFor="let number of all" cdkDrag>
+            {{ number }}
+          </div>
+        </div>
+        {{ all | json }}
+        <div id="usersDroplist" cdkDropList *ngIf="users">
+          <ng-container *ngFor="let user of users" cdkDrag>
+            <app-user-card [user]="user"></app-user-card>
+          </ng-container>
+        </div> -->
+
         <div *ngIf="users">
           <ng-container *ngFor="let user of users">
-            <app-user-card [user]="user"></app-user-card>
+            <app-user-card
+              [user]="user"
+              [isChosen]="chosenUser == user ? true : false"
+              (chooseFunction)="ChooseUser(user)"
+              (removeFunction)="RemoveRoleFromUser($event)"
+            ></app-user-card>
           </ng-container>
         </div>
       </div>
       <div fxFlex="30">
+        <h1 class="header__title">{{ "RolesList" | translate }}</h1>
         <mat-card class="hero-card">
           <mat-card-header>
             <div
@@ -112,11 +143,18 @@
 
         <div *ngIf="users">
           <ng-container *ngFor="let role of roles">
-            <app-role-permission-card [item]="role"></app-role-permission-card>
+            <!-- (click)="seeHeroDetails(hero)" -->
+
+            <app-role-permission-card
+              [item]="role"
+              [typeOfItem]="'role'"
+              (addFunction)="AddToUser(role)"
+            ></app-role-permission-card>
           </ng-container>
         </div>
       </div>
       <div fxFlex="30">
+        <h1 class="header__title">{{ "PermissionsList" | translate }}</h1>
         <mat-card class="hero-card">
           <mat-card-header>
             <div
@@ -165,10 +203,14 @@
         </mat-card>
 
         <div *ngIf="permissions">
-            <ng-container *ngFor="let permission of permissions">
-              <app-role-permission-card [item]="permission"></app-role-permission-card>
-            </ng-container>
-          </div>
+          <ng-container *ngFor="let permission of permissions">
+            <app-role-permission-card
+              [item]="permission"
+              [typeOfItem]="'permission'"
+              (addFunction)="AddToUser(permission)"
+            ></app-role-permission-card>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import {Deserializable} from '../../../shared/interfaces/deserializable.interface';
 
 export class Role implements Deserializable {
-  id: string;
+  id: number;
   name: string;
 
   constructor(role: any = {}) {

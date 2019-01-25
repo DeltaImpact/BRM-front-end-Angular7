@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { AppConfig } from "../../../configs/app.config";
 import { UserService } from "../../../modules/heroes/shared/user.service";
 import { User } from "../../../modules/heroes/shared/user.model";
@@ -13,12 +13,15 @@ import { Router } from "@angular/router";
 })
 export class RoleAndPermissionCardComponent implements OnInit {
   @Input() item: Role;
+  @Input() typeOfItem: String;
+  @Output() addFunction = new EventEmitter();
+  // @Output() addFunction: EventEmitter<Role> = new EventEmitter();
 
-
-  constructor(private userService: UserService, private router: Router) {
-
-    // debugger
-  }
+  constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {}
+
+  addToUser() {
+    this.addFunction.emit(this.item);
+  }
 }

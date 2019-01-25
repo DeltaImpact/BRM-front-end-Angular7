@@ -1,4 +1,9 @@
-<mat-card class="hero-card" *ngIf="user">
+<mat-card
+  class="hero-card"
+  *ngIf="user"
+  [ngClass]="{ mat__card__chosen: isChosen }"
+  [ngStyle]="isChosen && { 'background-color': '#72b42499' }"
+>
   <mat-card-header>
     <div
       mat-card-avatar
@@ -10,20 +15,34 @@
 
     <mat-card-title>{{ user.userName }}</mat-card-title>
     <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
-
-    <!-- <div class="hero-actions">ID: {{ user.id }}</div> -->
+    <div class="hero-actions">
+      {{ "chooseUser" | translate }}
+      <mat-icon class="icon__like--green" (click)="chooseUser()">add </mat-icon>
+    </div>
   </mat-card-header>
   <div>
     <div id="left">
-      <mat-card-title>Permissions:</mat-card-title>
-      {{ user.permissions | json }}
+      <div *ngIf="user.permissions.length !== 0">
+        <mat-card-title>Permissions:</mat-card-title>
+        <ng-container *ngFor="let permission of user.permissions">
+          <div class="example-box">{{ permission | json }}</div>
+        </ng-container>
+      </div>
+      <!-- {{ user.permissions | json }} -->
     </div>
     <div id="right">
-      <mat-card-title>Roles:</mat-card-title>
-      {{ user.roles | json }}
+      <div *ngIf="user.roles.length !== 0">
+        <mat-card-title>Roles:</mat-card-title>
+
+        <div class="example-list" *ngFor="let role of user.roles">
+          <div class="example-box">
+            <mat-card-title>{{ role.name }}</mat-card-title>
+            <mat-icon class="icon__like--green" (click)="RemoveRoleFromUser(role, user)">clear</mat-icon>
+          </div>
+        </div>
+      </div>
+      <!-- {{ user.roles | json }} -->
     </div>
     <div class="clear"></div>
   </div>
-
-  <!-- <img (click)="seeHeroDetails(user)" mat-card-image src="{{hero.avatarUrl}}"> -->
 </mat-card>

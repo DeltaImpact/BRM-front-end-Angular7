@@ -73,14 +73,79 @@ export class RoleService {
     return promise;
   }
 
+
+  addRoleToUser(userId: number, roleId: number) {
+    let promise = new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/role/addRoleToUser`;
+      const headers = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      };
+      this.http
+        // .post("http://httpbin.org/post", username, headers)
+        .post(
+          Url,
+          {
+            UserId: userId,
+            RoleId: roleId
+          },
+          headers
+        )
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+    return promise;
+  }
+
+  DeleteRoleFromUser(userId: number, roleId: number) {
+    let promise = new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/role/deleteRoleFromUser`;
+      const headers = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      };
+      this.http
+        // .post("http://httpbin.org/post", username, headers)
+        .post(
+          Url,
+          {
+            UserId: userId,
+            RoleId: roleId
+          },
+          headers
+        )
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+    return promise;
+  }
+
   showSnackBar(name): void {
     this.translateService
       .get(
         [
-          String(_("heroCreated")),
+          String(_("chooseUserError")),
+          String(_("userAlreadyHaveRole")),
+          String(_("UserAlreadyExist")),
+          String(_("RoleAlreadyExist")),
+          String(_("PermissionAlreadyExist")),
           String(_("saved")),
-          String(_("heroLikeMaximum")),
-          String(_("heroRemoved"))
         ],
         { value: AppConfig.votesLimit }
       )

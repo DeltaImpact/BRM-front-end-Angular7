@@ -44,7 +44,6 @@ export class HeaderComponent implements OnInit {
   private loadMenus(): void {
     this.menuItems = [
       {link: '/', name: _('home')},
-      {link: '/' + AppConfig.routes.heroes, name: _('heroesList')}
     ];
   }
 }

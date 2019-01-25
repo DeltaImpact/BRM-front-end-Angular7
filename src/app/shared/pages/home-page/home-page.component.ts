@@ -8,6 +8,7 @@ import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
 import { User } from "src/app/modules/heroes/shared/user.model";
 import { Role } from "src/app/modules/heroes/shared/role.model";
+import { RoleDelete } from "src/app/modules/heroes/shared/role.delete.model";
 import { Permission } from "src/app/modules/heroes/shared/permission.model";
 import {
   FormBuilder,
@@ -15,6 +16,13 @@ import {
   FormGroup,
   Validators
 } from "@angular/forms";
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDrag
+} from "@angular/cdk/drag-drop";
+import { jsonpCallbackContext } from "@angular/common/http/src/module";
 
 @Component({
   selector: "app-home-page",
@@ -25,6 +33,7 @@ import {
 export class HomePageComponent implements OnInit {
   heroes: Hero[] = null;
   users: User[] = null;
+  chosenUser: User = null;
   roles: Role[] = null;
   permissions: Permission[] = null;
   usersLoading: boolean = false;
@@ -51,7 +60,6 @@ export class HomePageComponent implements OnInit {
     this.newPermissionForm = this.formBuilder.group({
       name: new FormControl("", [Validators.required])
     });
-  
   }
 
   ngOnInit() {
@@ -68,7 +76,7 @@ export class HomePageComponent implements OnInit {
         this.usersLoading = false;
       }
     );
-    
+
     this.RoleService.getRoles().subscribe(
       (roles: Array<Role>) => {
         this.roles = roles;
@@ -90,39 +98,92 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  createNewUser(newUser: string) {
-    debugger
-    if (this.newUserForm.valid) {
-      this.UserService.AddUser(new User(newUser)).then(
+  AddToUser(Role: Role) {
+    if (this.chosenUser) {
+      let userId = this.chosenUser.id;
+      let roleId = Role.id;
+      this.RoleService.addRoleToUser(userId, roleId).then(
         r => {
-          debugger;
-
+          let updatedUser = r as User;
+          this.users = this.users.map(function(item) {
+            return item.id == updatedUser.id ? updatedUser : item;
+          });
           this.myNgForm.resetForm();
         },
         e => {
-          debugger;
-
-          this.error = "errorHasOcurred";
+          // debugger;
+          this.RoleService.showSnackBar("userAlreadyHaveRole");
+          // this.error = "errorHasOcurred";
         }
       );
+      // debugger;
+    } else {
+      this.RoleService.showSnackBar("chooseUser");
+      // console.log("Choose user.");
     }
   }
 
-  
+  RemoveRoleFromUser(RoleDelete: RoleDelete) {
+    let userId = RoleDelete.UserId;
+    let roleId = RoleDelete.RoleId;
+
+    this.RoleService.DeleteRoleFromUser(userId, roleId).then(
+      r => {
+        let updatedUser = r as User;
+        this.users = this.users.map(function(item) {
+          return item.id == updatedUser.id ? updatedUser : item;
+        });
+        this.myNgForm.resetForm();
+      },
+      e => {
+        // debugger;
+        this.RoleService.showSnackBar("userAlreadyHaveRole");
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  ChooseUser(User: User) {
+    this.chosenUser = User;
+    console.log("Chosen user: ");
+    console.log(this.chosenUser);
+    // debugger;
+  }
+
+  createNewUser(newUser: string) {
+    if (this.newUserForm.valid) {
+      this.UserService.AddUser(new User(newUser))
+        .then(
+          r => {
+            let newUser = r as User;
+            this.users = [...this.users, newUser];
+            this.myNgForm.resetForm();
+          },
+          e => {
+            this.RoleService.showSnackBar("UserAlreadyExist");
+            // this.error = "errorHasOcurred";
+          }
+        )
+        .catch(e => {
+          this.RoleService.showSnackBar("UserAlreadyExist");
+          // this.error = "errorHasOcurred";
+        });
+    }
+  }
+
   createNewRole(newRole: string) {
     // debugger
 
     if (this.newRoleForm.valid) {
       this.RoleService.AddRole(new Role(newRole)).then(
         r => {
-          debugger;
-
+          let newRole = r as Role;
+          this.roles = [...this.roles, newRole];
           this.myNgForm.resetForm();
         },
         e => {
-          debugger;
-
-          this.error = "errorHasOcurred";
+          this.RoleService.showSnackBar("RoleAlreadyExist");
+          // this.error = "errorHasOcurred";
         }
       );
     }
@@ -134,14 +195,14 @@ export class HomePageComponent implements OnInit {
     if (this.newPermissionForm.valid) {
       this.PermissionService.AddPermission(new Permission(newPermission)).then(
         r => {
-          debugger;
-
+          let newPermission = r as Permission;
+          this.permissions = [...this.permissions, newPermission];
           this.myNgForm.resetForm();
         },
         e => {
-          debugger;
-
-          this.error = "errorHasOcurred";
+          // debugger;
+          this.RoleService.showSnackBar("PermissionAlreadyExist");
+          // this.error = "errorHasOcurred";
         }
       );
     }

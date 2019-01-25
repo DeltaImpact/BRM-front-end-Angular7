@@ -5,7 +5,7 @@ import {environment} from '../../../environments/environment';
 
 @NgModule({
   imports: [
-    AngularFireModule.initializeApp(environment.firebase, 'angularexampleapp'),
+    AngularFireModule.initializeApp(environment.firebase, 'angularBRMApp'),
     AngularFirestoreModule,
   ],
   exports: [
