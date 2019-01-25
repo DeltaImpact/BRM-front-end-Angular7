@@ -40,7 +40,9 @@ export class HomePageComponent implements OnInit {
   newRoleForm: FormGroup;
   newPermissionForm: FormGroup;
   error: string;
-  @ViewChild("form") myNgForm;
+  @ViewChild("userForm") userForm;
+  @ViewChild("roleForm") roleForm;
+  @ViewChild("permissionForm") permissionForm;
 
   constructor(
     private UserService: UserService,
@@ -105,7 +107,8 @@ export class HomePageComponent implements OnInit {
           this.users = this.users.map(function(item) {
             return item.id == updatedUser.id ? updatedUser : item;
           });
-          this.myNgForm.resetForm();
+          this.chosenUser = null;
+
         },
         e => {
           // debugger;
@@ -115,7 +118,7 @@ export class HomePageComponent implements OnInit {
       );
       // debugger;
     } else {
-      this.RoleService.showSnackBar("chooseUser");
+      this.RoleService.showSnackBar("chooseUserError");
       // console.log("Choose user.");
     }
   }
@@ -130,10 +133,10 @@ export class HomePageComponent implements OnInit {
         this.users = this.users.map(function(item) {
           return item.id == updatedUser.id ? updatedUser : item;
         });
-        this.myNgForm.resetForm();
+        this.chosenUser = null;
+
       },
       e => {
-        // debugger;
         this.RoleService.showSnackBar("userAlreadyHaveRole");
         // this.error = "errorHasOcurred";
       }
@@ -154,18 +157,14 @@ export class HomePageComponent implements OnInit {
           r => {
             let newUser = r as User;
             this.users = [...this.users, newUser];
-            this.myNgForm.resetForm();
+            this.userForm.resetForm();
           },
           e => {
             this.RoleService.showSnackBar("UserAlreadyExist");
             // this.error = "errorHasOcurred";
           }
         )
-        .catch(e => {
-          this.RoleService.showSnackBar("UserAlreadyExist");
-          // this.error = "errorHasOcurred";
-        });
-    }
+    };
   }
 
   createNewRole(newRole: string) {
@@ -176,7 +175,7 @@ export class HomePageComponent implements OnInit {
         r => {
           let newRole = r as Role;
           this.roles = [...this.roles, newRole];
-          this.myNgForm.resetForm();
+          this.roleForm.resetForm();
         },
         e => {
           this.RoleService.showSnackBar("RoleAlreadyExist");
@@ -194,7 +193,7 @@ export class HomePageComponent implements OnInit {
         r => {
           let newPermission = r as Permission;
           this.permissions = [...this.permissions, newPermission];
-          this.myNgForm.resetForm();
+          this.permissionForm.resetForm();
         },
         e => {
           // debugger;

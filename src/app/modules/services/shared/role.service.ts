@@ -51,18 +51,25 @@ export class RoleService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
+        // .post(
+        //   "http://httpbin.org/post",
+        //   {
+        //     roleName: role.name
+        //   },
+        //   headers
+        // )
         .post(
           Url,
-          role.name,
-          // {
-          //   roleName: role.name
-          // },
+          // role.name,
+          {
+            roleName: role.name
+          },
           headers
         )
         .toPromise()
         .then(
           res => {
+            debugger
             resolve(res);
           },
           err => {
@@ -72,7 +79,6 @@ export class RoleService {
     });
     return promise;
   }
-
 
   addRoleToUser(userId: number, roleId: number) {
     let promise = new Promise((resolve, reject) => {
@@ -140,12 +146,13 @@ export class RoleService {
     this.translateService
       .get(
         [
+          String(_("chooseUser")),
           String(_("chooseUserError")),
           String(_("userAlreadyHaveRole")),
           String(_("UserAlreadyExist")),
           String(_("RoleAlreadyExist")),
           String(_("PermissionAlreadyExist")),
-          String(_("saved")),
+          String(_("saved"))
         ],
         { value: AppConfig.votesLimit }
       )
