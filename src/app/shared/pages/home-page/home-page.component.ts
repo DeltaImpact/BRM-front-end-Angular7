@@ -1,15 +1,13 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { Hero } from "../../../modules/heroes/shared/hero.model";
-import { HeroService } from "../../../modules/heroes/shared/hero.service";
-import { UserService } from "../../../modules/heroes/shared/user.service";
-import { RoleService } from "../../../modules/heroes/shared/role.service";
-import { PermissionService } from "../../../modules/heroes/shared/permission.service";
+import { UserService } from "../../../modules/services/shared/user.service";
+import { RoleService } from "../../../modules/services/shared/role.service";
+import { PermissionService } from "../../../modules/services/shared/permission.service";
 import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
-import { User } from "src/app/modules/heroes/shared/user.model";
-import { Role } from "src/app/modules/heroes/shared/role.model";
-import { RoleDelete } from "src/app/modules/heroes/shared/role.delete.model";
-import { Permission } from "src/app/modules/heroes/shared/permission.model";
+import { User } from "src/app/modules/services/shared/user.model";
+import { Role } from "src/app/modules/services/shared/role.model";
+import { RoleDelete } from "src/app/modules/services/shared/role.delete.model";
+import { Permission } from "src/app/modules/services/shared/permission.model";
 import {
   FormBuilder,
   FormControl,
@@ -31,7 +29,6 @@ import { jsonpCallbackContext } from "@angular/common/http/src/module";
   animations: [UtilsHelperService.fadeInOut()]
 })
 export class HomePageComponent implements OnInit {
-  heroes: Hero[] = null;
   users: User[] = null;
   chosenUser: User = null;
   roles: Role[] = null;

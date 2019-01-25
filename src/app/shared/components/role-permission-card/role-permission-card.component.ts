@@ -1,9 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { AppConfig } from "../../../configs/app.config";
-import { UserService } from "../../../modules/heroes/shared/user.service";
-import { User } from "../../../modules/heroes/shared/user.model";
-import { Role } from "../../../modules/heroes/shared/role.model";
-import { Permission } from "../../../modules/heroes/shared/permission.model";
+import { UserService } from "../../../modules/services/shared/user.service";
+import { User } from "../../../modules/services/shared/user.model";
+import { Role } from "../../../modules/services/shared/role.model";
+import { Permission } from "../../../modules/services/shared/permission.model";
 import { Router } from "@angular/router";
 
 @Component({

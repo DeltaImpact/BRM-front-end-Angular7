@@ -6,7 +6,6 @@ import {AppConfig} from './configs/app.config';
 
 const routes: Routes = [
   {path: '', component: HomePageComponent, pathMatch: 'full'},
-  {path: AppConfig.routes.heroes, loadChildren: './modules/heroes/heroes.module#HeroesModule'},
   {path: AppConfig.routes.error404, component: Error404PageComponent},
 
   // otherwise redirect to 404

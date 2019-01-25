@@ -2,7 +2,6 @@ import {async, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {HeaderComponent} from './header.component';
-import {HeroService} from '../../../modules/heroes/shared/hero.service';
 import {TestsModule} from '../../modules/tests.module';
 import {APP_CONFIG, AppConfig} from '../../../configs/app.config';
 import {ProgressBarService} from '../../../core/services/progress-bar.service';
@@ -25,7 +24,6 @@ describe('HeaderComponent', () => {
       ],
       providers: [
         {provide: APP_CONFIG, useValue: AppConfig},
-        HeroService,
         ProgressBarService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
