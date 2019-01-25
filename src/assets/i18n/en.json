@@ -35,7 +35,10 @@
   "UsersList": "List of users:",
   "RolesList": "List of roles:",
   "PermissionsList": "List of permissions:",
-
+  "UsersName": "Nickname:",
+  "RolesName": "Role name:",
+  "PermissionsName": "permission name:",
+  "fieldRequired": "Required field.",
 
 
   "heroDefault": "It's a default hero, you cannot delete it",
@@ -49,14 +52,13 @@
   "language": "Language",
   "mayTheForce": "May the force be with you",
   "name": "Name",
-  "nameRequired": "Name is required",
   "nameWithPalindrome": "Name (Palindrome?)",
   "no": "No",
   "noHero": "There is no hero!",
   "offlineMessage": "Without connection we can not load anything!",
   "orange": "Orange",
   "realName": "Real name",
-  "realNameRequired": "Real name is required",
+  "realfieldRequired": "Real name is required",
   "remove": "Remove",
   "removeHero": "Delete hero",
   "saveHero": "Save hero",
