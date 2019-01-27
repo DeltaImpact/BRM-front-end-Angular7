@@ -1,7 +1,7 @@
 import {Deserializable} from '../../../shared/interfaces/deserializable.interface';
 
 export class Permission implements Deserializable {
-  id: string;
+  id: number;
   name: string;
 
   constructor(permission: any = {}) {
