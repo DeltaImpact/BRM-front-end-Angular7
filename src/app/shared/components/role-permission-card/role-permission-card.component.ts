@@ -15,13 +15,17 @@ export class RoleAndPermissionCardComponent implements OnInit {
   @Input() item: Role;
   @Input() typeOfItem: String;
   @Output() addFunction = new EventEmitter();
-  // @Output() addFunction: EventEmitter<Role> = new EventEmitter();
+  @Output() deleteFunction = new EventEmitter();
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {}
 
   addToUser() {
-    this.addFunction.emit(this.item);
+    this.addFunction.emit({ typeOfItem : this.typeOfItem, item : this.item});
+  }
+
+  deleteItem() {
+    this.deleteFunction.emit({ typeOfItem : this.typeOfItem, item :this.item});
   }
 }

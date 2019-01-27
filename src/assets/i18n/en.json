@@ -27,8 +27,9 @@
   "heroCreated": "Hero created!",
   "chooseUserError": "Choose user.",
   "addToUser": "add to user",
-  "chooseUser": "choose user",
+  "chooseUser": "Choose user.",
   "userAlreadyHaveRole": "User already have role.",
+  "userAlreadyHavePermission": "User already have permission.",
   "UserAlreadyExist": "User already exist.",
   "PermissionAlreadyExist": "Permission already exist.",
   "RoleAlreadyExist": "Role already exist.",
@@ -39,7 +40,8 @@
   "RolesName": "Role name:",
   "PermissionsName": "permission name:",
   "fieldRequired": "Required field.",
-
+  "Permissions": "Permissions",
+  "Roles": "Roles",
 
   "heroDefault": "It's a default hero, you cannot delete it",
   "heroDetail": "Hero detail",

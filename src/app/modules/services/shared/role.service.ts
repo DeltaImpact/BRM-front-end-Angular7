@@ -94,7 +94,7 @@ export class RoleService {
           Url,
           {
             UserId: userId,
-            RoleId: roleId
+            RoleOrPermissionId: roleId
           },
           headers
         )
@@ -125,7 +125,7 @@ export class RoleService {
           Url,
           {
             UserId: userId,
-            RoleId: roleId
+            RoleOrPermissionId: roleId
           },
           headers
         )
@@ -149,6 +149,7 @@ export class RoleService {
           String(_("chooseUser")),
           String(_("chooseUserError")),
           String(_("userAlreadyHaveRole")),
+          String(_("userAlreadyHavePermission")),
           String(_("UserAlreadyExist")),
           String(_("RoleAlreadyExist")),
           String(_("PermissionAlreadyExist")),

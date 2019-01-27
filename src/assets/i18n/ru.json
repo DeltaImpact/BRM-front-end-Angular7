@@ -21,8 +21,9 @@
   "heroCreated": "Hero created!",
   "chooseUserError": "Выберите пользователя.",
   "addToUser": "добавить пользователю",
-  "chooseUser": "выбрать пользователя",
+  "chooseUser": "Выбрать пользователя.",
   "userAlreadyHaveRole": "Пользователь уже имеет роль.",
+  "userAlreadyHavePermission": "Пользователь уже имеет право доступа.",
   "UserAlreadyExist": "Пользователь уже существует.",
   "PermissionAlreadyExist": "Право уже существует.",
   "RoleAlreadyExist": "Роль уже существует.",
@@ -33,7 +34,8 @@
   "RolesName": "Название роли:",
   "PermissionsName": "Название права:",
   "fieldRequired": "Необходимо заполнить.",
-
+  "Permissions": "Права доступа",
+  "Roles": "Роли",
 
   "heroDefault": "It's a default hero, you cannot delete it",
   "heroDetail": "Hero detail",

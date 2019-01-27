@@ -30,7 +30,7 @@ import { jsonpCallbackContext } from "@angular/common/http/src/module";
 })
 export class HomePageComponent implements OnInit {
   users: User[] = null;
-  chosenUser: User = null;
+  chosenUserId: number = null;
   roles: Role[] = null;
   permissions: Permission[] = null;
   usersLoading: boolean = false;
@@ -66,6 +66,12 @@ export class HomePageComponent implements OnInit {
     this.rolesLoading = true;
     this.permissionsLoading = true;
 
+    this.loadUsers();
+    this.loadRoles();
+    this.loadPermissions();
+  }
+
+  loadUsers() {
     this.UserService.getUsers().subscribe(
       (user: Array<User>) => {
         this.users = user;
@@ -75,7 +81,9 @@ export class HomePageComponent implements OnInit {
         this.usersLoading = false;
       }
     );
+  }
 
+  loadRoles() {
     this.RoleService.getRoles().subscribe(
       (roles: Array<Role>) => {
         this.roles = roles;
@@ -85,7 +93,9 @@ export class HomePageComponent implements OnInit {
         this.rolesLoading = false;
       }
     );
+  }
 
+  loadPermissions() {
     this.PermissionService.getPermissions().subscribe(
       (permissions: Array<Permission>) => {
         this.permissions = permissions;
@@ -97,44 +107,78 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  AddToUser(Role: Role) {
-    if (this.chosenUser) {
-      let userId = this.chosenUser.id;
-      let roleId = Role.id;
-      this.RoleService.addRoleToUser(userId, roleId).then(
-        r => {
-          let updatedUser = r as User;
-          this.users = this.users.map(function(item) {
-            return item.id == updatedUser.id ? updatedUser : item;
-          });
-          this.chosenUser = null;
-
-        },
-        e => {
-          // debugger;
-          this.RoleService.showSnackBar("userAlreadyHaveRole");
-          // this.error = "errorHasOcurred";
-        }
-      );
-      // debugger;
+  AddToUser(obj: { item: Role; typeOfItem: string }) {
+    if (this.chosenUserId) {
+      if (obj.typeOfItem == "role") {
+        this.addRoleToUser(this.chosenUserId, obj.item.id);
+      }
+      if (obj.typeOfItem == "permission") {
+        this.addPermissionToUser(this.chosenUserId, obj.item.id);
+      }
     } else {
       this.RoleService.showSnackBar("chooseUserError");
       // console.log("Choose user.");
     }
   }
 
-  RemoveRoleFromUser(RoleDelete: RoleDelete) {
-    let userId = RoleDelete.UserId;
-    let roleId = RoleDelete.RoleId;
+  deleteItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
+    if (typeOfItem == "role") {
+      debugger
 
+    }
+    if (typeOfItem == "permission") {
+      debugger
+
+    }
+  }
+
+  RemoveRoleFrom({
+    role,
+    user,
+    typeOfItem
+  }: {
+    role: Role;
+    user: User;
+    typeOfItem: string;
+  }) {
+    if (typeOfItem == "role") {
+      this.DeleteRoleFromUser(user.id, role.id);
+    }
+    if (typeOfItem == "permission") {
+      this.DeletePermissionFromUser(user.id, role.id);
+    }
+  }
+
+  addRoleToUser(userId: number, roleId: number) {
+    this.RoleService.addRoleToUser(userId, roleId).then(
+      r => {
+        this.UpdateChangedUser(r as User);
+      },
+      e => {
+        // debugger;
+        this.RoleService.showSnackBar("userAlreadyHaveRole");
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  addPermissionToUser(userId: number, roleId: number) {
+    this.PermissionService.addPermissionToUser(userId, roleId).then(
+      r => {
+        this.UpdateChangedUser(r as User);
+      },
+      e => {
+        // debugger;
+        this.RoleService.showSnackBar("userAlreadyHaveRole");
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  DeleteRoleFromUser(userId: number, roleId: number) {
     this.RoleService.DeleteRoleFromUser(userId, roleId).then(
       r => {
-        let updatedUser = r as User;
-        this.users = this.users.map(function(item) {
-          return item.id == updatedUser.id ? updatedUser : item;
-        });
-        this.chosenUser = null;
-
+        this.UpdateChangedUser(r as User);
       },
       e => {
         this.RoleService.showSnackBar("userAlreadyHaveRole");
@@ -143,28 +187,47 @@ export class HomePageComponent implements OnInit {
     );
   }
 
+  DeletePermissionFromUser(userId: number, permissionId: number) {
+    this.PermissionService.DeletePermissionFromUser(userId, permissionId).then(
+      r => {
+        this.UpdateChangedUser(r as User);
+      },
+      e => {
+        // this.RoleService.showSnackBar("userAlreadyHavePermission");
+        this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  UpdateChangedUser(user: User) {
+    let updatedUser = user as User;
+    this.users = this.users.map(function(item) {
+      return item.id == updatedUser.id ? updatedUser : item;
+    });
+  }
+
   ChooseUser(User: User) {
-    this.chosenUser = User;
-    console.log("Chosen user: ");
-    console.log(this.chosenUser);
-    // debugger;
+    if (User.id != this.chosenUserId) {
+      this.chosenUserId = User.id;
+    } else {
+      this.chosenUserId = null;
+    }
   }
 
   createNewUser(newUser: string) {
     if (this.newUserForm.valid) {
-      this.UserService.AddUser(new User(newUser))
-        .then(
-          r => {
-            let newUser = r as User;
-            this.users = [...this.users, newUser];
-            this.userForm.resetForm();
-          },
-          e => {
-            this.RoleService.showSnackBar("UserAlreadyExist");
-            // this.error = "errorHasOcurred";
-          }
-        )
-    };
+      this.UserService.AddUser(new User(newUser)).then(
+        r => {
+          let newUser = r as User;
+          this.users = [...this.users, newUser];
+          this.userForm.resetForm();
+        },
+        e => {
+          this.RoleService.showSnackBar("UserAlreadyExist");
+          // this.error = "errorHasOcurred";
+        }
+      );
+    }
   }
 
   createNewRole(newRole: string) {

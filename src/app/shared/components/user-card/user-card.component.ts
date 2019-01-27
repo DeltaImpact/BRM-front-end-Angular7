@@ -24,21 +24,25 @@ export class UserCardComponent implements OnInit {
   @Output() chooseFunction = new EventEmitter();
   @Output() removeFunction = new EventEmitter();
 
-  constructor(private userService: UserService, private router: Router) {
-    // debugger
+  constructor() {
   }
-
-  // @Output() addFunction: EventEmitter<Role> = new EventEmitter();
 
   ngOnInit() {}
 
-  RemoveRoleFromUser(role: Role, user: User) {
-    let obj = new RoleDelete(role, user);
-    this.removeFunction.emit(obj);
-    // this.removeFunction.emit([role, user]);
+  RemoveFromUser(role: Role, user: User, typeOfItem: string) {
+    this.removeFunction.emit({
+      role: role,
+      user: user,
+      typeOfItem: typeOfItem
+    });
   }
+
   chooseUser() {
     this.chooseFunction.emit(this.user);
+  }
+
+  deleteUser() {
+    debugger;
   }
 
   ngOnChanges(changes: SimpleChanges) {

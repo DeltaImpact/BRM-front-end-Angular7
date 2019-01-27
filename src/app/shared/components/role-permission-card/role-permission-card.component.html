@@ -1,8 +1,4 @@
-<mat-card
-  class="hero-card"
-  *ngIf="item"
-
->
+<mat-card class="hero-card" *ngIf="item">
   <mat-card-header>
     <div
       *ngIf="typeOfItem == 'permission'"
@@ -26,6 +22,9 @@
     <div class="hero-actions">
       {{ "addToUser" | translate }}
       <mat-icon class="icon__like--green" (click)="addToUser()">add </mat-icon>
+      <mat-icon class="icon__like--green" (click)="deleteItem()"
+        >delete
+      </mat-icon>
     </div>
     <!-- <mat-card-subtitle>Type: {{ typeOfItem | json}}</mat-card-subtitle> -->
 

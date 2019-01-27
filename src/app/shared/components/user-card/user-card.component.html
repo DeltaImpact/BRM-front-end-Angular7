@@ -16,32 +16,57 @@
     <mat-card-title>{{ user.userName }}</mat-card-title>
     <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
     <div class="hero-actions">
-      {{ "chooseUser" | translate }}
-      <mat-icon class="icon__like--green" (click)="chooseUser()">add </mat-icon>
+      <mat-icon
+        class="icon__like--green"
+        matTooltip="{{ 'chooseUser' | translate }}"
+        (click)="chooseUser()"
+      >
+        {{ isChosen ? "radio_button_checked" : "radio_button_unchecked" }}
+      </mat-icon>
+      <mat-icon class="icon__like--green" (click)="deleteUser()"
+        >delete
+      </mat-icon>
     </div>
   </mat-card-header>
   <div>
     <div id="left">
-      <div *ngIf="user.permissions.length !== 0">
-        <mat-card-title>Permissions:</mat-card-title>
-        <ng-container *ngFor="let permission of user.permissions">
-          <div class="example-box">{{ permission | json }}</div>
-        </ng-container>
-      </div>
-      <!-- {{ user.permissions | json }} -->
-    </div>
-    <div id="right">
       <div *ngIf="user.roles.length !== 0">
-        <mat-card-title>Roles:</mat-card-title>
+        <mat-card-subtitle>{{ "Roles" | translate }}:</mat-card-subtitle>
 
         <div class="example-list" *ngFor="let role of user.roles">
           <div class="example-box">
             <mat-card-title>{{ role.name }}</mat-card-title>
-            <mat-icon class="icon__like--green" (click)="RemoveRoleFromUser(role, user)">clear</mat-icon>
+            <mat-card-content> ID: {{ role.id }}</mat-card-content>
+
+            <mat-icon
+              class="icon__like--green"
+              (click)="RemoveFromUser(role, user, 'role')"
+              >clear</mat-icon
+            >
           </div>
         </div>
       </div>
       <!-- {{ user.roles | json }} -->
+    </div>
+    <div id="right">
+      <div *ngIf="user.permissions.length !== 0">
+        <mat-card-subtitle> {{ "Permissions" | translate }}:</mat-card-subtitle>
+        <div class="example-list" *ngFor="let permission of user.permissions">
+          <div class="example-box">
+            <!-- {{ permission | json }} -->
+            <mat-card-title>{{ permission.name }}</mat-card-title>
+            <mat-card-content> ID: {{ permission.id }}</mat-card-content>
+
+            <!-- <mat-card-subtitle> {{ permission | json }}</mat-card-subtitle> -->
+            <mat-icon
+              class="icon__like--green"
+              (click)="RemoveFromUser(permission, user, 'permission')"
+              >clear</mat-icon
+            >
+          </div>
+        </div>
+      </div>
+      <!-- {{ user.permissions | json }} -->
     </div>
     <div class="clear"></div>
   </div>

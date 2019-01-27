@@ -70,6 +70,69 @@ export class PermissionService {
     return promise;
   }
 
+  
+  addPermissionToUser(userId: number, permissionId: number) {
+    let promise = new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/permission/addPermissionToUser`;
+      const headers = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      };
+      this.http
+        // .post("http://httpbin.org/post", username, headers)
+        .post(
+          Url,
+          {
+            UserId: userId,
+            RoleOrPermissionId: permissionId
+          },
+          headers
+        )
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+    return promise;
+  }
+
+  DeletePermissionFromUser(userId: number, permissionId: number) {
+    let promise = new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/permission/deletePermissionFromUser`;
+      const headers = {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
+      };
+      this.http
+        // .post("http://httpbin.org/post", username, headers)
+        .post(
+          Url,
+          {
+            UserId: userId,
+            RoleOrPermissionId: permissionId
+          },
+          headers
+        )
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+    return promise;
+  }
+
   showSnackBar(name): void {
     this.translateService
       .get(

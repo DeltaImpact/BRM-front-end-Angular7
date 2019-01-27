@@ -54,9 +54,9 @@
           <ng-container *ngFor="let user of users">
             <app-user-card
               [user]="user"
-              [isChosen]="chosenUser == user ? true : false"
+              [isChosen]="chosenUserId == user.id ? true : false"
               (chooseFunction)="ChooseUser(user)"
-              (removeFunction)="RemoveRoleFromUser($event)"
+              (removeFunction)="RemoveRoleFrom($event)"
             ></app-user-card>
           </ng-container>
         </div>
@@ -115,7 +115,8 @@
             <app-role-permission-card
               [item]="role"
               [typeOfItem]="'role'"
-              (addFunction)="AddToUser(role)"
+              (addFunction)="AddToUser($event)"
+              (deleteFunction)="deleteItem($event)"
             ></app-role-permission-card>
           </ng-container>
         </div>
@@ -174,7 +175,8 @@
             <app-role-permission-card
               [item]="permission"
               [typeOfItem]="'permission'"
-              (addFunction)="AddToUser(permission)"
+              (addFunction)="AddToUser($event)"
+              (deleteFunction)="deleteItem($event)"
             ></app-role-permission-card>
           </ng-container>
         </div>
