@@ -123,12 +123,10 @@ export class HomePageComponent implements OnInit {
 
   deleteItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
     if (typeOfItem == "role") {
-      debugger
-
+      debugger;
     }
     if (typeOfItem == "permission") {
-      debugger
-
+      debugger;
     }
   }
 
@@ -152,11 +150,15 @@ export class HomePageComponent implements OnInit {
   addRoleToUser(userId: number, roleId: number) {
     this.RoleService.addRoleToUser(userId, roleId).then(
       r => {
-        this.UpdateChangedUser(r as User);
+        let responseObject = r as {role: Role, user: User }
+        this.AddUserRole(userId, responseObject.role)
       },
       e => {
-        // debugger;
-        this.RoleService.showSnackBar("userAlreadyHaveRole");
+        if (e.error) {
+          if (e.error.message == "User already have role.") {
+            this.RoleService.showSnackBar("userAlreadyHaveRole");
+          }
+        }
         // this.error = "errorHasOcurred";
       }
     );
@@ -165,11 +167,15 @@ export class HomePageComponent implements OnInit {
   addPermissionToUser(userId: number, roleId: number) {
     this.PermissionService.addPermissionToUser(userId, roleId).then(
       r => {
-        this.UpdateChangedUser(r as User);
+        let responseObject = r as {role: Role, permission: Permission }
+        this.AddUserPermission(userId, responseObject.permission)
       },
       e => {
-        // debugger;
-        this.RoleService.showSnackBar("userAlreadyHaveRole");
+        if (e.error) {
+          if (e.error.message == "User already have permission.") {
+            this.RoleService.showSnackBar("userAlreadyHavePermission");
+          }
+        }
         // this.error = "errorHasOcurred";
       }
     );
@@ -178,10 +184,9 @@ export class HomePageComponent implements OnInit {
   DeleteRoleFromUser(userId: number, roleId: number) {
     this.RoleService.DeleteRoleFromUser(userId, roleId).then(
       r => {
-        this.UpdateChangedUser(r as User);
+        this.DeleteUserRole(userId, roleId);
       },
       e => {
-        this.RoleService.showSnackBar("userAlreadyHaveRole");
         // this.error = "errorHasOcurred";
       }
     );
@@ -190,13 +195,53 @@ export class HomePageComponent implements OnInit {
   DeletePermissionFromUser(userId: number, permissionId: number) {
     this.PermissionService.DeletePermissionFromUser(userId, permissionId).then(
       r => {
-        this.UpdateChangedUser(r as User);
+        this.DeleteUserPermission(userId, permissionId);
       },
       e => {
         // this.RoleService.showSnackBar("userAlreadyHavePermission");
         this.error = "errorHasOcurred";
       }
     );
+  }
+
+  AddUserRole(userId: number, role: Role) {
+    this.users = this.users.map(function(user) {
+      if (user.id == userId) {
+        user.roles = [...user.roles, role];
+        return user;
+      } else return user;
+    });
+  }
+
+  AddUserPermission(userId: number, permission: Permission) {
+    this.users = this.users.map(function(user) {
+      if (user.id == userId) {
+        user.permissions = [...user.permissions, permission];
+        return user;
+      } else return user;
+    });
+  }
+
+  DeleteUserRole(userId: number, roleId: number) {
+    this.users = this.users.map(function(user) {
+      if (user.id == userId) {
+        user.roles = user.roles.filter(role => {
+          return role.id !== roleId;
+        });
+        return user;
+      } else return user;
+    });
+  }
+
+  DeleteUserPermission(userId: number, permissionId: number) {
+    this.users = this.users.map(function(user) {
+      if (user.id == userId) {
+        user.permissions = user.permissions.filter(permission => {
+          return permission.id !== permissionId;
+        });
+        return user;
+      } else return user;
+    });
   }
 
   UpdateChangedUser(user: User) {
