@@ -2,7 +2,8 @@
   <h3 align="center">Angular BRM App</h3>
 </p>
 
-<img src="repository_files/chrome_2019-01-25_20-51-32.png">
+<img src="repository_files/chrome_2019-01-28_17-42-30.png">
+<img src="repository_files/chrome_2019-01-28_17-37-17.png">
 
 
 ## Quick start
