@@ -9,10 +9,11 @@ export class User implements Deserializable {
   roles: Role[] = [];
 
   constructor(user: any = {}) {
+    // debugger
     this.id = user.id;
     this.name = user.name || "";
-    this.permissions = user.permissions || "";
-    this.roles = user.roles || "";
+    this.permissions = user.permissions || [];
+    this.roles = user.roles || [];
   }
 
   // ngOnInit() {

@@ -9,6 +9,10 @@ import { AppConfig } from "../../../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Role } from "./role.model";
 
+const httpOptions = {
+  headers: new HttpHeaders({ "Content-Type": "application/json" })
+};
+
 @Injectable({
   providedIn: "root"
 })
@@ -42,25 +46,16 @@ export class RoleService {
   }
 
   AddRole(role: Role) {
-    console.log(role);
+    const headers = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json"
+      })
+    };
     let promise = new Promise((resolve, reject) => {
       let Url = `${AppConfig.apiUrl}/role/AddRole`;
-      const headers = {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
-        })
-      };
       this.http
-        // .post(
-        //   "http://httpbin.org/post",
-        //   {
-        //     roleName: role.name
-        //   },
-        //   headers
-        // )
         .post(
           Url,
-          // role.name,
           {
             roleName: role.name
           },
@@ -69,7 +64,6 @@ export class RoleService {
         .toPromise()
         .then(
           res => {
-            debugger
             resolve(res);
           },
           err => {
@@ -78,6 +72,40 @@ export class RoleService {
         );
     });
     return promise;
+  }
+
+  DeleteRole(roleId: number) {
+    return new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/role/deleteRole?Id=${roleId}`;
+      this.http
+        .delete(Url, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  UpdateRole(role: Role) {
+    return new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/role/updateRole`;
+      this.http
+        .put(Url, role, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
   }
 
   addRoleToUser(userId: number, roleId: number) {
@@ -89,7 +117,6 @@ export class RoleService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
         .post(
           Url,
           {
@@ -120,7 +147,6 @@ export class RoleService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
         .post(
           Url,
           {

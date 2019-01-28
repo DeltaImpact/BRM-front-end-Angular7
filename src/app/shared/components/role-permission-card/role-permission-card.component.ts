@@ -5,6 +5,12 @@ import { User } from "../../../modules/services/shared/user.model";
 import { Role } from "../../../modules/services/shared/role.model";
 import { Permission } from "../../../modules/services/shared/permission.model";
 import { Router } from "@angular/router";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
 
 @Component({
   selector: "app-role-permission-card",
@@ -16,16 +22,36 @@ export class RoleAndPermissionCardComponent implements OnInit {
   @Input() typeOfItem: String;
   @Output() addFunction = new EventEmitter();
   @Output() deleteFunction = new EventEmitter();
+  @Output() updateFunction = new EventEmitter();
+  isEditMode: boolean = false;
+  editItemForm: FormGroup;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private formBuilder: FormBuilder
+  ) {
+    this.editItemForm = this.formBuilder.group({
+      name: new FormControl("", [Validators.required])
+    });
+  }
 
   ngOnInit() {}
 
   addToUser() {
-    this.addFunction.emit({ typeOfItem : this.typeOfItem, item : this.item});
+    this.addFunction.emit({ typeOfItem: this.typeOfItem, item: this.item });
   }
 
   deleteItem() {
-    this.deleteFunction.emit({ typeOfItem : this.typeOfItem, item :this.item});
+    this.deleteFunction.emit({ typeOfItem: this.typeOfItem, item: this.item });
+  }
+
+  switchEditMode() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  changeItem(item: Role) {
+    this.item.name = item.name;
+    this.updateFunction.emit({ typeOfItem: this.typeOfItem, item: this.item });
   }
 }

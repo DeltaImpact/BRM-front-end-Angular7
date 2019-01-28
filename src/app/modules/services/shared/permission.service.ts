@@ -9,6 +9,10 @@ import { AppConfig } from "../../../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Permission } from "./permission.model";
 
+const httpOptions = {
+  headers: new HttpHeaders({ "Content-Type": "application/json" })
+};
+
 @Injectable({
   providedIn: "root"
 })
@@ -51,10 +55,11 @@ export class PermissionService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
         .post(
           Url,
-          role.name,
+          {
+            PermissionName: role.name
+          },
           headers
         )
         .toPromise()
@@ -70,7 +75,42 @@ export class PermissionService {
     return promise;
   }
 
-  
+  DeletePermission(permissionId: number) {
+    return new Promise((resolve, reject) => {
+      let Url = `${
+        AppConfig.apiUrl
+      }/permission/deletePermission?Id=${permissionId}`;
+      this.http
+        .delete(Url, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+  }
+
+  UpdatePermission(permission: Permission) {
+    return new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/permission/updatePermission`;
+      this.http
+        .put(Url, permission, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+  }
+
   addPermissionToUser(userId: number, permissionId: number) {
     let promise = new Promise((resolve, reject) => {
       let Url = `${AppConfig.apiUrl}/permission/addPermissionToUser`;
@@ -80,7 +120,6 @@ export class PermissionService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
         .post(
           Url,
           {
@@ -111,7 +150,6 @@ export class PermissionService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
         .post(
           Url,
           {

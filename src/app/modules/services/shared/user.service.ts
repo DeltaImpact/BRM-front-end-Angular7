@@ -9,6 +9,10 @@ import { AppConfig } from "../../../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { User } from "./user.model";
 
+const httpOptions = {
+  headers: new HttpHeaders({ "Content-Type": "application/json" })
+};
+
 @Injectable({
   providedIn: "root"
 })
@@ -52,7 +56,7 @@ export class UserService {
   }
 
   // AddUser(nickname: string): Observable<User[]> {
-  //   let params = new HttpParams().set("userNickname", nickname);
+  //   let params = new HttpParams().set("username", nickname);
   //   return <Observable<User[]>>(
   //     this.http
   //       .post(`${AppConfig.apiUrl}/user/register`, { params: params })
@@ -64,8 +68,6 @@ export class UserService {
   // }
 
   AddUser(user: User) {
-    console.log(user);
-
     let promise = new Promise((resolve, reject) => {
       let Url = `${AppConfig.apiUrl}/user/register`;
       const headers = {
@@ -74,13 +76,16 @@ export class UserService {
         })
       };
       this.http
-        // .post("http://httpbin.org/post", username, headers)
-        .post(Url, user.name, headers)
+        .post(
+          Url,
+          {
+            Username: user.name
+          },
+          headers
+        )
         .toPromise()
         .then(
           res => {
-            // console.log(res);
-            // debugger;
             resolve(res);
           },
           err => {
@@ -89,6 +94,41 @@ export class UserService {
         );
     });
     return promise;
+  }
+
+  DeleteUser(user: User) {
+    let promise = new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/user/deleteUser?Id=${user.id}`;
+      this.http
+        .delete(Url, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
+    return promise;
+  }
+
+  UpdateUser(user: User) {
+    return new Promise((resolve, reject) => {
+      let Url = `${AppConfig.apiUrl}/user/update`;
+      this.http
+        .put(Url, user, httpOptions)
+        .toPromise()
+        .then(
+          res => {
+            resolve(res);
+          },
+          err => {
+            reject(err);
+          }
+        );
+    });
   }
 
   showSnackBar(name): void {

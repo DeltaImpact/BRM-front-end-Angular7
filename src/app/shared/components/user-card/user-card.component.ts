@@ -12,6 +12,12 @@ import { User } from "../../../modules/services/shared/user.model";
 import { Role } from "../../../modules/services/shared/role.model";
 import { RoleDelete } from "../../../modules/services/shared/role.delete.model";
 import { Router } from "@angular/router";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators
+} from "@angular/forms";
 
 @Component({
   selector: "app-user-card",
@@ -23,11 +29,23 @@ export class UserCardComponent implements OnInit {
   @Input() isChosen: Boolean;
   @Output() chooseFunction = new EventEmitter();
   @Output() removeFunction = new EventEmitter();
+  @Output() deleteFunction = new EventEmitter();
+  @Output() updateFunction = new EventEmitter();
+  isEditMode: boolean = false;
+  editItemForm: FormGroup;
 
-  constructor() {
+  constructor(private formBuilder: FormBuilder) {
+    this.editItemForm = this.formBuilder.group({
+      name: new FormControl("", [Validators.required])
+    });
   }
 
   ngOnInit() {}
+
+  // ngOnChanges(changes: SimpleChanges) {
+  //   debugger
+  //   // changes.prop contains the old and the new value...
+  // }
 
   RemoveFromUser(role: Role, user: User, typeOfItem: string) {
     this.removeFunction.emit({
@@ -41,11 +59,17 @@ export class UserCardComponent implements OnInit {
     this.chooseFunction.emit(this.user);
   }
 
-  deleteUser() {
-    debugger;
+  deleteItem() {
+    this.deleteFunction.emit(this.user);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    // debugger
+  switchEditMode() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  changeItem(name: User) {
+    // this.user.userName = name.name;
+    this.user.name = name.name; 
+    this.updateFunction.emit(this.user);
   }
 }

@@ -73,8 +73,11 @@ export class HomePageComponent implements OnInit {
 
   loadUsers() {
     this.UserService.getUsers().subscribe(
-      (user: Array<User>) => {
-        this.users = user;
+      (users: Array<any>) => {
+        this.users = users.map(function(item) {
+          item.name = item.userName;
+          return item;
+        });
       },
       err => {},
       () => {
@@ -117,17 +120,174 @@ export class HomePageComponent implements OnInit {
       }
     } else {
       this.RoleService.showSnackBar("chooseUserError");
-      // console.log("Choose user.");
     }
   }
 
   deleteItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
     if (typeOfItem == "role") {
-      debugger;
+      this.DeleteRole(item.id);
     }
     if (typeOfItem == "permission") {
-      debugger;
+      this.DeletePermission(item.id);
     }
+  }
+
+  RemoveUser(user: User) {
+    this.UserService.DeleteUser(user).then(
+      r => {
+        this.DeleteUserOnView(user);
+      },
+      e => {
+        // this.RoleService.showSnackBar("userAlreadyHavePermission");
+        this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  changeItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
+    debugger;
+    if (typeOfItem == "role") {
+      this.UpdateRole(item);
+    }
+    if (typeOfItem == "permission") {
+      this.UpdatePermission(item);
+    }
+  }
+
+  UpdateRole(item: Role) {
+    this.RoleService.UpdateRole(item).then(
+      r => {
+        let responseObject = r as Role;
+        this.UpdateRoleOnView(responseObject);
+      },
+      e => {
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  UpdateRoleOnView(role: Role) {
+    this.roles = this.roles.map(function(item) {
+      if (item.id == role.id) item.name = role.name;
+      return item;
+    });
+    this.UpdateRoleInUsersOnView(role);
+  }
+
+  UpdateRoleInUsersOnView(role: Role) {
+    this.users = this.users.map(function(user) {
+      user.roles = user.roles.map(function(item) {
+        if (item.id == role.id) item.name = role.name;
+        return item;
+      });
+      return user;
+    });
+  }
+
+  UpdatePermission(item: Permission) {
+    this.PermissionService.UpdatePermission(item).then(
+      r => {
+        let responseObject = r as Permission;
+        this.UpdatePermissionOnView(responseObject);
+      },
+      e => {
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  
+  UpdatePermissionOnView(item: Permission) {
+    this.roles = this.roles.map(function(item) {
+      if (item.id == item.id) item.name = item.name;
+      return item;
+    });
+    this.UpdatePermissionInUsersOnView(item);
+  }
+
+  UpdatePermissionInUsersOnView(item: Permission) {
+    this.users = this.users.map(function(user) {
+      user.roles = user.roles.map(function(item) {
+        if (item.id == item.id) item.name = item.name;
+        return item;
+      });
+      return user;
+    });
+  }
+
+  UpdateUser(item: User) {
+    this.UserService.UpdateUser(item).then(
+      r => {
+        let responseObject = r as any;
+        this.users = this.users.map(function(user) {
+          if (user.id == responseObject.id) user.name = responseObject.Username;
+          return user;
+        });
+      },
+      e => {
+        if (e.error.message == "User with same nickname already exist.") {
+          this.RoleService.showSnackBar("UserAlreadyExist");
+        }
+       
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  DeleteRole(id: number) {
+    this.RoleService.DeleteRole(id).then(
+      r => {
+        let responseObject = r as Role;
+        this.DeleteRoleOnView(responseObject);
+      },
+      e => {
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  DeleteRoleOnView(role: Role) {
+    this.roles = this.roles.filter(curRole => {
+      return curRole.id !== role.id;
+    });
+    this.DeleteRoleFromUsersOnView(role);
+  }
+
+  DeleteRoleFromUsersOnView(role: Role) {
+    this.users = this.users.map(function(user) {
+      user.roles = user.roles.filter(curRole => {
+        return curRole.id !== role.id;
+      });
+      return user;
+    });
+  }
+
+  DeletePermission(id: number) {
+    this.PermissionService.DeletePermission(id).then(
+      r => {
+        let responseObject = r as Permission;
+        this.DeletePermissionOnView(responseObject);
+      },
+      e => {
+        // this.error = "errorHasOcurred";
+      }
+    );
+  }
+
+  DeletePermissionOnView(permission: Permission) {
+    this.permissions = this.permissions.filter(curPermission => {
+      return curPermission.id !== permission.id;
+    });
+    this.DeletePermissionFromUsersOnView(permission);
+  }
+
+  DeletePermissionFromUsersOnView(permission: Permission) {
+    this.users = this.users.map(function(user) {
+      user.permissions = user.permissions.filter(curPermission => {
+        return curPermission.id !== permission.id;
+      });
+      return user;
+    });
   }
 
   RemoveRoleFrom({
@@ -150,8 +310,8 @@ export class HomePageComponent implements OnInit {
   addRoleToUser(userId: number, roleId: number) {
     this.RoleService.addRoleToUser(userId, roleId).then(
       r => {
-        let responseObject = r as {role: Role, user: User }
-        this.AddUserRole(userId, responseObject.role)
+        let responseObject = r as { role: Role; user: User };
+        this.addRoleToUserOnView(userId, responseObject.role);
       },
       e => {
         if (e.error) {
@@ -167,8 +327,8 @@ export class HomePageComponent implements OnInit {
   addPermissionToUser(userId: number, roleId: number) {
     this.PermissionService.addPermissionToUser(userId, roleId).then(
       r => {
-        let responseObject = r as {role: Role, permission: Permission }
-        this.AddUserPermission(userId, responseObject.permission)
+        let responseObject = r as { role: Role; permission: Permission };
+        this.AddUserPermissionOnView(userId, responseObject.permission);
       },
       e => {
         if (e.error) {
@@ -184,7 +344,7 @@ export class HomePageComponent implements OnInit {
   DeleteRoleFromUser(userId: number, roleId: number) {
     this.RoleService.DeleteRoleFromUser(userId, roleId).then(
       r => {
-        this.DeleteUserRole(userId, roleId);
+        this.DeleteUserRoleOnView(userId, roleId);
       },
       e => {
         // this.error = "errorHasOcurred";
@@ -195,7 +355,7 @@ export class HomePageComponent implements OnInit {
   DeletePermissionFromUser(userId: number, permissionId: number) {
     this.PermissionService.DeletePermissionFromUser(userId, permissionId).then(
       r => {
-        this.DeleteUserPermission(userId, permissionId);
+        this.DeleteUserPermissionOnView(userId, permissionId);
       },
       e => {
         // this.RoleService.showSnackBar("userAlreadyHavePermission");
@@ -204,7 +364,13 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  AddUserRole(userId: number, role: Role) {
+  DeleteUserOnView(user: User) {
+    this.users = this.users.filter(curUser => {
+      return curUser.id !== user.id;
+    });
+  }
+
+  addRoleToUserOnView(userId: number, role: Role) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
         user.roles = [...user.roles, role];
@@ -213,7 +379,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  AddUserPermission(userId: number, permission: Permission) {
+  AddUserPermissionOnView(userId: number, permission: Permission) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
         user.permissions = [...user.permissions, permission];
@@ -222,7 +388,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  DeleteUserRole(userId: number, roleId: number) {
+  DeleteUserRoleOnView(userId: number, roleId: number) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
         user.roles = user.roles.filter(role => {
@@ -233,7 +399,7 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  DeleteUserPermission(userId: number, permissionId: number) {
+  DeleteUserPermissionOnView(userId: number, permissionId: number) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
         user.permissions = user.permissions.filter(permission => {
@@ -244,14 +410,14 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  UpdateChangedUser(user: User) {
+  UpdateChangedUserOnView(user: User) {
     let updatedUser = user as User;
     this.users = this.users.map(function(item) {
       return item.id == updatedUser.id ? updatedUser : item;
     });
   }
 
-  ChooseUser(User: User) {
+  ChooseUserOnView(User: User) {
     if (User.id != this.chosenUserId) {
       this.chosenUserId = User.id;
     } else {
@@ -263,7 +429,13 @@ export class HomePageComponent implements OnInit {
     if (this.newUserForm.valid) {
       this.UserService.AddUser(new User(newUser)).then(
         r => {
-          let newUser = r as User;
+          // let newUser = r;
+          let responseObject = r as any;
+          let  newUser = responseObject as User;
+          newUser.id = responseObject.id;
+          newUser.name = responseObject.userName;
+          newUser.roles = [];
+          newUser.permissions = [];
           this.users = [...this.users, newUser];
           this.userForm.resetForm();
         },
@@ -276,8 +448,6 @@ export class HomePageComponent implements OnInit {
   }
 
   createNewRole(newRole: string) {
-    // debugger
-
     if (this.newRoleForm.valid) {
       this.RoleService.AddRole(new Role(newRole)).then(
         r => {
@@ -294,8 +464,6 @@ export class HomePageComponent implements OnInit {
   }
 
   createNewPermission(newPermission: string) {
-    // debugger
-
     if (this.newPermissionForm.valid) {
       this.PermissionService.AddPermission(new Permission(newPermission)).then(
         r => {

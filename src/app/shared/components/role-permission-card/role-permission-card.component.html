@@ -20,17 +20,56 @@
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ item.id }}</mat-card-subtitle>
     <div class="hero-actions">
-      {{ "addToUser" | translate }}
-      <mat-icon class="icon__like--green" (click)="addToUser()">add </mat-icon>
+      <mat-icon
+        matTooltip="{{ 'addToUser' | translate }}"
+        class="icon__like--green"
+        (click)="addToUser()"
+        >add
+      </mat-icon>
+      <mat-icon class="icon__like--green" (click)="switchEditMode()"
+        >edit
+      </mat-icon>
       <mat-icon class="icon__like--green" (click)="deleteItem()"
         >delete
       </mat-icon>
     </div>
+
     <!-- <mat-card-subtitle>Type: {{ typeOfItem | json}}</mat-card-subtitle> -->
 
     <!-- <div class="hero-actions">{{ typeOfItem }}</div> -->
   </mat-card-header>
-  <!-- {{ typeOfItem | json }} -->
-
-  <!-- <img (click)="seeHeroDetails(item)" mat-card-image src="{{hero.avatarUrl}}"> -->
+  <div *ngIf="isEditMode" class="roles__list">
+    <div class="roles__box">
+      <form
+        [formGroup]="editItemForm"
+        #editForm="ngForm"
+        ngxScrollToFirstInvalid
+        (ngSubmit)="changeItem(editItemForm.value)"
+        autocomplete="on"
+      >
+        <mat-form-field class="input-container">
+          <input
+            matInput
+            name="hname"
+            type="text"
+            placeholder="{{ 'newItemName' | translate }}"
+            formControlName="name"
+          />
+          <mat-error
+            *ngIf="!editItemForm.controls.name.valid && editForm.submitted"
+          >
+            {{ "fieldRequired" | translate }}
+          </mat-error>
+        </mat-form-field>
+        <button
+          mat-raised-button
+          type="submit"
+          [disabled]="editForm.submitted && !editItemForm.valid"
+        >
+          {{ "renameItem" | translate }}
+        </button>
+        <div *ngIf="error">{{ error | translate }}</div>
+      </form>
+    </div>
+  </div>
 </mat-card>

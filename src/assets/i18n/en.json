@@ -42,6 +42,8 @@
   "fieldRequired": "Required field.",
   "Permissions": "Permissions",
   "Roles": "Roles",
+  "newItemName": "Новое название:",
+  "renameItem": "переименовать",
 
   "heroDefault": "It's a default hero, you cannot delete it",
   "heroDetail": "Hero detail",
