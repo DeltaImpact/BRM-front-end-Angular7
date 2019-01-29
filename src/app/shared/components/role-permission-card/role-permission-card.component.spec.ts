@@ -6,7 +6,7 @@ import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../modules/tests.module';
 import {TranslateModule} from '@ngx-translate/core';
 
-describe('HeroCardComponent', () => {
+describe('RolePermissionCardComponent', () => {
   let component: RoleAndPermissionCardComponent;
   let fixture: ComponentFixture<RoleAndPermissionCardComponent>;
 

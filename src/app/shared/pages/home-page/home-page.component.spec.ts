@@ -25,7 +25,7 @@ describe("HomePage", () => {
     component = fixture.debugElement.componentInstance;
   });
 
-  it("should create hero top component", () => {
+  it("should create main page component", () => {
     fixture.detectChanges();
     expect(component).toBeTruthy();
   });
