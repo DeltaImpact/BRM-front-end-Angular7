@@ -148,4 +148,59 @@ export class UserService {
         this.snackBar.open(texts[name], "OK", config);
       });
   }
+
+  deletePermissionFromArray(users: User[], permission: Permission): User[] {
+    users = users.map(user => {
+      user = this.deletePermissionFromUserObject(user, permission);
+      return user;
+    });
+    return users;
+  }
+
+  deletePermissionFromUserObject(user: User, permission: Permission): User {
+    user.permissions = user.permissions.filter(curPermission => {
+      return curPermission.id !== permission.id;
+    });
+    return user;
+  }
+
+  deleteRoleFromArrayOfUsers(users: User[], role: Role): User[] {
+    users = users.map(user => {
+      user.roles = this.RoleService.deleteRoleFromArrayOfRoles(
+        user.roles,
+        role
+      );
+      // user = this.deleteRole(user, role);
+      return user;
+    });
+    return users;
+  }
+
+  deleteRoleFromUserObject(user: User, role: Role): User {
+    if (user.roles) {
+      user.roles = user.roles.filter(curRole => {
+        return curRole.id !== role.id;
+      });
+      return user;
+    }
+  }
+
+  deleteRoleFromUserObjectById(user: User, roleId: number): User {
+    if (user.roles) {
+      user.roles = user.roles.filter(role => {
+        return role.id !== roleId;
+      });
+      return user;
+    }
+  }
+
+  addRoleToUser(user: User, role: Role): User {
+    user.roles = [...user.roles, role];
+    return user;
+  }
+
+  addPermissionToUser(user: User, permission: Permission): User {
+    user.permissions = [...user.permissions, permission];
+    return user;
+  }
 }

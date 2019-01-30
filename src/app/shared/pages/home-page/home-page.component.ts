@@ -196,7 +196,6 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  
   UpdatePermissionOnView(item: Permission) {
     this.roles = this.roles.map(function(item) {
       if (item.id == item.id) item.name = item.name;
@@ -228,7 +227,7 @@ export class HomePageComponent implements OnInit {
         if (e.error.message == "User with same nickname already exist.") {
           this.RoleService.showSnackBar("UserAlreadyExist");
         }
-       
+
         // this.error = "errorHasOcurred";
       }
     );
@@ -247,19 +246,8 @@ export class HomePageComponent implements OnInit {
   }
 
   DeleteRoleOnView(role: Role) {
-    this.roles = this.roles.filter(curRole => {
-      return curRole.id !== role.id;
-    });
-    this.DeleteRoleFromUsersOnView(role);
-  }
-
-  DeleteRoleFromUsersOnView(role: Role) {
-    this.users = this.users.map(function(user) {
-      user.roles = user.roles.filter(curRole => {
-        return curRole.id !== role.id;
-      });
-      return user;
-    });
+    this.roles = this.RoleService.deleteRoleFromArrayOfRoles(this.roles, role);
+    this.users = this.UserService.deleteRoleFromArrayOfUsers(this.users, role);
   }
 
   DeletePermission(id: number) {
@@ -275,19 +263,14 @@ export class HomePageComponent implements OnInit {
   }
 
   DeletePermissionOnView(permission: Permission) {
-    this.permissions = this.permissions.filter(curPermission => {
-      return curPermission.id !== permission.id;
-    });
-    this.DeletePermissionFromUsersOnView(permission);
-  }
-
-  DeletePermissionFromUsersOnView(permission: Permission) {
-    this.users = this.users.map(function(user) {
-      user.permissions = user.permissions.filter(curPermission => {
-        return curPermission.id !== permission.id;
-      });
-      return user;
-    });
+    this.permissions = this.PermissionService.deletePermissionFromArray(
+      this.permissions,
+      permission
+    );
+    this.users = this.UserService.deletePermissionFromArray(
+      this.users,
+      permission
+    );
   }
 
   RemoveRoleFrom({
@@ -373,8 +356,7 @@ export class HomePageComponent implements OnInit {
   addRoleToUserOnView(userId: number, role: Role) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
-        user.roles = [...user.roles, role];
-        return user;
+        this.UserService.addRoleFromUserObject(user, role);
       } else return user;
     });
   }
@@ -382,8 +364,7 @@ export class HomePageComponent implements OnInit {
   AddUserPermissionOnView(userId: number, permission: Permission) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
-        user.permissions = [...user.permissions, permission];
-        return user;
+        this.UserService.addPermissionToUser(user, permission);
       } else return user;
     });
   }
@@ -391,9 +372,7 @@ export class HomePageComponent implements OnInit {
   DeleteUserRoleOnView(userId: number, roleId: number) {
     this.users = this.users.map(function(user) {
       if (user.id == userId) {
-        user.roles = user.roles.filter(role => {
-          return role.id !== roleId;
-        });
+        user = this.UserService.deleteRoleFromUserObjectById(user, roleId);
         return user;
       } else return user;
     });

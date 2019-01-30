@@ -168,6 +168,14 @@ export class RoleService {
     return promise;
   }
 
+  deleteRoleFromArrayOfRoles(roles: Role[], role: Role): Role[] {
+    return roles.filter(curRole => {
+      return curRole.id !== role.id;
+    });
+  }
+
+  
+
   showSnackBar(name): void {
     this.translateService
       .get(

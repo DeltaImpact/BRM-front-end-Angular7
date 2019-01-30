@@ -171,6 +171,15 @@ export class PermissionService {
     return promise;
   }
 
+  deletePermissionFromArray(
+    permissions: Permission[],
+    permission: Permission
+  ): Permission[] {
+    return permissions.filter(curPermission => {
+      return curPermission.id !== permission.id;
+    });
+  }
+
   showSnackBar(name): void {
     this.translateService
       .get(
