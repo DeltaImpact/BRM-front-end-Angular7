@@ -6,7 +6,6 @@ import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
 import { User } from "src/app/modules/services/shared/user.model";
 import { Role } from "src/app/modules/services/shared/role.model";
-import { RoleDelete } from "src/app/modules/services/shared/role.delete.model";
 import { Permission } from "src/app/modules/services/shared/permission.model";
 import {
   FormBuilder,
