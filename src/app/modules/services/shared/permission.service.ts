@@ -23,6 +23,10 @@ export class PermissionService {
     private http: HttpClient
   ) {}
 
+  static permissionToPermissionAddDto(input: Permission): any {
+    return { PermissionName: input.name };
+  }
+
   private static handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -45,8 +49,8 @@ export class PermissionService {
     );
   }
 
-  AddPermission(role: Permission) {
-    console.log(role);
+  AddPermission(item: Permission) {
+    console.log(item);
     let promise = new Promise((resolve, reject) => {
       let Url = `${AppConfig.apiUrl}/permission/addPermission`;
       const headers = {
@@ -57,9 +61,10 @@ export class PermissionService {
       this.http
         .post(
           Url,
-          {
-            PermissionName: role.name
-          },
+          PermissionService.permissionToPermissionAddDto(item),
+          // {
+          //   PermissionName: role.name
+          // },
           headers
         )
         .toPromise()

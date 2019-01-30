@@ -23,6 +23,14 @@ export class RoleService {
     private http: HttpClient
   ) {}
 
+  static roleToRoleAddDto(input: Role): any {
+    return {RoleName: input.name};
+  }
+
+  static roleToRoleOrPermissionUpdateDto(input: Role): any {
+    return {RoleName: input.name};
+  }
+
   private static handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
@@ -45,7 +53,7 @@ export class RoleService {
     );
   }
 
-  AddRole(role: Role) {
+  AddRole(item: Role) {
     const headers = {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
@@ -56,9 +64,10 @@ export class RoleService {
       this.http
         .post(
           Url,
-          {
-            roleName: role.name
-          },
+          RoleService.roleToRoleAddDto(item),
+          // {
+          //   roleName: role.name
+          // },
           headers
         )
         .toPromise()

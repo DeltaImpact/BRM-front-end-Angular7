@@ -8,6 +8,11 @@ import { LoggerService } from "../../../core/services/logger.service";
 import { AppConfig } from "../../../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { User } from "./user.model";
+import { Permission } from "./permission.model";
+import { Role } from "./role.model";
+import { RoleService } from "./role.service";
+import { EventEmitter } from "@angular/core";
+import { PermissionService } from "./permission.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -67,26 +72,24 @@ export class UserService {
   //   );
   // }
 
-  AddUser(user: User) {
+  AddUser() {
     let promise = new Promise((resolve, reject) => {
       let Url = `${AppConfig.apiUrl}/user/register`;
-      const headers = {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
-        })
-      };
       this.http
         .post(
           Url,
-          {
-            Username: user.name
-          },
-          headers
+          UserService.userToUserAddDto(this._newUser),
+          // {
+          //   Username: this._newUser.name,
+          //   Roles: this._newUser.roles,
+          //   Permissions: this._newUser.permissions
+          // },
+          httpOptions
         )
         .toPromise()
         .then(
           res => {
-            resolve(res);
+            resolve(User.fromJS(res));
           },
           err => {
             reject(err);

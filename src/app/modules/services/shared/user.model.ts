@@ -9,19 +9,24 @@ export class User implements Deserializable {
   roles: Role[] = [];
 
   constructor(user: any = {}) {
-    // debugger
     this.id = user.id;
     this.name = user.name || "";
     this.permissions = user.permissions || [];
     this.roles = user.roles || [];
   }
 
-  // ngOnInit() {
-  //   debugger;
-  // }
-
   deserialize(input: any) {
     Object.assign(this, input);
     return this;
+  }
+
+  static fromJS(item: any): User {
+    // debugger
+    return new User({
+      id: item.id,
+      name: item.userName  || "",
+      roles: item.roles  || [],
+      permissions: item.permissions || []
+    });
   }
 }

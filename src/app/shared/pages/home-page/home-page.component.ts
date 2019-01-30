@@ -73,11 +73,8 @@ export class HomePageComponent implements OnInit {
 
   loadUsers() {
     this.UserService.getUsers().subscribe(
-      (users: Array<any>) => {
-        this.users = users.map(function(item) {
-          item.name = item.userName;
-          return item;
-        });
+      (users: Array<User>) => {
+        this.users = users.map(e => User.fromJS(e));
       },
       err => {},
       () => {
