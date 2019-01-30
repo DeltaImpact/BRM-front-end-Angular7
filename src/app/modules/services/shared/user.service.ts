@@ -25,8 +25,54 @@ export class UserService {
   constructor(
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
-    private http: HttpClient
+    private http: HttpClient,
+    private RoleService: RoleService
   ) {}
+
+  private _newUser: User = new User({
+    id: -1,
+    name: "",
+    roles: [],
+    permissions: []
+  });
+  newUserChanged: EventEmitter<User> = new EventEmitter();
+
+  set newUser(val: User) {
+    this.newUser = val;
+    this.newUserChanged.emit(this._newUser);
+  }
+
+  changeNicknameOfNewUser(name: string) {
+    this._newUser.name = name;
+    this.newUserChanged.emit(this._newUser);
+  }
+
+  addItemToNewUser(obj: { item: Role; typeOfItem: string }) {
+    if (obj.typeOfItem == "role") {
+      this._newUser.roles = [...this._newUser.roles, obj.item];
+      this.newUserChanged.emit(this._newUser);
+    }
+    if (obj.typeOfItem == "permission") {
+      this._newUser.permissions = [...this._newUser.permissions, obj.item];
+      this.newUserChanged.emit(this._newUser);
+    }
+  }
+
+  get newUser(): User {
+    return this._newUser;
+  }
+
+  // newUserChangedEmitter() {
+  //   return this.newUserChanged;
+  // }
+
+  static userToUserAddDto(input: User): any {
+    return {
+      Username: input.name,
+      RolesId: input.roles.map(item => item.id) || [],
+      PermissionsId: input.permissions.map(item => item.id) || []
+    };
+  }
 
   private static handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {

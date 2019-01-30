@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  EventEmitter,
+  Output
+} from "@angular/core";
 import { UserService } from "../../../modules/services/shared/user.service";
 import { RoleService } from "../../../modules/services/shared/role.service";
 import { PermissionService } from "../../../modules/services/shared/permission.service";
@@ -35,13 +41,14 @@ export class HomePageComponent implements OnInit {
   usersLoading: boolean = false;
   rolesLoading: boolean = false;
   permissionsLoading: boolean = false;
-  newUserForm: FormGroup;
+
   newRoleForm: FormGroup;
   newPermissionForm: FormGroup;
   error: string;
-  @ViewChild("userForm") userForm;
   @ViewChild("roleForm") roleForm;
   @ViewChild("permissionForm") permissionForm;
+
+  @Output() addItemToCreateNewUserForm = new EventEmitter<any>();
 
   constructor(
     private UserService: UserService,
@@ -49,9 +56,6 @@ export class HomePageComponent implements OnInit {
     private PermissionService: PermissionService,
     private formBuilder: FormBuilder
   ) {
-    this.newUserForm = this.formBuilder.group({
-      name: new FormControl("", [Validators.required])
-    });
     this.newRoleForm = this.formBuilder.group({
       name: new FormControl("", [Validators.required])
     });
