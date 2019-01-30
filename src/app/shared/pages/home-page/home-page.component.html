@@ -6,7 +6,7 @@
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxFlex="30">
         <h1 class="header__title">{{ "UsersList" | translate }}</h1>
-        <mat-card class="hero-card">
+        <!-- <mat-card class="hero-card">
           <mat-card-header>
             <div
               mat-card-avatar
@@ -49,13 +49,19 @@
               </form>
             </div>
           </mat-card-header>
-        </mat-card>
+        </mat-card> -->
+        <app-create-user-card
+          [isChosen]="chosenUserId == -1 ? true : false"
+          (chooseFunction)="ChooseUserOnViewById(-1)"
+          (addItemToCreateNewUserForm)="addItemToCreateNewUserForm($event)"
+          (createFunction)="createNewUser($event)"
+        ></app-create-user-card>
         <div *ngIf="users">
           <ng-container *ngFor="let user of users">
             <app-user-card
               [user]="user"
               [isChosen]="chosenUserId == user.id ? true : false"
-              (chooseFunction)="ChooseUserOnView(user)"
+              (chooseFunction)="ChooseUserOnViewById(user.id)"
               (removeFunction)="RemoveRoleFrom($event)"
               (updateFunction)="UpdateUser($event)"
               (deleteFunction)="RemoveUser($event)"
@@ -92,7 +98,9 @@
                     formControlName="name"
                   />
                   <mat-error
-                    *ngIf="!newRoleForm.controls.name.valid && roleForm.submitted"
+                    *ngIf="
+                      !newRoleForm.controls.name.valid && roleForm.submitted
+                    "
                   >
                     {{ "fieldRequired" | translate }}
                   </mat-error>
@@ -154,7 +162,8 @@
                   />
                   <mat-error
                     *ngIf="
-                      !newPermissionForm.controls.name.valid && permissionForm.submitted
+                      !newPermissionForm.controls.name.valid &&
+                      permissionForm.submitted
                     "
                   >
                     {{ "fieldRequired" | translate }}
@@ -163,7 +172,9 @@
                 <button
                   mat-raised-button
                   type="submit"
-                  [disabled]="permissionForm.submitted && !newPermissionForm.valid"
+                  [disabled]="
+                    permissionForm.submitted && !newPermissionForm.valid
+                  "
                 >
                   {{ "create" | translate }}
                 </button>

@@ -11,6 +11,7 @@ import {RouterModule} from '@angular/router';
 import {HomePageComponent} from './pages/home-page/home-page.component';
 import {Error404PageComponent} from './pages/error404-page/error404-page.component';
 import {UserCardComponent} from './components/user-card/user-card.component';
+import {CreateUserCardComponent} from './components/create-user-card/create-user-card.component';
 import {RoleAndPermissionCardComponent} from './components/role-permission-card/role-permission-card.component';
 import {NgxExampleLibraryModule} from '@ismaestro/ngx-example-library';
 import {WebStorageModule} from 'ngx-store';
@@ -37,6 +38,7 @@ import {LoadingPlaceholderComponent} from './components/loading-placeholder/load
     FooterComponent,
     SpinnerComponent,
     UserCardComponent,
+    CreateUserCardComponent,
     RoleAndPermissionCardComponent,
     HeroLoadingComponent,
     LoadingPlaceholderComponent
@@ -52,6 +54,7 @@ import {LoadingPlaceholderComponent} from './components/loading-placeholder/load
     FooterComponent,
     SpinnerComponent,
     UserCardComponent,
+    CreateUserCardComponent,
     RoleAndPermissionCardComponent,
     HeroLoadingComponent,
     NgxScrollToFirstInvalidModule,

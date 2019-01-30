@@ -112,11 +112,17 @@ export class HomePageComponent implements OnInit {
 
   AddToUser(obj: { item: Role; typeOfItem: string }) {
     if (this.chosenUserId) {
-      if (obj.typeOfItem == "role") {
-        this.addRoleToUser(this.chosenUserId, obj.item.id);
-      }
-      if (obj.typeOfItem == "permission") {
-        this.addPermissionToUser(this.chosenUserId, obj.item.id);
+      if (this.chosenUserId == -1) {
+        // this.addItemToCreateNewUserForm.emit(obj);
+        this.UserService.addItemToNewUser(obj);
+        // debugger;
+      } else {
+        if (obj.typeOfItem == "role") {
+          this.addRoleToUser(this.chosenUserId, obj.item.id);
+        }
+        if (obj.typeOfItem == "permission") {
+          this.addPermissionToUser(this.chosenUserId, obj.item.id);
+        }
       }
     } else {
       this.RoleService.showSnackBar("chooseUserError");
