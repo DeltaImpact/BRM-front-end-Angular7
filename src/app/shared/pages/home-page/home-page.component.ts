@@ -396,34 +396,25 @@ export class HomePageComponent implements OnInit {
     });
   }
 
-  ChooseUserOnView(User: User) {
-    if (User.id != this.chosenUserId) {
-      this.chosenUserId = User.id;
+  ChooseUserOnViewById(UserId: number) {
+    if (UserId != this.chosenUserId) {
+      this.chosenUserId = UserId;
     } else {
       this.chosenUserId = null;
     }
   }
 
-  createNewUser(newUser: string) {
-    if (this.newUserForm.valid) {
-      this.UserService.AddUser(new User(newUser)).then(
-        r => {
-          // let newUser = r;
-          let responseObject = r as any;
-          let  newUser = responseObject as User;
-          newUser.id = responseObject.id;
-          newUser.name = responseObject.userName;
-          newUser.roles = [];
-          newUser.permissions = [];
-          this.users = [...this.users, newUser];
-          this.userForm.resetForm();
-        },
-        e => {
-          this.RoleService.showSnackBar("UserAlreadyExist");
-          // this.error = "errorHasOcurred";
-        }
-      );
-    }
+  createNewUser() {
+    this.UserService.AddUser().then(
+      r => {
+        let responseObject = r as User;
+        this.users = [...this.users, responseObject];
+      },
+      e => {
+        this.RoleService.showSnackBar("UserAlreadyExist");
+        // this.error = "errorHasOcurred";
+      }
+    );
   }
 
   createNewRole(newRole: string) {
