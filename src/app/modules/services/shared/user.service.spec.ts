@@ -7,37 +7,45 @@ import { APP_CONFIG, AppConfig } from "../../../configs/app.config";
 import { Role } from "./role.model";
 import { HttpErrorResponse } from "@angular/common/http";
 import { User } from "./user.model";
-
+import { RoleService } from "./role.service";
+import { TranslateService } from "@ngx-translate/core";
+ 
 describe("UserService", () => {
-  let UserService: UserService;
-
+  let userService: UserService;
+ 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TestsModule, TranslateModule.forRoot()],
       providers: [
         { provide: APP_CONFIG, useValue: AppConfig },
         { provide: APP_BASE_HREF, useValue: "/" },
-        UserService
+        UserService,
+        RoleService
       ]
     });
-
-    UserService = TestBed.get(UserService);
+ 
+    userService = TestBed.get(UserService);
   });
-
-  // it("should delete role from user", () => {
-  //   let role1 = new Role({
-  //     id: 1,
-  //     name: "role1"
-  //   });
-  //   let role2 = new Role({
-  //     id: 2,
-  //     name: "role2"
-  //   });
-
-  //   let user1 = new User({ id: 1, name: "role1", roles: new Array(role2, role1)});
-  //   user1 = UserService.deleteRoleFromUserObject(user1, role1);
-  //   let user2 = new User({ id: 1, name: "role1", roles: new Array(role2)});
-  //   debugger
-  //   expect(user1).toBe(user2);
-  // });
+ 
+  it("should delete role from user", () => {
+    let role1 = new Role({
+      id: 1,
+      name: "role1"
+    });
+    let role2 = new Role({
+      id: 2,
+      name: "role2"
+    });
+ 
+    let user1 = new User({
+      id: 1,
+      name: "role1",
+      roles: new Array(role2, role1)
+    });
+    // debugger;
+    user1 = userService.deleteRoleFromUserObject(user1, role1);
+    let user2 = new User({ id: 1, name: "role1", roles: new Array(role2) });
+    // debugger;
+    expect(user1).toEqual(user2);
+  });
 });
