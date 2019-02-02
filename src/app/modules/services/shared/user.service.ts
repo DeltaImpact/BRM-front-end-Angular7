@@ -62,10 +62,6 @@ export class UserService {
     return this._newUser;
   }
 
-  // newUserChangedEmitter() {
-  //   return this.newUserChanged;
-  // }
-
   static userToUserAddDto(input: User): any {
     return {
       Username: input.name,
