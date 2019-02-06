@@ -6,8 +6,8 @@ import {
   Output
 } from "@angular/core";
 import { UserService } from "../../../modules/services/shared/user.service";
-import { RoleService } from "../../../modules/services/shared/role.service";
 import { SnackBarService } from "../../../modules/services/shared/snackBar.service";
+import { RoleStore } from "../../../modules/services/shared/role.store";
 import { PermissionService } from "../../../modules/services/shared/permission.service";
 import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
@@ -20,12 +20,9 @@ import {
   FormGroup,
   Validators
 } from "@angular/forms";
-import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-  CdkDrag
-} from "@angular/cdk/drag-drop";
+import { Observable, of, empty } from "rxjs";
+import { take, finalize, catchError, map, tap } from "rxjs/operators";
+
 import { jsonpCallbackContext } from "@angular/common/http/src/module";
 
 @Component({
@@ -53,8 +50,8 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private UserService: UserService,
-    private RoleService: RoleService,
     private SnackBarService: SnackBarService,
+    private RoleStore: RoleStore,
     private PermissionService: PermissionService,
     private formBuilder: FormBuilder
   ) {
@@ -71,9 +68,11 @@ export class HomePageComponent implements OnInit {
     this.rolesLoading = true;
     this.permissionsLoading = true;
 
-    this.loadUsers();
     this.loadRoles();
     this.loadPermissions();
+    this.RoleStore.loadRoles();
+
+    // this.loadUsers();
   }
 
   loadUsers() {
@@ -84,18 +83,6 @@ export class HomePageComponent implements OnInit {
       err => {},
       () => {
         this.usersLoading = false;
-      }
-    );
-  }
-
-  loadRoles() {
-    this.RoleService.getRoles().subscribe(
-      (roles: Array<Role>) => {
-        this.roles = roles;
-      },
-      err => {},
-      () => {
-        this.rolesLoading = false;
       }
     );
   }
@@ -162,15 +149,15 @@ export class HomePageComponent implements OnInit {
   }
 
   UpdateRole(item: Role) {
-    this.RoleService.UpdateRole(item).then(
-      r => {
-        let responseObject = r as Role;
-        this.UpdateRoleOnView(responseObject);
-      },
-      e => {
-        // this.error = "errorHasOcurred";
-      }
-    );
+    this.RoleStore.updateRole(item)
+    .pipe(
+      catchError((err, caught) => {
+        debugger
+        console.error("UpdateRole got unexpected error: " + err);
+        return empty();
+      })
+    )
+    .subscribe();
   }
 
   UpdateRoleOnView(role: Role) {
@@ -239,19 +226,19 @@ export class HomePageComponent implements OnInit {
   }
 
   DeleteRole(id: number) {
-    this.RoleService.DeleteRole(id).then(
-      r => {
-        let responseObject = r as Role;
-        this.DeleteRoleOnView(responseObject);
-      },
-      e => {
-        // this.error = "errorHasOcurred";
-      }
-    );
+    this.RoleStore.deleteRole(id)
+      .pipe(
+        catchError((err, caught) => {
+          console.error("DeleteRole got unexpected error: " + err);
+          return empty();
+        })
+      )
+      .subscribe();
   }
 
   DeleteRoleOnView(role: Role) {
-    this.roles = this.RoleService.deleteRoleFromArrayOfRoles(this.roles, role);
+    debugger;
+    // this.roles = this.RoleService.deleteRoleFromArrayOfRoles(this.roles, role);
     this.users = this.UserService.deleteRoleFromArrayOfUsers(this.users, role);
   }
 
@@ -296,20 +283,21 @@ export class HomePageComponent implements OnInit {
   }
 
   addRoleToUser(userId: number, roleId: number) {
-    this.RoleService.addRoleToUser(userId, roleId).then(
-      r => {
-        let responseObject = r as { role: Role; user: User };
-        this.addRoleToUserOnView(userId, responseObject.role);
-      },
-      e => {
-        if (e.error) {
-          if (e.error.message == "User already have role.") {
-            this.RoleService.showSnackBar("userAlreadyHaveRole");
-          }
-        }
-        // this.error = "errorHasOcurred";
-      }
-    );
+    debugger;
+    // this.RoleService.addRoleToUser(userId, roleId).then(
+    //   r => {
+    //     let responseObject = r as { role: Role; user: User };
+    //     this.addRoleToUserOnView(userId, responseObject.role);
+    //   },
+    //   e => {
+    //     if (e.error) {
+    //       if (e.error.message == "User already have role.") {
+    //         this.RoleService.showSnackBar("userAlreadyHaveRole");
+    //       }
+    //     }
+    //     // this.error = "errorHasOcurred";
+    //   }
+    // );
   }
 
   addPermissionToUser(userId: number, roleId: number) {
@@ -330,14 +318,15 @@ export class HomePageComponent implements OnInit {
   }
 
   DeleteRoleFromUser(userId: number, roleId: number) {
-    this.RoleService.DeleteRoleFromUser(userId, roleId).then(
-      r => {
-        this.DeleteUserRoleOnView(userId, roleId);
-      },
-      e => {
-        // this.error = "errorHasOcurred";
-      }
-    );
+    debugger;
+    // this.RoleService.DeleteRoleFromUser(userId, roleId).then(
+    //   r => {
+    //     this.DeleteUserRoleOnView(userId, roleId);
+    //   },
+    //   e => {
+    //     // this.error = "errorHasOcurred";
+    //   }
+    // );
   }
 
   DeletePermissionFromUser(userId: number, permissionId: number) {
@@ -424,17 +413,21 @@ export class HomePageComponent implements OnInit {
 
   createNewRole(newRole: string) {
     if (this.newRoleForm.valid) {
-      this.RoleService.AddRole(new Role(newRole)).then(
-        r => {
-          let newRole = r as Role;
-          this.roles = [...this.roles, newRole];
-          this.roleForm.resetForm();
-        },
-        e => {
-          this.RoleService.showSnackBar("RoleAlreadyExist");
-          // this.error = "errorHasOcurred";
-        }
-      );
+      this.RoleStore.addRole(new Role(newRole))
+        .pipe(
+          map(result => {
+            if (result) {
+              this.roleForm.resetForm();
+            }
+          }),
+          catchError((err, caught) => {
+            if (err.error.message == "UserRole with such name already added.") {
+              this.SnackBarService.showRoleSnackBar("RoleAlreadyExist");
+            } else console.error("createNewRole got unexpected error: " + err);
+            return empty();
+          })
+        )
+        .subscribe();
     }
   }
 
@@ -447,9 +440,7 @@ export class HomePageComponent implements OnInit {
           this.permissionForm.resetForm();
         },
         e => {
-          // debugger;
           this.SnackBarService.showRoleSnackBar("PermissionAlreadyExist");
-          // this.error = "errorHasOcurred";
         }
       );
     }

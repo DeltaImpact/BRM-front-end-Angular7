@@ -1,6 +1,6 @@
-import { Observable, of } from "rxjs";
+import { Observable, of, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
-import { catchError, map, tap } from "rxjs/operators";
+import { catchError, map, tap, finalize } from "rxjs/operators";
 import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
 import { TranslateService } from "@ngx-translate/core";
 import { _ } from "@biesbjerg/ngx-translate-extract/dist/utils/utils";
@@ -24,16 +24,16 @@ export class RoleService {
   ) {}
 
   static roleToRoleAddDto(input: Role): any {
-    return {RoleName: input.name};
+    return { RoleName: input.name };
   }
 
   static roleToRoleOrPermissionUpdateDto(input: Role): any {
-    return {RoleName: input.name};
+    return { RoleName: input.name };
   }
 
-  private static handleError<T>(operation = "operation", result?: T) {
+  private static logError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error);
+      // console.error(error);
       LoggerService.log(`${operation} failed: ${error.message}`);
 
       if (error.status >= 500) {
@@ -47,134 +47,108 @@ export class RoleService {
   getRoles(): Observable<Role[]> {
     return <Observable<Role[]>>(
       this.http.get(`${AppConfig.apiUrl}/role/roles`).pipe(
-        tap(() => LoggerService.log(`fetched roles`)),
-        catchError(RoleService.handleError("getRoles", []))
+        tap(e => {
+          LoggerService.log(`fetched roles`);
+        }),
+        catchError(err => {
+          RoleService.logError("getRoles", []);
+          return throwError(err);
+        })
       )
     );
   }
 
-  AddRole(item: Role) {
-    const headers = {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
+  addRole(item: Role): Observable<Role> {
+    let Url = `${AppConfig.apiUrl}/role/AddRole`;
+    return <Observable<Role>>(
+      this.http.post(Url, RoleService.roleToRoleAddDto(item), httpOptions).pipe(
+        tap(e => {
+          LoggerService.log(`added role`);
+        }),
+        catchError(err => {
+          RoleService.logError("addRole", []);
+          return throwError(err);
+        })
+      )
+    );
+  }
+
+  deleteRole(roleId: number) {
+    let Url = `${AppConfig.apiUrl}/role/deleteRole?Id=${roleId}`;
+    return <Observable<Role>>this.http.delete(Url, httpOptions).pipe(
+      tap(e => {
+        LoggerService.log(`deleted role`);
+      }),
+      catchError(err => {
+        RoleService.logError("deleteRole", []);
+        return throwError(err);
       })
-    };
-    let promise = new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/AddRole`;
+    );
+  }
+
+  updateRole(role: Role) {
+    let Url = `${AppConfig.apiUrl}/role/updateRole`;
+    return <Observable<Role>>(
       this.http
-        .post(
+        .put(
           Url,
-          RoleService.roleToRoleAddDto(item),
-          // {
-          //   roleName: role.name
-          // },
-          headers
+          role,
+          httpOptions
         )
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
-    return promise;
-  }
-
-  DeleteRole(roleId: number) {
-    return new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/deleteRole?Id=${roleId}`;
-      this.http
-        .delete(Url, httpOptions)
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
-  }
-
-  UpdateRole(role: Role) {
-    return new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/updateRole`;
-      this.http
-        .put(Url, role, httpOptions)
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
+        .pipe(
+          tap(e => {
+            LoggerService.log(`updated role`);
+          }),
+          catchError(err => {
+            RoleService.logError("updateRole", []);
+            return throwError(err);
+          })
+        )
+    );
   }
 
   addRoleToUser(userId: number, roleId: number) {
-    let promise = new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/addRoleToUser`;
-      const headers = {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
+    let Url = `${AppConfig.apiUrl}/role/addRoleToUser`;
+    return <Observable<Role>>this.http
+      .post(
+        Url,
+        {
+          UserId: userId,
+          RoleOrPermissionId: roleId
+        },
+        httpOptions
+      )
+      .pipe(
+        tap(e => {
+          LoggerService.log(`added role to user`);
+        }),
+        catchError(err => {
+          RoleService.logError("addRoleToUser", []);
+          return throwError(err);
         })
-      };
-      this.http
-        .post(
-          Url,
-          {
-            UserId: userId,
-            RoleOrPermissionId: roleId
-          },
-          headers
-        )
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
-    return promise;
+      );
   }
 
-  DeleteRoleFromUser(userId: number, roleId: number) {
-    let promise = new Promise((resolve, reject) => {
-      let Url = `${AppConfig.apiUrl}/role/deleteRoleFromUser`;
-      const headers = {
-        headers: new HttpHeaders({
-          "Content-Type": "application/json"
+  deleteRoleFromUser(userId: number, roleId: number) {
+    let Url = `${AppConfig.apiUrl}/role/deleteRoleFromUser`;
+    return <Observable<Role>>this.http
+      .post(
+        Url,
+        {
+          UserId: userId,
+          RoleOrPermissionId: roleId
+        },
+        httpOptions
+      )
+      .pipe(
+        tap(e => {
+          LoggerService.log(`deleted role from user`);
+        }),
+        catchError(err => {
+          RoleService.logError("deleteRoleFromUser", []);
+          return throwError(err);
         })
-      };
-      this.http
-        .post(
-          Url,
-          {
-            UserId: userId,
-            RoleOrPermissionId: roleId
-          },
-          headers
-        )
-        .toPromise()
-        .then(
-          res => {
-            resolve(res);
-          },
-          err => {
-            reject(err);
-          }
-        );
-    });
-    return promise;
+      );
   }
 
   deleteRoleFromArrayOfRoles(roles: Role[], role: Role): Role[] {
