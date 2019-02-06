@@ -23,7 +23,7 @@ import {FirebaseModule} from './shared/modules/firebase.module';
     }),
     NgxExampleLibraryModule.forRoot({
       config: {
-        say: 'hello'
+        // say: 'hello'
       }
     }),
     CoreModule,
