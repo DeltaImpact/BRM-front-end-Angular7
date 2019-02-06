@@ -182,28 +182,4 @@ export class RoleService {
       return curRole.id !== role.id;
     });
   }
-
-  
-
-  showSnackBar(name): void {
-    this.translateService
-      .get(
-        [
-          String(_("chooseUser")),
-          String(_("chooseUserError")),
-          String(_("userAlreadyHaveRole")),
-          String(_("userAlreadyHavePermission")),
-          String(_("UserAlreadyExist")),
-          String(_("RoleAlreadyExist")),
-          String(_("PermissionAlreadyExist")),
-          String(_("saved"))
-        ],
-        { value: AppConfig.votesLimit }
-      )
-      .subscribe(texts => {
-        const config: any = new MatSnackBarConfig();
-        config.duration = AppConfig.snackBarDuration;
-        this.snackBar.open(texts[name], "OK", config);
-      });
-  }
 }

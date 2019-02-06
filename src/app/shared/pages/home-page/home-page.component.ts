@@ -7,6 +7,7 @@ import {
 } from "@angular/core";
 import { UserService } from "../../../modules/services/shared/user.service";
 import { RoleService } from "../../../modules/services/shared/role.service";
+import { SnackBarService } from "../../../modules/services/shared/snackBar.service";
 import { PermissionService } from "../../../modules/services/shared/permission.service";
 import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
@@ -53,6 +54,7 @@ export class HomePageComponent implements OnInit {
   constructor(
     private UserService: UserService,
     private RoleService: RoleService,
+    private SnackBarService: SnackBarService,
     private PermissionService: PermissionService,
     private formBuilder: FormBuilder
   ) {
@@ -125,7 +127,7 @@ export class HomePageComponent implements OnInit {
         }
       }
     } else {
-      this.RoleService.showSnackBar("chooseUserError");
+      this.SnackBarService.showRoleSnackBar("chooseUserError");
     }
   }
 
@@ -151,7 +153,6 @@ export class HomePageComponent implements OnInit {
   }
 
   changeItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
-    debugger;
     if (typeOfItem == "role") {
       this.UpdateRole(item);
     }
@@ -231,10 +232,8 @@ export class HomePageComponent implements OnInit {
       },
       e => {
         if (e.error.message == "User with same nickname already exist.") {
-          this.RoleService.showSnackBar("UserAlreadyExist");
+          this.SnackBarService.showRoleSnackBar("UserAlreadyExist");
         }
-
-        // this.error = "errorHasOcurred";
       }
     );
   }
@@ -322,7 +321,7 @@ export class HomePageComponent implements OnInit {
       e => {
         if (e.error) {
           if (e.error.message == "User already have permission.") {
-            this.RoleService.showSnackBar("userAlreadyHavePermission");
+            this.SnackBarService.showRoleSnackBar("userAlreadyHavePermission");
           }
         }
         // this.error = "errorHasOcurred";
@@ -417,7 +416,7 @@ export class HomePageComponent implements OnInit {
         this.users = [...this.users, responseObject];
       },
       e => {
-        this.RoleService.showSnackBar("UserAlreadyExist");
+        this.SnackBarService.showRoleSnackBar("UserAlreadyExist");
         // this.error = "errorHasOcurred";
       }
     );
@@ -449,7 +448,7 @@ export class HomePageComponent implements OnInit {
         },
         e => {
           // debugger;
-          this.RoleService.showSnackBar("PermissionAlreadyExist");
+          this.SnackBarService.showRoleSnackBar("PermissionAlreadyExist");
           // this.error = "errorHasOcurred";
         }
       );
