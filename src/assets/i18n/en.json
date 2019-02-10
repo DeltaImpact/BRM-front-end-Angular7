@@ -1,4 +1,16 @@
 {
+  "networkError": "Network Error.",
+
+  "chooseUser": "Choose user.",
+  "chooseUserError": "Choose user.",
+  "userAlreadyHaveRole": "User already have role.",
+  "userAlreadyHavePermission": "User already have permission.",
+  "RoleAlreadyExist": "Role with such name already added.",
+  "PermissionAlreadyExist": "Permission already exist.",
+  "saved": "Saved!",
+
+  "UserAlreadyExist": "User already exist.",
+
   "alert": "Alert",
   "anchorToHero": "Anchor the hero",
   "angularBRMApp": "Angular BRM App",
@@ -25,14 +37,7 @@
     "title": "Top Heroes"
   },
   "heroCreated": "Hero created!",
-  "chooseUserError": "Choose user.",
   "addToUser": "add to user",
-  "chooseUser": "Choose user.",
-  "userAlreadyHaveRole": "User already have role.",
-  "userAlreadyHavePermission": "User already have permission.",
-  "UserAlreadyExist": "User already exist.",
-  "PermissionAlreadyExist": "Permission already exist.",
-  "RoleAlreadyExist": "Role already exist.",
   "UsersList": "List of users:",
   "RolesList": "List of roles:",
   "PermissionsList": "List of permissions:",
@@ -66,7 +71,6 @@
   "remove": "Remove",
   "removeHero": "Delete hero",
   "saveHero": "Save hero",
-  "saved": "Saved!",
   "snapshot": "Snapshot",
   "sureRemoveHero": "Do you want to remove the hero?",
   "topHeroes": "Heroes most liked",

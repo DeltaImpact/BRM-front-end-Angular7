@@ -12,7 +12,7 @@ import { PermissionService } from "../../../modules/services/shared/permission.s
 import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
 import { User } from "src/app/modules/services/shared/user.model";
-import { Role } from "src/app/modules/services/shared/role.model";
+// import { Role } from "src/app/modules/services/shared/role.model";
 import { Permission } from "src/app/modules/services/shared/permission.model";
 import {
   FormBuilder,
@@ -25,6 +25,19 @@ import { take, finalize, catchError, map, tap } from "rxjs/operators";
 
 import { jsonpCallbackContext } from "@angular/common/http/src/module";
 
+import { Role } from "../../../models";
+import { Store } from "@ngrx/store";
+
+import {
+  RootStoreState,
+  RootStoreSelectors,
+  RootStoreModule,
+  RolesActions,
+  RolesSelectors
+} from "../../../root-store";
+
+// import { Role } from "src/app/modules/services/shared/role.model";
+
 @Component({
   selector: "app-home-page",
   templateUrl: "./home-page.component.html",
@@ -34,7 +47,7 @@ import { jsonpCallbackContext } from "@angular/common/http/src/module";
 export class HomePageComponent implements OnInit {
   users: User[] = null;
   chosenUserId: number = null;
-  roles: Role[] = null;
+  roles$: Observable<Role[]> = null;
   permissions: Permission[] = null;
   usersLoading: boolean = false;
   rolesLoading: boolean = false;
@@ -49,6 +62,7 @@ export class HomePageComponent implements OnInit {
   @Output() addItemToCreateNewUserForm = new EventEmitter<any>();
 
   constructor(
+    private store$: Store<RootStoreState.State>,
     private UserService: UserService,
     private SnackBarService: SnackBarService,
     private RoleStore: RoleStore,
@@ -64,15 +78,14 @@ export class HomePageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.usersLoading = true;
-    this.rolesLoading = true;
-    this.permissionsLoading = true;
-
-    this.loadRoles();
-    this.loadPermissions();
-    this.RoleStore.loadRoles();
-
-    // this.loadUsers();
+    this.store$.dispatch(new RolesActions.LoadRolesRequest());
+    this.roles$ = this.store$.select<Role[]>(RolesSelectors.getAllRoles);
+    // let asd = this.store$
+    //   .select<Role[]>(RolesSelectors.getAllRoles)
+    //   .subscribe(state => {
+    //     console.log(state);
+    //     debugger;
+    //   });
   }
 
   loadUsers() {
@@ -100,22 +113,22 @@ export class HomePageComponent implements OnInit {
   }
 
   AddToUser(obj: { item: Role; typeOfItem: string }) {
-    if (this.chosenUserId) {
-      if (this.chosenUserId == -1) {
-        // this.addItemToCreateNewUserForm.emit(obj);
-        this.UserService.addItemToNewUser(obj);
-        // debugger;
-      } else {
-        if (obj.typeOfItem == "role") {
-          this.addRoleToUser(this.chosenUserId, obj.item.id);
-        }
-        if (obj.typeOfItem == "permission") {
-          this.addPermissionToUser(this.chosenUserId, obj.item.id);
-        }
-      }
-    } else {
-      this.SnackBarService.showRoleSnackBar("chooseUserError");
-    }
+    // if (this.chosenUserId) {
+    //   if (this.chosenUserId == -1) {
+    //     // this.addItemToCreateNewUserForm.emit(obj);
+    //     this.UserService.addItemToNewUser(obj);
+    //     // debugger;
+    //   } else {
+    //     if (obj.typeOfItem == "role") {
+    //       this.addRoleToUser(this.chosenUserId, obj.item.id);
+    //     }
+    //     if (obj.typeOfItem == "permission") {
+    //       this.addPermissionToUser(this.chosenUserId, obj.item.id);
+    //     }
+    //   }
+    // } else {
+    //   this.SnackBarService.showRoleSnackBar("chooseUserError");
+    // }
   }
 
   deleteItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
@@ -144,28 +157,20 @@ export class HomePageComponent implements OnInit {
       this.UpdateRole(item);
     }
     if (typeOfItem == "permission") {
-      this.UpdatePermission(item);
+      // this.UpdatePermission(item);
     }
   }
 
   UpdateRole(item: Role) {
-    this.RoleStore.updateRole(item)
-    .pipe(
-      catchError((err, caught) => {
-        debugger
-        console.error("UpdateRole got unexpected error: " + err);
-        return empty();
-      })
-    )
-    .subscribe();
+    this.store$.dispatch(new RolesActions.UpdateRoleRequest(item));
   }
 
   UpdateRoleOnView(role: Role) {
-    this.roles = this.roles.map(function(item) {
-      if (item.id == role.id) item.name = role.name;
-      return item;
-    });
-    this.UpdateRoleInUsersOnView(role);
+    // this.roles = this.roles.map(function(item) {
+    //   if (item.id == role.id) item.name = role.name;
+    //   return item;
+    // });
+    // this.UpdateRoleInUsersOnView(role);
   }
 
   UpdateRoleInUsersOnView(role: Role) {
@@ -191,11 +196,11 @@ export class HomePageComponent implements OnInit {
   }
 
   UpdatePermissionOnView(item: Permission) {
-    this.roles = this.roles.map(function(item) {
-      if (item.id == item.id) item.name = item.name;
-      return item;
-    });
-    this.UpdatePermissionInUsersOnView(item);
+    // this.roles = this.roles.map(function(item) {
+    //   if (item.id == item.id) item.name = item.name;
+    //   return item;
+    // });
+    // this.UpdatePermissionInUsersOnView(item);
   }
 
   UpdatePermissionInUsersOnView(item: Permission) {
@@ -226,20 +231,23 @@ export class HomePageComponent implements OnInit {
   }
 
   DeleteRole(id: number) {
-    this.RoleStore.deleteRole(id)
-      .pipe(
-        catchError((err, caught) => {
-          console.error("DeleteRole got unexpected error: " + err);
-          return empty();
-        })
-      )
-      .subscribe();
+    this.store$.dispatch(new RolesActions.RemoveRoleRequest(id));
+
+    // this.store.dispatch(new RolesActions.RemoveRoleRequest(id));
+    // this.RoleStore.deleteRole(id)
+    //   .pipe(
+    //     catchError((err, caught) => {
+    //       console.error("DeleteRole got unexpected error: " + err);
+    //       return empty();
+    //     })
+    //   )
+    //   .subscribe();
   }
 
   DeleteRoleOnView(role: Role) {
     debugger;
     // this.roles = this.RoleService.deleteRoleFromArrayOfRoles(this.roles, role);
-    this.users = this.UserService.deleteRoleFromArrayOfUsers(this.users, role);
+    // this.users = this.UserService.deleteRoleFromArrayOfUsers(this.users, role);
   }
 
   DeletePermission(id: number) {
@@ -411,23 +419,28 @@ export class HomePageComponent implements OnInit {
     );
   }
 
-  createNewRole(newRole: string) {
+  createNewRole(newRoleForm: any) {
     if (this.newRoleForm.valid) {
-      this.RoleStore.addRole(new Role(newRole))
-        .pipe(
-          map(result => {
-            if (result) {
-              this.roleForm.resetForm();
-            }
-          }),
-          catchError((err, caught) => {
-            if (err.error.message == "UserRole with such name already added.") {
-              this.SnackBarService.showRoleSnackBar("RoleAlreadyExist");
-            } else console.error("createNewRole got unexpected error: " + err);
-            return empty();
-          })
-        )
-        .subscribe();
+      this.store$.dispatch(new RolesActions.AddRoleRequest(newRoleForm.name));
+
+      // this.store.dispatch(
+      //   new RolesActions.AddRoleRequest({ id: -1, name: newRole })
+      // );
+      // this.RoleStore.addRole(new Role(newRole))
+      //   .pipe(
+      //     map(result => {
+      //       if (result) {
+      //         this.roleForm.resetForm();
+      //       }
+      //     }),
+      //     catchError((err, caught) => {
+      //       if (err.error.message == "UserRole with such name already added.") {
+      //         this.SnackBarService.showRoleSnackBar("RoleAlreadyExist");
+      //       } else console.error("createNewRole got unexpected error: " + err);
+      //       return empty();
+      //     })
+      //   )
+      //   .subscribe();
     }
   }
 

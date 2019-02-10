@@ -6,50 +6,6 @@
     <div fxLayout="row" fxLayoutAlign="space-between center">
       <div fxFlex="30">
         <h1 class="header__title">{{ "UsersList" | translate }}</h1>
-        <!-- <mat-card class="hero-card">
-          <mat-card-header>
-            <div
-              mat-card-avatar
-              class="hero-header__image"
-              [ngStyle]="{
-                'background-image': 'url(assets/images/users/default.png)'
-              }"
-            ></div>
-
-            <div>
-              <form
-                [formGroup]="newUserForm"
-                #userForm="ngForm"
-                ngxScrollToFirstInvalid
-                (ngSubmit)="createNewUser(newUserForm.value)"
-                autocomplete="on"
-              >
-                <mat-form-field class="input-container">
-                  <input
-                    matInput
-                    name="hname"
-                    type="text"
-                    placeholder="{{ 'UsersName' | translate }}"
-                    formControlName="name"
-                  />
-                  <mat-error
-                    *ngIf="!newUserForm.controls.name.valid && userForm.submitted"
-                  >
-                    {{ "fieldRequired" | translate }}
-                  </mat-error>
-                </mat-form-field>
-                <button
-                  mat-raised-button
-                  type="submit"
-                  [disabled]="userForm.submitted && !newUserForm.valid"
-                >
-                  {{ "create" | translate }}
-                </button>
-                <div *ngIf="error">{{ error | translate }}</div>
-              </form>
-            </div>
-          </mat-card-header>
-        </mat-card> -->
         <app-create-user-card
           [isChosen]="chosenUserId == -1 ? true : false"
           (chooseFunction)="ChooseUserOnViewById(-1)"
@@ -117,13 +73,14 @@
             </div>
           </mat-card-header>
         </mat-card>
+        <!-- <pre>
+          {{ roles$ | async | json }}
+        </pre> -->
         <!-- <mat-progress-spinner
           *ngIf="(RoleStore.state$ | async)?.rolesLoading"
         ></mat-progress-spinner> -->
-        <div *ngIf="(RoleStore.state$ | async)?.roles">
-          <ng-container *ngFor="let role of (RoleStore.state$ | async)?.roles">
-            <!-- (click)="seeHeroDetails(hero)" -->
-
+        <div *ngIf="(roles$ | async)">
+          <ng-container *ngFor="let role of (roles$ | async)">
             <app-role-permission-card
               [item]="role"
               [typeOfItem]="'role'"
