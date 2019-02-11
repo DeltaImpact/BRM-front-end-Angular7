@@ -5,7 +5,7 @@ import { ActionTypes } from "./roles.actions";
 import { Role } from "../../models";
 
 import { EventEmitter, Injectable } from "@angular/core";
-import { featureAdapter, initialState, RolesState } from "./role.state";
+import { featureAdapter, initialState, RolesState } from "./roles.state";
 
 import {
   HttpRequest,
@@ -127,6 +127,6 @@ export function roleReducer(state = initialState, action: roleAction.Action) {
   }
 }
 
-function sortBySeqNo(e1: Role, e2: Role) {
+function sortBySeqId(e1: Role, e2: Role) {
   return e1.id - e2.id;
 }

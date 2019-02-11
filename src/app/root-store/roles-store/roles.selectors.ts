@@ -6,7 +6,7 @@ import {
 
 import { Role } from "src/app/modules/services/shared/role.model";
 
-import { featureAdapter, RolesState } from "./role.state";
+import { featureAdapter, RolesState } from "./roles.state";
 
 export const getIsLoadingRoles = (state: RolesState) => state.isLoadingRoles;
 export const getSelected = (state: RolesState) => state.selected;
