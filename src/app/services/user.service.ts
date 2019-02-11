@@ -20,18 +20,6 @@ import { processErrorResponse } from "./utils.service";
 export class UserService {
   constructor(private http: HttpClient, private userAdapter: UserAdapter) {}
 
-  static userToUserAddDto(input: User): any {
-    return {
-      Username: input.name,
-      RolesId: input.roles.map(item => item.id) || [],
-      PermissionsId: input.permissions.map(item => item.id) || []
-    };
-  }
-
-  static userToUserOrUserUpdateDto(input: User): any {
-    return { UserName: input.name };
-  }
-
   getUsers(): Observable<User[]> {
     return <Observable<User[]>>(
       this.http.get(`${AppConfig.apiUrl}/user/users`).pipe(
@@ -43,7 +31,7 @@ export class UserService {
   addUser(item: User): Observable<User> {
     let Url = `${AppConfig.apiUrl}/user/register`;
     return <Observable<User>>(
-      this.http.post(Url, UserService.userToUserAddDto(item), httpOptions)
+      this.http.post(Url, this.userAdapter.toUserAddDto(item), httpOptions)
     );
   }
 
