@@ -1,8 +1,6 @@
 import { Observable, of, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
 import { catchError, map, tap, finalize } from "rxjs/operators";
-import { MatSnackBar, MatSnackBarConfig } from "@angular/material";
-import { TranslateService } from "@ngx-translate/core";
 import { _ } from "@biesbjerg/ngx-translate-extract/dist/utils/utils";
 import { LoggerService } from "../core/services/logger.service";
 import { AppConfig } from "../configs/app.config";
@@ -14,17 +12,11 @@ const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
 };
 
-import { processErrorResponse } from "./utils.service";
-
 @Injectable({
   providedIn: "root"
 })
 export class RoleService {
-  constructor(
-    private translateService: TranslateService,
-    private snackBar: MatSnackBar,
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
   static stringToRoleAddDto(input: string): any {
     return { RoleName: input };
@@ -36,7 +28,6 @@ export class RoleService {
 
   private static logError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
-      // console.error(error);
       LoggerService.log(`${operation} failed: ${error.message}`);
 
       if (error.status >= 500) {
@@ -49,15 +40,7 @@ export class RoleService {
 
   getRoles(): Observable<Role[]> {
     return <Observable<Role[]>>(
-      this.http.get(`${AppConfig.apiUrl}/role/roles`).pipe(
-        tap(e => {
-          LoggerService.log(`fetched roles`);
-        })
-        // catchError(err => {
-        //   RoleService.logError("getRoles", []);
-        //   return throwError(processErrorResponse(err));
-        // })
-      )
+      this.http.get(`${AppConfig.apiUrl}/role/roles`)
     );
   }
 
@@ -66,42 +49,17 @@ export class RoleService {
     return <Observable<Role>>(
       this.http
         .post(Url, RoleService.stringToRoleAddDto(item), httpOptions)
-        .pipe(
-          tap(e => {
-            LoggerService.log(`added role`);
-          })
-          // catchError(err => {
-          //   RoleService.logError("addRole", []);
-          //   return throwError(processErrorResponse(err));
-          // })
-        )
     );
   }
 
   deleteRole(roleId: number) {
     let Url = `${AppConfig.apiUrl}/role/deleteRole?Id=${roleId}`;
-    return <Observable<Role>>this.http.delete(Url, httpOptions).pipe(
-      tap(e => {
-        LoggerService.log(`deleted role`);
-      })
-      // catchError(err => {
-      //   RoleService.logError("deleteRole", []);
-      //   return throwError(processErrorResponse(err));
-      // })
-    );
+    return <Observable<Role>>this.http.delete(Url, httpOptions)
   }
 
   updateRole(role: Role) {
     let Url = `${AppConfig.apiUrl}/role/updateRole`;
-    return <Observable<Role>>this.http.put(Url, role, httpOptions).pipe(
-      tap(e => {
-        LoggerService.log(`updated role`);
-      })
-      // catchError(err => {
-      //   RoleService.logError("updateRole", []);
-      //   return throwError(processErrorResponse(err));
-      // })
-    );
+    return <Observable<Role>>this.http.put(Url, role, httpOptions)
   }
 
   addRoleToUser(userId: number, roleId: number) {
@@ -115,15 +73,6 @@ export class RoleService {
         },
         httpOptions
       )
-      .pipe(
-        tap(e => {
-          LoggerService.log(`added role to user`);
-        })
-        // catchError(err => {
-        //   RoleService.logError("addRoleToUser", []);
-        //   return throwError(processErrorResponse(err));
-        // })
-      );
   }
 
   deleteRoleFromUser(userId: number, roleId: number) {
@@ -137,20 +86,5 @@ export class RoleService {
         },
         httpOptions
       )
-      .pipe(
-        tap(e => {
-          LoggerService.log(`deleted role from user`);
-        })
-        // catchError(err => {
-        //   RoleService.logError("deleteRoleFromUser", []);
-        //   return throwError(processErrorResponse(err));
-        // })
-      );
-  }
-
-  deleteRoleFromArrayOfRoles(roles: Role[], role: Role): Role[] {
-    return roles.filter(curRole => {
-      return curRole.id !== role.id;
-    });
   }
 }
