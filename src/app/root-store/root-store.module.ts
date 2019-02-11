@@ -4,7 +4,7 @@ import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { RolesStoreModule } from "./roles-store/roles.store.module";
 import { PermissionsStoreModule } from "./permission-store/permissions.store.module";
-import { metaReducers } from "./meta.reducers";
+import { UsersStoreModule } from "./user-store/users.store.module";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
 @NgModule({
@@ -12,6 +12,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
     CommonModule,
     RolesStoreModule,
     PermissionsStoreModule,
+    UsersStoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({

@@ -32,7 +32,9 @@ import {
   RolesActions,
   RolesSelectors,
   PermissionsActions,
-  PermissionsSelectors
+  PermissionsSelectors,
+  UsersActions,
+  UsersSelectors
 } from "../../../root-store";
 
 // import { Role } from "src/app/modules/services/shared/role.model";
@@ -63,10 +65,6 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private store$: Store<RootStoreState.State>,
-    private UserService: UserService,
-    private SnackBarService: SnackBarService,
-    private RoleStore: RoleStore,
-    private PermissionService: PermissionService,
     private formBuilder: FormBuilder
   ) {
     this.newRoleForm = this.formBuilder.group({
@@ -80,10 +78,12 @@ export class HomePageComponent implements OnInit {
   ngOnInit() {
     this.store$.dispatch(new RolesActions.LoadRolesRequest());
     this.store$.dispatch(new PermissionsActions.LoadPermissionsRequest());
+    this.store$.dispatch(new UsersActions.LoadUsersRequest());
     this.roles$ = this.store$.select<Role[]>(RolesSelectors.getAllRoles);
     this.permissions$ = this.store$.select<Permission[]>(
       PermissionsSelectors.getAllPermissions
     );
+    this.users$ = this.store$.select<User[]>(UsersSelectors.getAllUsers);
     // let asd = this.store$
     //   .select<Role[]>(RolesSelectors.getAllRoles)
     //   .subscribe(state => {
@@ -148,7 +148,7 @@ export class HomePageComponent implements OnInit {
   }
 
   addPermissionToUser(userId: number, roleId: number) {
-    debugger
+    debugger;
     // this.PermissionService.addPermissionToUser(userId, roleId).then(
     //   r => {
     //     let responseObject = r as { role: Role; permission: Permission };
@@ -178,7 +178,7 @@ export class HomePageComponent implements OnInit {
   }
 
   DeletePermissionFromUser(userId: number, permissionId: number) {
-    debugger
+    debugger;
     // this.PermissionService.DeletePermissionFromUser(userId, permissionId).then(
     //   r => {
     //     this.DeleteUserPermissionOnView(userId, permissionId);
@@ -190,7 +190,6 @@ export class HomePageComponent implements OnInit {
     // );
   }
 
-
   ChooseUserOnViewById(UserId: number) {
     if (UserId != this.chosenUserId) {
       this.chosenUserId = UserId;
@@ -199,9 +198,9 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  createNewUser() {
+  createNewUser(user: User) {
     debugger;
-    // this.SnackBarService.showRoleSnackBar("UserAlreadyExist");
+    // this.store$.dispatch(new UsersActions.AddUserRequest(user));
   }
 
   createNewRole(newRoleForm: any) {
@@ -219,7 +218,7 @@ export class HomePageComponent implements OnInit {
   }
 
   RemoveUser(user: User) {
-    debugger;
+    this.store$.dispatch(new UsersActions.RemoveUserRequest(user.id));
   }
 
   deleteItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {
@@ -234,21 +233,7 @@ export class HomePageComponent implements OnInit {
   }
 
   UpdateUser(item: User) {
-    debugger;
-    // this.UserService.UpdateUser(item).then(
-    //   r => {
-    //     let responseObject = r as any;
-    //     this.users = this.users.map(function(user) {
-    //       if (user.id == responseObject.id) user.name = responseObject.Username;
-    //       return user;
-    //     });
-    //   },
-    //   e => {
-    //     if (e.error.message == "User with same nickname already exist.") {
-    //       this.SnackBarService.showRoleSnackBar("UserAlreadyExist");
-    //     }
-    //   }
-    // );
+    this.store$.dispatch(new UsersActions.UpdateUserRequest(item));
   }
 
   changeItem({ item, typeOfItem }: { item: Role; typeOfItem: string }) {

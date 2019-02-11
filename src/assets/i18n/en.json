@@ -6,9 +6,10 @@
   "userAlreadyHaveRole": "User already have role.",
   "userAlreadyHavePermission": "User already have permission.",
   "RoleAlreadyExist": "Role with such name already added.",
-  "PermissionAlreadyExist": "Permission already exist.",
   "saved": "Saved!",
-
+  
+  "PermissionAlreadyExist": "Permission already exist.",
+  
   "UserAlreadyExist": "User already exist.",
 
   "alert": "Alert",

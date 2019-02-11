@@ -19,33 +19,23 @@ export class SnackBarService {
   ) {}
 
   showNetworkSnackBar(name): void {
-    this.translateService
-      .get(
-        [
-          String(_("networkError")),
-        ],
-      )
-      .subscribe(texts => {
-        const config: any = new MatSnackBarConfig();
-        config.duration = AppConfig.snackBarDuration;
-        this.snackBar.open(texts[name], "OK", config);
-      });
+    this.translateService.get([String(_("networkError"))]).subscribe(texts => {
+      const config: any = new MatSnackBarConfig();
+      config.duration = AppConfig.snackBarDuration;
+      this.snackBar.open(texts[name], "OK", config);
+    });
   }
 
   showRoleSnackBar(name): void {
     this.translateService
-      .get(
-        [
-          String(_("RoleAlreadyExist")),
-          String(_("chooseUser")),
-          String(_("chooseUserError")),
-          String(_("userAlreadyHaveRole")),
-          String(_("userAlreadyHavePermission")),
-          String(_("UserAlreadyExist")),
-          String(_("PermissionAlreadyExist")),
-          String(_("saved"))
-        ],
-      )
+      .get([
+        String(_("RoleAlreadyExist")),
+        String(_("chooseUser")),
+        String(_("chooseUserError")),
+        String(_("userAlreadyHaveRole")),
+        String(_("userAlreadyHavePermission")),
+        String(_("UserAlreadyExist")),
+      ])
       .subscribe(texts => {
         const config: any = new MatSnackBarConfig();
         config.duration = AppConfig.snackBarDuration;
@@ -55,15 +45,9 @@ export class SnackBarService {
 
   showPermissionSnackBar(name): void {
     this.translateService
-      .get(
-        [
-          String(_("heroCreated")),
-          String(_("saved")),
-          String(_("heroLikeMaximum")),
-          String(_("heroRemoved"))
-        ],
-        { value: AppConfig.votesLimit }
-      )
+      .get([String(_("PermissionAlreadyExist"))], {
+        value: AppConfig.votesLimit
+      })
       .subscribe(texts => {
         const config: any = new MatSnackBarConfig();
         config.duration = AppConfig.snackBarDuration;
@@ -71,4 +55,15 @@ export class SnackBarService {
       });
   }
 
+  showUserSnackBar(name): void {
+    this.translateService
+      .get([String(_("UserAlreadyExist"))], {
+        value: AppConfig.votesLimit
+      })
+      .subscribe(texts => {
+        const config: any = new MatSnackBarConfig();
+        config.duration = AppConfig.snackBarDuration;
+        this.snackBar.open(texts[name], "OK", config);
+      });
+  }
 }

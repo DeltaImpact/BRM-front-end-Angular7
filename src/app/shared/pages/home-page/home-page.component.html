@@ -12,8 +12,8 @@
           (addItemToCreateNewUserForm)="addItemToCreateNewUserForm($event)"
           (createFunction)="createNewUser($event)"
         ></app-create-user-card>
-        <div *ngIf="users">
-          <ng-container *ngFor="let user of users">
+        <div *ngIf="(users$ | async)">
+          <ng-container *ngFor="let user of (users$ | async)">
             <app-user-card
               [user]="user"
               [isChosen]="chosenUserId == user.id ? true : false"
