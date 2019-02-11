@@ -2,19 +2,19 @@ import { Action } from "@ngrx/store";
 import { Permission } from "../../models";
 
 export enum ActionTypes {
-  SELECT_PERMISSION = "[Permissions] Select role",
-  LOAD_PERMISSIONS_REQUEST = "[Permissions] Load roles request",
-  LOAD_PERMISSIONS_SUCCESS = "[Permissions] Load roles success",
-  LOAD_PERMISSIONS_FAILURE = "[Permissions] Load roles failure",
-  ADD_PERMISSION_REQUEST = "[Permissions] Add role request",
-  ADD_PERMISSION_SUCCESS = "[Permissions] Add role success",
-  ADD_PERMISSION_FAILURE = "[Permissions] Add role failure",
-  REMOVE_PERMISSION_REQUEST = "[Permissions] Delete role request",
-  REMOVE_PERMISSION_SUCCESS = "[Permissions] Delete role success",
-  REMOVE_PERMISSION_FAILURE = "[Permissions] Delete role failure",
-  UPDATE_PERMISSION_REQUEST = "[Permissions] Update role request",
-  UPDATE_PERMISSION_SUCCESS = "[Permissions] Update role success",
-  UPDATE_PERMISSION_FAILURE = "[Permissions] Update role failure"
+  SELECT_PERMISSION = "[Permissions] Select permission",
+  LOAD_PERMISSIONS_REQUEST = "[Permissions] Load permissions request",
+  LOAD_PERMISSIONS_SUCCESS = "[Permissions] Load permissions success",
+  LOAD_PERMISSIONS_FAILURE = "[Permissions] Load permissions failure",
+  ADD_PERMISSION_REQUEST = "[Permissions] Add permission request",
+  ADD_PERMISSION_SUCCESS = "[Permissions] Add permission success",
+  ADD_PERMISSION_FAILURE = "[Permissions] Add permission failure",
+  REMOVE_PERMISSION_REQUEST = "[Permissions] Delete permission request",
+  REMOVE_PERMISSION_SUCCESS = "[Permissions] Delete permission success",
+  REMOVE_PERMISSION_FAILURE = "[Permissions] Delete permission failure",
+  UPDATE_PERMISSION_REQUEST = "[Permissions] Update permission request",
+  UPDATE_PERMISSION_SUCCESS = "[Permissions] Update permission success",
+  UPDATE_PERMISSION_FAILURE = "[Permissions] Update permission failure"
 }
 
 export class SelectPermission implements Action {
