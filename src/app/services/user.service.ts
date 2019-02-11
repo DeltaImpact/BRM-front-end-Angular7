@@ -6,6 +6,7 @@ import { LoggerService } from "../core/services/logger.service";
 import { AppConfig } from "../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { User } from "../models";
+import { UserAdapter } from "../adapters/user.adapter";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -17,7 +18,7 @@ import { processErrorResponse } from "./utils.service";
   providedIn: "root"
 })
 export class UserService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userAdapter: UserAdapter) {}
 
   static userToUserAddDto(input: User): any {
     return {
@@ -44,7 +45,11 @@ export class UserService {
   }
 
   getUsers(): Observable<User[]> {
-    return <Observable<User[]>>this.http.get(`${AppConfig.apiUrl}/user/users`);
+    return <Observable<User[]>>(
+      this.http.get(`${AppConfig.apiUrl}/user/users`).pipe(
+        map((data: any[]) => data.map(item => this.userAdapter.adapt(item)))
+      )
+    );
   }
 
   addUser(item: User): Observable<User> {
