@@ -7,8 +7,7 @@ import {
   SimpleChanges
 } from "@angular/core";
 import { AppConfig } from "../../../configs/app.config";
-import { User } from "../../../modules/services/shared/user.model";
-import { Role } from "../../../modules/services/shared/role.model";
+import { Role, User } from "../../../models";
 import { Router } from "@angular/router";
 import {
   FormBuilder,

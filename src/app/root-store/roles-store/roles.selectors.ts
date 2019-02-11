@@ -4,7 +4,7 @@ import {
   MemoizedSelector
 } from "@ngrx/store";
 
-import { Role } from "src/app/modules/services/shared/role.model";
+import { Role } from "../../models";
 
 import { featureAdapter, RolesState } from "./roles.state";
 

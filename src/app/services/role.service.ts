@@ -6,7 +6,7 @@ import { LoggerService } from "../core/services/logger.service";
 import { AppConfig } from "../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 // import { Role } from "./role.model";
-import { Role } from "../models";
+import { Role, User } from "../models";
 import { RoleAdapter } from "../adapters/role.adapter";
 
 const httpOptions = {

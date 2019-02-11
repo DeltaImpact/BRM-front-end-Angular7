@@ -1,9 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from "@angular/core";
 import { AppConfig } from "../../../configs/app.config";
-import { UserService } from "../../../modules/services/shared/user.service";
-import { User } from "../../../modules/services/shared/user.model";
-import { Role } from "../../../modules/services/shared/role.model";
-import { Permission } from "../../../modules/services/shared/permission.model";
+import { UserService } from "../../../services/user.service";
+import { Role, User, Permission } from "../../../models";
 import { Router } from "@angular/router";
 import {
   FormBuilder,

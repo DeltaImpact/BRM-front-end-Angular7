@@ -4,16 +4,20 @@ import {
   MemoizedSelector
 } from "@ngrx/store";
 
-import { Permission } from "src/app/modules/services/shared/permission.model";
+import { Permission } from "../../models";
 
 import { featureAdapter, PermissionsState } from "./permissions.state";
 
-export const getIsLoadingPermissions = (state: PermissionsState) => state.isLoadingPermissions;
+export const getIsLoadingPermissions = (state: PermissionsState) =>
+  state.isLoadingPermissions;
 export const getSelected = (state: PermissionsState) => state.selected;
 export const getPermissions = (state: PermissionsState) => state.permissions;
-export const getError = (PermissionsState: PermissionsState): any => PermissionsState.errorLoadPermissions;
+export const getError = (PermissionsState: PermissionsState): any =>
+  PermissionsState.errorLoadPermissions;
 
-export const selectPermissionsState = createFeatureSelector<PermissionsState>("permissions");
+export const selectPermissionsState = createFeatureSelector<PermissionsState>(
+  "permissions"
+);
 export const getAllPermissions = createSelector(
   selectPermissionsState,
   getPermissions
@@ -31,7 +35,10 @@ export const selectPermissionById = (id: number) =>
     }
   );
 
-export const selectPermissionsError: MemoizedSelector<object, any> = createSelector(
+export const selectPermissionsError: MemoizedSelector<
+  object,
+  any
+> = createSelector(
   selectPermissionsState,
   getError
 );

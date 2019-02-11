@@ -8,9 +8,8 @@ import {
   ViewChild
 } from "@angular/core";
 import { AppConfig } from "../../../configs/app.config";
-import { User } from "../../../modules/services/shared/user.model";
-import { Role } from "../../../modules/services/shared/role.model";
-import { UserService } from "../../../modules/services/shared/user.service";
+import { Role, User } from "../../../models";
+import { UserService } from "../../../services";
 import { Router } from "@angular/router";
 import {
   FormBuilder,
