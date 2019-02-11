@@ -5,10 +5,6 @@ import {
   EventEmitter,
   Output
 } from "@angular/core";
-import { UserService } from "../../../modules/services/shared/user.service";
-import { SnackBarService } from "../../../modules/services/shared/snackBar.service";
-import { RoleStore } from "../../../modules/services/shared/role.store";
-import { PermissionService } from "../../../modules/services/shared/permission.service";
 import { AppConfig } from "../../../configs/app.config";
 import { UtilsHelperService } from "../../../core/services/utils-helper.service";
 import {

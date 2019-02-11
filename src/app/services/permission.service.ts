@@ -27,18 +27,6 @@ export class PermissionService {
     return { PermissionName: input.name };
   }
 
-  private static logError<T>(operation = "operation", result?: T) {
-    return (error: any): Observable<T> => {
-      LoggerService.log(`${operation} failed: ${error.message}`);
-
-      if (error.status >= 500) {
-        throw error;
-      }
-
-      return of(result as T);
-    };
-  }
-
   getPermissions(): Observable<Permission[]> {
     return <Observable<Permission[]>>(
       this.http.get(`${AppConfig.apiUrl}/permission/permissions`)

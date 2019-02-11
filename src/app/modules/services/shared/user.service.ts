@@ -12,7 +12,6 @@ import { Permission } from "./permission.model";
 import { Role } from "./role.model";
 import { RoleService } from "./role.service";
 import { EventEmitter } from "@angular/core";
-import { PermissionService } from "./permission.service";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
