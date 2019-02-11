@@ -2,7 +2,7 @@ import { Action } from "@ngrx/store";
 import * as usersAction from "./users.actions";
 import { ActionTypes } from "./users.actions";
 
-import { User } from "../../models";
+import { User, Role, Permission } from "../../models";
 
 import { EventEmitter, Injectable } from "@angular/core";
 import { featureAdapter, initialState, UsersState } from "./users.state";
@@ -18,21 +18,21 @@ import { NullTemplateVisitor } from "@angular/compiler";
 
 export function userReducer(state = initialState, action: usersAction.Action) {
   switch (action.type) {
-    case ActionTypes.SELECT_PERMISSION: {
+    case ActionTypes.SELECT_USER: {
       const id = action.payload;
       return {
         ...state,
         selected: id
       };
     }
-    case ActionTypes.LOAD_PERMISSIONS_REQUEST: {
+    case ActionTypes.LOAD_USERS_REQUEST: {
       return {
         ...state,
         loadingUsers: true,
         errorLoadUsers: null
       };
     }
-    case ActionTypes.LOAD_PERMISSIONS_SUCCESS: {
+    case ActionTypes.LOAD_USERS_SUCCESS: {
       const receivedUsers: User[] = action.payload;
 
       return {
@@ -41,7 +41,7 @@ export function userReducer(state = initialState, action: usersAction.Action) {
         loadingUsers: false
       };
     }
-    case ActionTypes.LOAD_PERMISSIONS_FAILURE: {
+    case ActionTypes.LOAD_USERS_FAILURE: {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
@@ -49,21 +49,21 @@ export function userReducer(state = initialState, action: usersAction.Action) {
         errorLoadUsers: error
       };
     }
-    case ActionTypes.ADD_PERMISSION_REQUEST: {
+    case ActionTypes.ADD_USER_REQUEST: {
       // const newUser: User = action.payload;
       return {
         ...state,
         errorAddUser: null
       };
     }
-    case ActionTypes.ADD_PERMISSION_SUCCESS: {
+    case ActionTypes.ADD_USER_SUCCESS: {
       const newUser: User = action.payload;
       return {
         ...state,
         users: [...state.users, newUser]
       };
     }
-    case ActionTypes.ADD_PERMISSION_FAILURE: {
+    case ActionTypes.ADD_USER_FAILURE: {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
@@ -71,14 +71,14 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
-    case ActionTypes.REMOVE_PERMISSION_REQUEST: {
+    case ActionTypes.REMOVE_USER_REQUEST: {
       const newUser: number = action.payload;
       return {
         ...state,
         errorRemoveUser: null
       };
     }
-    case ActionTypes.REMOVE_PERMISSION_SUCCESS: {
+    case ActionTypes.REMOVE_USER_SUCCESS: {
       const user: User = action.payload;
       return {
         ...state,
@@ -88,7 +88,7 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
-    case ActionTypes.REMOVE_PERMISSION_FAILURE: {
+    case ActionTypes.REMOVE_USER_FAILURE: {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
@@ -96,14 +96,14 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
-    case ActionTypes.UPDATE_PERMISSION_REQUEST: {
+    case ActionTypes.UPDATE_USER_REQUEST: {
       // const newUser: number = action.payload;
       return {
         ...state,
         errorRemoveUser: null
       };
     }
-    case ActionTypes.UPDATE_PERMISSION_SUCCESS: {
+    case ActionTypes.UPDATE_USER_SUCCESS: {
       const receivedUser: User = action.payload;
       return {
         ...state,
@@ -114,7 +114,7 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
-    case ActionTypes.UPDATE_PERMISSION_FAILURE: {
+    case ActionTypes.UPDATE_USER_FAILURE: {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
@@ -122,11 +122,53 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
+    case ActionTypes.ADD_ROLE_TO_USER_REQUEST: {
+      // const newUser: User = action.payload;
+      return {
+        ...state,
+        errorAddUser: null
+      };
+    }
+    case ActionTypes.ADD_ROLE_TO_USER_SUCCESS: {
+      const newUser: { user: User; role: Role } = action.payload;
+      debugger
+      // return {
+      //   ...state,
+      //   users: [...state.users, newUser]
+      // };
+    }
+    case ActionTypes.ADD_ROLE_TO_USER_FAILURE: {
+      const error: HttpErrorResponse = action.payload;
+      return {
+        ...state,
+        errorAddUser: error
+      };
+    }
+
+    case ActionTypes.ADD_PERMISSION_TO_USER_REQUEST: {
+      // const newUser: User = action.payload;
+      return {
+        ...state,
+        errorAddUser: null
+      };
+    }
+    case ActionTypes.ADD_PERMISSION_TO_USER_SUCCESS: {
+      const newUser: { user: User; permission: Permission } = action.payload;
+      debugger
+      // return {
+      //   ...state,
+      //   users: [...state.users, newUser]
+      // };
+    }
+    case ActionTypes.ADD_PERMISSION_TO_USER_FAILURE: {
+      const error: HttpErrorResponse = action.payload;
+      return {
+        ...state,
+        errorAddUser: error
+      };
+    }
+
     default:
       return state;
   }
-}
-
-function sortBySeqId(e1: User, e2: User) {
-  return e1.id - e2.id;
 }

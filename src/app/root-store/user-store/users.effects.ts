@@ -5,8 +5,8 @@ import { map, switchMap, catchError, tap, exhaustMap } from "rxjs/operators";
 import { Action } from "@ngrx/store";
 import * as UserActions from "./users.actions";
 import { ActionTypes } from "./users.actions";
-import { UserService } from "../../services";
-import { User } from "../../models";
+import { UserService, PermissionService, RoleService } from "../../services";
+import { User, Role, Permission } from "../../models";
 import { SnackBarService } from "../../services/snackBar.service";
 import { duration } from "moment";
 
@@ -15,12 +15,14 @@ export class UsersEffects {
   constructor(
     private actions$: Actions,
     private UserService: UserService,
+    private PermissionService: PermissionService,
+    private RoleService: RoleService,
     private snackBarService: SnackBarService
   ) {}
 
   @Effect()
   loadUsers$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.LOAD_PERMISSIONS_REQUEST),
+    ofType(ActionTypes.LOAD_USERS_REQUEST),
     switchMap(() => {
       return this.UserService.getUsers().pipe(
         map(item => new UserActions.LoadUsersSuccess(item)),
@@ -33,7 +35,7 @@ export class UsersEffects {
 
   @Effect()
   addUser$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.ADD_PERMISSION_REQUEST),
+    ofType(ActionTypes.ADD_USER_REQUEST),
     map((action: UserActions.AddUserRequest) => action.payload),
     exhaustMap((user: User) =>
       this.UserService.addUser(user).pipe(
@@ -47,19 +49,18 @@ export class UsersEffects {
 
   @Effect()
   addUserFailure$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.ADD_PERMISSION_FAILURE),
+    ofType(ActionTypes.ADD_USER_FAILURE),
     switchMap((error: any) => {
       if (error.payload.message == "User with such name already added.") {
         this.snackBarService.showUserSnackBar("UserAlreadyExist");
-      } else if (error.payload != "Network Error")
-        console.error(error.payload);
+      } else if (error.payload != "Network Error") console.error(error.payload);
       return of({ type: "noop" });
     })
   );
 
   @Effect()
   deleteUser$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.REMOVE_PERMISSION_REQUEST),
+    ofType(ActionTypes.REMOVE_USER_REQUEST),
     map((action: UserActions.RemoveUserRequest) => action.payload),
     exhaustMap((toDeleteId: number) =>
       this.UserService.deleteUser(toDeleteId).pipe(
@@ -71,7 +72,7 @@ export class UsersEffects {
 
   @Effect()
   updateUser$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.UPDATE_PERMISSION_REQUEST),
+    ofType(ActionTypes.UPDATE_USER_REQUEST),
     map((action: UserActions.UpdateUserRequest) => action.payload),
     exhaustMap((item: User) =>
       this.UserService.updateUser(item).pipe(
@@ -85,13 +86,26 @@ export class UsersEffects {
 
   @Effect()
   updateUserFailure$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.UPDATE_PERMISSION_FAILURE),
+    ofType(ActionTypes.UPDATE_USER_FAILURE),
     switchMap((error: any) => {
       if (error.payload.message == "User with such name already added.") {
         this.snackBarService.showUserSnackBar("UserAlreadyExist");
-      } else if (error.payload != "Network Error")
-        console.error(error.payload);
+      } else if (error.payload != "Network Error") console.error(error.payload);
       return of({ type: "noop" });
     })
+  );
+
+  @Effect()
+  addRoleToUser$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.ADD_ROLE_TO_USER_REQUEST),
+    map((action: UserActions.AddRoleToUserRequest) => action.payload),
+    exhaustMap((item: { user: User; role: Role }) =>
+      this.RoleService.addRoleToUser(item.user.id, item.role.id).pipe(
+        map(item => {
+          return new UserActions.AddRoleToUserSuccess(item);
+        }),
+        catchError(error => of(new UserActions.AddRoleToUserFailure(error)))
+      )
+    )
   );
 }
