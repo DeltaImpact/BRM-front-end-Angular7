@@ -6,7 +6,7 @@ import { LoggerService } from "../core/services/logger.service";
 import { AppConfig } from "../configs/app.config";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
 import { Permission } from "../models";
-
+import { PermissionAdapter } from "../adapters/permisson.adapter";
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
 };
@@ -17,15 +17,7 @@ import { processErrorResponse } from "./utils.service";
   providedIn: "root"
 })
 export class PermissionService {
-  constructor(private http: HttpClient) {}
-
-  static stringToPermissionAddDto(input: string): any {
-    return { PermissionName: input };
-  }
-
-  static permissionToPermissionOrPermissionUpdateDto(input: Permission): any {
-    return { PermissionName: input.name };
-  }
+  constructor(private http: HttpClient,  private permissionAdapter: PermissionAdapter) {}
 
   getPermissions(): Observable<Permission[]> {
     return <Observable<Permission[]>>(
@@ -39,7 +31,7 @@ export class PermissionService {
       this.http
         .post(
           Url,
-          PermissionService.stringToPermissionAddDto(item),
+          this.permissionAdapter.toPermissionAddDto(item),
           httpOptions
         )
     );
