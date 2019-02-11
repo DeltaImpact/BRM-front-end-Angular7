@@ -15,14 +15,8 @@ export class RolesEffects {
   constructor(
     private actions$: Actions,
     private RoleService: RoleService,
-    private SnackBarService: SnackBarService
+    private snackBarService: SnackBarService
   ) {}
-
-  @Effect()
-  initEffect$: Observable<Action> = this.actions$.pipe(
-    ofType(ROOT_EFFECTS_INIT),
-    map(_ => new RoleActions.LoadRolesRequest())
-  );
 
   @Effect()
   loadRoles$: Observable<Action> = this.actions$.pipe(
@@ -34,17 +28,6 @@ export class RolesEffects {
           return of(new RoleActions.LoadRolesFailure(error));
         })
       );
-    })
-  );
-
-  @Effect()
-  loadRolesFailure$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.LOAD_ROLES_FAILURE),
-    switchMap((error: any) => {
-      if (error.payload == "Network Error") {
-        this.SnackBarService.showNetworkSnackBar("networkError");
-      } else console.error(error.payload);
-      return of({ type: "noop" });
     })
   );
 
@@ -67,8 +50,9 @@ export class RolesEffects {
     ofType(ActionTypes.ADD_ROLE_FAILURE),
     switchMap((error: any) => {
       if (error.payload.message == "Role with such name already added.") {
-        this.SnackBarService.showRoleSnackBar("RoleAlreadyExist");
-      } else console.error(error.payload);
+        this.snackBarService.showRoleSnackBar("RoleAlreadyExist");
+      } else if (error.payload != "Network Error")
+        console.error(error.payload);
       return of({ type: "noop" });
     })
   );
@@ -104,8 +88,9 @@ export class RolesEffects {
     ofType(ActionTypes.UPDATE_ROLE_FAILURE),
     switchMap((error: any) => {
       if (error.payload.message == "Role with such name already added.") {
-        this.SnackBarService.showRoleSnackBar("RoleAlreadyExist");
-      } else console.error(error.payload);
+        this.snackBarService.showRoleSnackBar("RoleAlreadyExist");
+      } else if (error.payload != "Network Error")
+        console.error(error.payload);
       return of({ type: "noop" });
     })
   );
