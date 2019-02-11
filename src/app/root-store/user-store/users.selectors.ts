@@ -4,14 +4,14 @@ import {
   MemoizedSelector
 } from "@ngrx/store";
 
-import { User } from "src/app/modules/services/shared/user.model";
-
+import { User } from "../../models";
 import { featureAdapter, UsersState } from "./users.state";
 
 export const getIsLoadingUsers = (state: UsersState) => state.isLoadingUsers;
 export const getSelected = (state: UsersState) => state.selected;
 export const getUsers = (state: UsersState) => state.users;
-export const getError = (UsersState: UsersState): any => UsersState.errorLoadUsers;
+export const getError = (UsersState: UsersState): any =>
+  UsersState.errorLoadUsers;
 
 export const selectUsersState = createFeatureSelector<UsersState>("users");
 export const getAllUsers = createSelector(
@@ -21,7 +21,7 @@ export const getAllUsers = createSelector(
 
 export const selectUserById = (id: number) =>
   createSelector(
-    this.selectAllUserItems,
+    getAllUsers,
     (users: User[]) => {
       if (users) {
         return users.find(p => p.id === id);
