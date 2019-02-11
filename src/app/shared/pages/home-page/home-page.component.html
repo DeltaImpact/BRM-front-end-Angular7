@@ -143,8 +143,8 @@
           </mat-card-header>
         </mat-card>
 
-        <div *ngIf="permissions">
-          <ng-container *ngFor="let permission of permissions">
+        <div *ngIf="(permissions$ | async)">
+          <ng-container *ngFor="let permission of (permissions$ | async)">
             <app-role-permission-card
               [item]="permission"
               [typeOfItem]="'permission'"

@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from "@ngrx/store";
 import { RolesStoreModule } from "./roles-store/roles.store.module";
+import { PermissionsStoreModule } from "./permission-store/permissions.store.module";
 import { metaReducers } from "./meta.reducers";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 
@@ -10,6 +11,7 @@ import { StoreDevtoolsModule } from "@ngrx/store-devtools";
   imports: [
     CommonModule,
     RolesStoreModule,
+    PermissionsStoreModule,
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({

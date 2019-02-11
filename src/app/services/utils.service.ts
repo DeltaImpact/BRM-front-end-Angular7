@@ -6,8 +6,6 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 
-import { ErrorGroup } from "../models";
-
 export function processErrorResponse(error: HttpErrorResponse) {
   let err = [];
   if (error.status === 0) {

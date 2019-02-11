@@ -52,4 +52,23 @@ export class SnackBarService {
         this.snackBar.open(texts[name], "OK", config);
       });
   }
+
+  showPermissionSnackBar(name): void {
+    this.translateService
+      .get(
+        [
+          String(_("heroCreated")),
+          String(_("saved")),
+          String(_("heroLikeMaximum")),
+          String(_("heroRemoved"))
+        ],
+        { value: AppConfig.votesLimit }
+      )
+      .subscribe(texts => {
+        const config: any = new MatSnackBarConfig();
+        config.duration = AppConfig.snackBarDuration;
+        this.snackBar.open(texts[name], "OK", config);
+      });
+  }
+
 }
