@@ -25,10 +25,27 @@ export const getAllPermissions = createSelector(
 
 export const selectPermissionById = (id: number) =>
   createSelector(
-    this.selectAllPermissionItems,
+    getAllPermissions,
     (permissions: Permission[]) => {
       if (permissions) {
         return permissions.find(p => p.id === id);
+      } else {
+        return null;
+      }
+    }
+  );
+
+  export const selectSearchPermissionByName = (name: string) =>
+  createSelector(
+    getAllPermissions,
+    (permission: Permission[]) => {
+      if (permission) {
+        if (name == "") {
+          return permission;
+        } else
+          return permission.filter(
+            perm => perm.name.toLowerCase().indexOf(name) === 0
+          );
       } else {
         return null;
       }

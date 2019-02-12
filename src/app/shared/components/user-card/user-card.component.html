@@ -36,7 +36,7 @@
         [formGroup]="editItemForm"
         #editForm="ngForm"
         ngxScrollToFirstInvalid
-        (ngSubmit)="changeItem(editItemForm.value)"
+        (ngSubmit)="changeItemName(editItemForm.value)"
         autocomplete="on"
       >
         <mat-form-field class="input-container">
@@ -66,34 +66,74 @@
   </div>
   <div>
     <div id="left">
+      <!-- -----------------------   list of user roles   ----------------------- -->
       <div *ngIf="user.roles.length !== 0">
         <mat-card-subtitle>{{ "Roles" | translate }}:</mat-card-subtitle>
-
-        <div class="roles__list" *ngFor="let role of user.roles">
-          <div class="roles__box">
+        <div
+          class="roles__list"
+          *ngFor="let role of (user.roles | mergeById: changedUser.roles)"
+        >
+          <div
+            class="roles__box"
+            [ngClass]="isDeletedInChangedUser(role, 'role')"
+          >
             <mat-card-title>{{ role.name }}</mat-card-title>
             <mat-card-content> ID: {{ role.id }}</mat-card-content>
 
             <mat-icon
               class="icon__like--green"
               (click)="RemoveFromUser(role, user, 'role')"
+              *ngIf="isEditMode"
               >clear</mat-icon
             >
           </div>
         </div>
       </div>
-      <!-- {{ user.roles | json }} -->
+      <!-- -----------------------   add role to user form   ----------------------- -->
+      <div class="roles__list" *ngIf="isEditMode">
+        <mat-error *ngIf="addRoleError">
+          {{ addRoleError | translate }}
+        </mat-error>
+        <div class="roles__box">
+          <input
+            type="text"
+            placeholder="Add role"
+            aria-label="Role choose"
+            matInput
+            [formControl]="rolesControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-icon class="icon__like--green" (click)="addRole()">add</mat-icon>
+
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of (filteredRoles | async)"
+              [value]="option.name"
+            >
+              <span>{{ option.name }}</span> |
+              <small>ID: {{ option.id }}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
     </div>
     <div id="right">
+      <!-- -----------------------   list of user permissions   ----------------------- -->
       <div *ngIf="user.permissions.length !== 0">
         <mat-card-subtitle> {{ "Permissions" | translate }}:</mat-card-subtitle>
-        <div class="roles__list" *ngFor="let permission of user.permissions">
-          <div class="roles__box">
-            <!-- {{ permission | json }} -->
+        <div
+          class="roles__list"
+          *ngFor="
+            let permission of (user.permissions
+              | mergeById: changedUser.permissions)
+          "
+        >
+          <div
+            class="roles__box"
+            [ngClass]="isDeletedInChangedUser(permission, 'permission')"
+          >
             <mat-card-title>{{ permission.name }}</mat-card-title>
             <mat-card-content> ID: {{ permission.id }}</mat-card-content>
-
-            <!-- <mat-card-subtitle> {{ permission | json }}</mat-card-subtitle> -->
             <mat-icon
               class="icon__like--green"
               (click)="RemoveFromUser(permission, user, 'permission')"
@@ -102,8 +142,49 @@
           </div>
         </div>
       </div>
-      <!-- {{ user.permissions | json }} -->
+      <!-- -----------------------   add permission to user form   ----------------------- -->
+      <div class="roles__list" *ngIf="isEditMode">
+        <mat-error *ngIf="addRoleError">
+          {{ addRoleError | translate }}
+        </mat-error>
+        <div class="roles__box">
+          <input
+            type="text"
+            placeholder="Add role"
+            aria-label="Role choose"
+            matInput
+            [formControl]="rolesControl"
+            [matAutocomplete]="auto"
+          />
+          <mat-icon class="icon__like--green" (click)="addPermission()">add</mat-icon>
+
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of (filteredPermissions | async)"
+              [value]="option.name"
+            >
+              <span>{{ option.name }}</span> |
+              <small>ID: {{ option.id }}</small>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
     </div>
     <div class="clear"></div>
   </div>
+
+      <!-- -----------------------   save changes button   ----------------------- -->
+  
+  <button mat-raised-button [disabled]="isNeedSave"  *ngIf="isEditMode">
+    {{ "renameItem" | translate }}
+  </button>
+  <!-- {{ isNeedSave | json }} -->
+  <!-- <pre>
+      {{ user.roles | mergeById: changedUser.roles | json }}
+    </pre
+  > -->
+  <!-- {{ user | json }} -->
+  <!-- <pre> -->
+  <!-- {{ changedUser | json }}
+  </pre> -->
 </mat-card>

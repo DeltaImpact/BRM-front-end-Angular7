@@ -1,7 +1,10 @@
 @import "../../../styles/mixins";
 @import "../../../styles/colors";
 
-.hero-header__image, mat-card-title, mat-card-subtitle, .mat-card-image {
+.hero-header__image,
+mat-card-title,
+mat-card-subtitle,
+.mat-card-image {
   cursor: pointer;
 }
 
@@ -54,4 +57,12 @@
   cursor: move;
   background: white;
   font-size: 14px;
+}
+
+.roles__box--added {
+  background: #e6ffed;
+}
+
+.roles__box--removed {
+  background: #ffeef0;
 }

@@ -37,37 +37,48 @@ export class CreateUserCardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private UserService: UserService
   ) {
+    this.user = { id: 0, name: "", roles: [], permissions: [] };
+
     this.newUserForm = this.formBuilder.group({
       name: new FormControl("", [Validators.required])
     });
   }
 
   ngOnInit() {
-    this.user = this.UserService.newUser;
-    this.UserService.newUserChanged.subscribe(data => {
-      this.user = data;
-    });
+    // this.user = this.UserService.newUser;
+    // this.UserService.newUserChanged.subscribe(data => {
+    //   this.user = data;
+    // });
 
     this.newUserForm.valueChanges.subscribe(changes => {
       if (changes.name) {
-        this.UserService.changeNicknameOfNewUser(changes.name);
+        this.user.name = changes.name;
+
+        // debugger;
+
+        // this.UserService.changeNicknameOfNewUser(changes.name);
       }
     });
   }
 
   RemoveFromUser(role: Role, user: User, typeOfItem: string) {
     if (typeOfItem == "role") {
-      this.user = this.UserService.deleteRoleFromUserObject(user, role);
+      debugger;
+      // this.user = this.UserService.deleteRoleFromUserObject(user, role);
     }
     if (typeOfItem == "permission") {
-      this.user = this.UserService.deletePermissionFromUserObject(user, role);
+      debugger;
+
+      // this.user = this.UserService.deletePermissionFromUserObject(user, role);
     }
   }
 
   createNewUser(newUser: any) {
     if (this.newUserForm.valid) {
       let obj = newUser as User;
-      this.UserService.changeNicknameOfNewUser(obj.name);
+      debugger;
+
+      // this.UserService.changeNicknameOfNewUser(obj.name);
       this.createFunction.emit(obj.name);
       this.userForm.resetForm();
     }

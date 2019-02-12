@@ -42,7 +42,7 @@ export class RoleService {
 
   addRoleToUser(userId: number, roleId: number) {
     let Url = `${AppConfig.apiUrl}/role/addRoleToUser`;
-    return <Observable<Role>>this.http.post(
+    return <Observable<{ user: User; role: Role }>>this.http.post(
       Url,
       {
         UserId: userId,

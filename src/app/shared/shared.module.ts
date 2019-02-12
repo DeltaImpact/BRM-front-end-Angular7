@@ -18,6 +18,8 @@ import { WebStorageModule } from "ngx-store";
 import { HeroLoadingComponent } from "./components/hero-loading/hero-loading.component";
 import { NgxScrollToFirstInvalidModule } from "@ismaestro/ngx-scroll-to-first-invalid";
 import { LoadingPlaceholderComponent } from "./components/loading-placeholder/loading-placeholder.component";
+
+import { MergeByIdPipe } from '../pipes/merge-by-id.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { LoadingPlaceholderComponent } from "./components/loading-placeholder/lo
     CreateUserCardComponent,
     RoleAndPermissionCardComponent,
     HeroLoadingComponent,
-    LoadingPlaceholderComponent
+    LoadingPlaceholderComponent,
+    MergeByIdPipe
   ],
   exports: [
     CommonModule,

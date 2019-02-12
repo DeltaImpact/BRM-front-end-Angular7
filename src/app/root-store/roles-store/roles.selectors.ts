@@ -11,7 +11,8 @@ import { featureAdapter, RolesState } from "./roles.state";
 export const getIsLoadingRoles = (state: RolesState) => state.isLoadingRoles;
 export const getSelected = (state: RolesState) => state.selected;
 export const getRoles = (state: RolesState) => state.roles;
-export const getError = (RolesState: RolesState): any => RolesState.errorLoadRoles;
+export const getError = (RolesState: RolesState): any =>
+  RolesState.errorLoadRoles;
 
 // export const selectRolesState: MemoizedSelector<
 //   object,
@@ -31,10 +32,27 @@ export const getAllRoles = createSelector(
 
 export const selectRoleById = (id: number) =>
   createSelector(
-    this.selectAllRoleItems,
+    getAllRoles,
     (roles: Role[]) => {
       if (roles) {
         return roles.find(p => p.id === id);
+      } else {
+        return null;
+      }
+    }
+  );
+
+export const selectSearchRoleByName = (name: string) =>
+  createSelector(
+    getAllRoles,
+    (roles: Role[]) => {
+      if (roles) {
+        if (name == "") {
+          return roles;
+        } else
+          return roles.filter(
+            role => role.name.toLowerCase().indexOf(name) === 0
+          );
       } else {
         return null;
       }

@@ -16,16 +16,12 @@ import {
 import { Observable, of, empty } from "rxjs";
 import { take, finalize, catchError, map, tap } from "rxjs/operators";
 
-import { jsonpCallbackContext } from "@angular/common/http/src/module";
-
 import { Role, Permission, User } from "../../../models";
 import { SnackBarService } from "../../../services";
 import { Store } from "@ngrx/store";
 
 import {
   RootStoreState,
-  RootStoreSelectors,
-  RootStoreModule,
   RolesActions,
   RolesSelectors,
   PermissionsActions,
@@ -33,8 +29,6 @@ import {
   UsersActions,
   UsersSelectors
 } from "../../../root-store";
-
-// import { Role } from "src/app/modules/services/shared/role.model";
 
 @Component({
   selector: "app-home-page",
@@ -62,7 +56,8 @@ export class HomePageComponent implements OnInit {
 
   constructor(
     private store$: Store<RootStoreState.State>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private SnackBarService: SnackBarService
   ) {
     this.newRoleForm = this.formBuilder.group({
       name: new FormControl("", [Validators.required])
@@ -91,22 +86,35 @@ export class HomePageComponent implements OnInit {
   }
 
   AddToUser(obj: { item: Role; typeOfItem: string }) {
-    // if (this.chosenUserId) {
-    //   if (this.chosenUserId == -1) {
-    //     // this.addItemToCreateNewUserForm.emit(obj);
-    //     this.UserService.addItemToNewUser(obj);
-    //     // debugger;
-    //   } else {
-    //     if (obj.typeOfItem == "role") {
-    //       this.addRoleToUser(this.chosenUserId, obj.item.id);
-    //     }
-    //     if (obj.typeOfItem == "permission") {
-    //       this.addPermissionToUser(this.chosenUserId, obj.item.id);
-    //     }
-    //   }
-    // } else {
-    //   this.SnackBarService.showRoleSnackBar("chooseUserError");
-    // }
+    if (this.chosenUserId) {
+      if (this.chosenUserId == -1) {
+        // this.addItemToCreateNewUserForm.emit(obj);
+        // this.UserService.addItemToNewUser(obj);
+        // debugger;
+      } else {
+        if (obj.typeOfItem == "role") {
+          // let selectedUser = this.users$.subscribe(e => e.filter(u => u.id == this.chosenUserId)) as User;
+          this.store$
+            .select<User>(UsersSelectors.selectUserById(this.chosenUserId))
+            .subscribe(selectedUser => {
+              new UsersActions.AddRoleToUserRequest({
+                user: selectedUser,
+                role: obj.item
+              });
+              // return sel
+              // debugger;
+            });
+          // debugger;
+
+          // this.addRoleToUser(this.chosenUserId, obj.item.id);
+        }
+        if (obj.typeOfItem == "permission") {
+          // this.addPermissionToUser(this.chosenUserId, obj.item.id);
+        }
+      }
+    } else {
+      this.SnackBarService.showRoleSnackBar("chooseUserError");
+    }
   }
 
   RemoveRoleFrom({
