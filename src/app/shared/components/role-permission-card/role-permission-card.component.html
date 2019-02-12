@@ -20,12 +20,6 @@
     <mat-card-title>{{ item.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ item.id }}</mat-card-subtitle>
     <div class="hero-actions">
-      <mat-icon
-        matTooltip="{{ 'addToUser' | translate }}"
-        class="icon__like--green"
-        (click)="addToUser()"
-        >add
-      </mat-icon>
       <mat-icon class="icon__like--green" (click)="switchEditMode()"
         >edit
       </mat-icon>

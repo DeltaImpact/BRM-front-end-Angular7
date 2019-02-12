@@ -2,7 +2,6 @@
   class="hero-card"
   *ngIf="user"
   [ngClass]="{ mat__card__chosen: isChosen }"
-  [ngStyle]="isChosen && { 'background-color': '#72b42499' }"
 >
   <mat-card-header>
     <div
@@ -15,13 +14,6 @@
     <mat-card-title>{{ user.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
     <div class="hero-actions">
-      <mat-icon
-        class="icon__like--green"
-        matTooltip="{{ 'chooseUser' | translate }}"
-        (click)="chooseUser()"
-      >
-        {{ isChosen ? "radio_button_checked" : "radio_button_unchecked" }}
-      </mat-icon>
       <mat-icon class="icon__like--green" (click)="switchEditMode()"
         >edit
       </mat-icon>
