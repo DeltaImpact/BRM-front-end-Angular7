@@ -24,11 +24,7 @@ import { FirebaseModule } from "./shared/modules/firebase.module";
         useClass: WebpackTranslateLoader
       }
     }),
-    NgxExampleLibraryModule.forRoot({
-      config: {
-        // say: 'hello'
-      }
-    }),
+    NgxExampleLibraryModule.forRoot(),
     CoreModule,
     SharedModule,
     RootStoreModule,
