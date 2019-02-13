@@ -2,16 +2,24 @@
   "networkError": "Network Error.",
 
   "chooseUser": "Choose user.",
+  "chooseRole": "Choose role.",
+  "addRoleToUser": "Add role.",
+  "addPermissionToUser": "Add permission.",
+  "choosePermission": "Choose permission.",
   "chooseUserError": "Choose user.",
   "userAlreadyHaveRole": "User already have role.",
   "userAlreadyHavePermission": "User already have permission.",
-  "RoleAlreadyExist": "Role with such name already added.",
   "saved": "Saved!",
-  
-  "PermissionAlreadyExist": "Permission already exist.",
-  
-  "UserAlreadyExist": "User already exist.",
+  "changeNickname": "Nickname change.",
 
+  "UserAlreadyExist": "User already exist.",
+  "RoleAlreadyExist": "Role with such name already added.",
+  "roleAlreadyAdded": "Role already added.",
+  "permissionAlreadyAdded": "Permission already added.",
+  "PermissionAlreadyExist": "Permission already exist.",
+
+  "saveChanges": "Save changes",
+  
   "alert": "Alert",
   "anchorToHero": "Anchor the hero",
   "angularBRMApp": "Angular BRM App",

@@ -38,7 +38,7 @@ mat-card-subtitle,
 
 .roles__list {
   border: solid 1px #ccc;
-  min-height: 60px;
+  // min-height: 60px;
   background: white;
   border-radius: 4px;
   overflow: hidden;
@@ -65,4 +65,15 @@ mat-card-subtitle,
 
 .roles__box--removed {
   background: #ffeef0;
+}
+
+.save__user__button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.items__group__header {
+  margin-top: 10px;
+  margin-bottom: 5px;
+
 }

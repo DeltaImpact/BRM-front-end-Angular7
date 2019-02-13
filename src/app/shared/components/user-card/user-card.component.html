@@ -11,7 +11,7 @@
         'background-image': 'url(assets/images/users/default.png)'
       }"
     ></div>
-    <mat-card-title>{{ user.name }}</mat-card-title>
+    <mat-card-title>{{ changedUser.name }}</mat-card-title>
     <mat-card-subtitle>ID: {{ user.id }}</mat-card-subtitle>
     <div class="hero-actions">
       <mat-icon class="icon__like--green" (click)="switchEditMode()"
@@ -22,45 +22,29 @@
       </mat-icon>
     </div>
   </mat-card-header>
-  <div *ngIf="isEditMode" class="roles__list">
+  <!-- -----------------------   input username   ----------------------- -->
+  <div class="roles__list" *ngIf="isEditMode">
+    <mat-error *ngIf="changeNameError">
+      {{ changeNameError | translate }}
+    </mat-error>
     <div class="roles__box">
-      <form
-        [formGroup]="editItemForm"
-        #editForm="ngForm"
-        ngxScrollToFirstInvalid
-        (ngSubmit)="changeItemName(editItemForm.value)"
-        autocomplete="on"
-      >
-        <mat-form-field class="input-container">
-          <input
-            matInput
-            name="hname"
-            type="text"
-            placeholder="{{ 'newItemName' | translate }}"
-            formControlName="name"
-          />
-          <mat-error
-            *ngIf="!editItemForm.controls.name.valid && editForm.submitted"
-          >
-            {{ "fieldRequired" | translate }}
-          </mat-error>
-        </mat-form-field>
-        <button
-          mat-raised-button
-          type="submit"
-          [disabled]="editForm.submitted && !editItemForm.valid"
-        >
-          {{ "renameItem" | translate }}
-        </button>
-        <div *ngIf="error">{{ error | translate }}</div>
-      </form>
+      <input
+        type="text"
+        placeholder="{{ changeNickname | translate }}"
+        aria-label="New nickname input"
+        matInput
+        [(ngModel)]="changedUser.name"
+        [formControl]="nameControl"
+      />
     </div>
   </div>
   <div>
     <div id="left">
       <!-- -----------------------   list of user roles   ----------------------- -->
       <div *ngIf="user.roles.length !== 0">
-        <mat-card-subtitle>{{ "Roles" | translate }}:</mat-card-subtitle>
+        <mat-card-subtitle class="items__group__header"
+          >{{ "Roles" | translate }}:</mat-card-subtitle
+        >
         <div
           class="roles__list"
           *ngFor="let role of (user.roles | mergeById: changedUser.roles)"
@@ -89,7 +73,7 @@
         <div class="roles__box">
           <input
             type="text"
-            placeholder="Add role"
+            placeholder="{{ addRoleToUser | translate }}"
             aria-label="Role choose"
             matInput
             [formControl]="rolesControl"
@@ -112,7 +96,9 @@
     <div id="right">
       <!-- -----------------------   list of user permissions   ----------------------- -->
       <div *ngIf="user.permissions.length !== 0">
-        <mat-card-subtitle> {{ "Permissions" | translate }}:</mat-card-subtitle>
+        <mat-card-subtitle class="items__group__header">
+          {{ "Permissions" | translate }}:</mat-card-subtitle
+        >
         <div
           class="roles__list"
           *ngFor="
@@ -142,13 +128,15 @@
         <div class="roles__box">
           <input
             type="text"
-            placeholder="Add role"
-            aria-label="Role choose"
+            placeholder="{{ addPermissionToUser | translate }}"
+            aria-label="Permission choose"
             matInput
-            [formControl]="rolesControl"
+            [formControl]="permissionsControl"
             [matAutocomplete]="auto"
           />
-          <mat-icon class="icon__like--green" (click)="addPermission()">add</mat-icon>
+          <mat-icon class="icon__like--green" (click)="addPermission()"
+            >add</mat-icon
+          >
 
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
             <mat-option
@@ -165,11 +153,13 @@
     <div class="clear"></div>
   </div>
 
-      <!-- -----------------------   save changes button   ----------------------- -->
-  
-  <button mat-raised-button [disabled]="isNeedSave"  *ngIf="isEditMode">
-    {{ "renameItem" | translate }}
+  <!-- -----------------------   save changes button   ----------------------- -->
+
+  <button mat-raised-button class="save__user__button" *ngIf="isEditMode">
+    {{ "saveChanges" | translate }}
   </button>
+  <!-- [disabled]="isNeedSave" -->
+
   <!-- {{ isNeedSave | json }} -->
   <!-- <pre>
       {{ user.roles | mergeById: changedUser.roles | json }}

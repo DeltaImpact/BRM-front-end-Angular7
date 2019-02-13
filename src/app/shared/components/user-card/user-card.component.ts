@@ -6,7 +6,6 @@ import {
   OnInit,
   SimpleChanges
 } from "@angular/core";
-import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
 import { AppConfig } from "../../../configs/app.config";
 import { Role, User, Permission } from "../../../models";
@@ -27,7 +26,8 @@ import {
   UsersSelectors
 } from "../../../root-store";
 import { Store } from "@ngrx/store";
-// import { Subject } from "rxjs/Rx";
+import { Observable, of, throwError, empty } from "rxjs";
+import * as Rx from "rxjs";
 
 @Component({
   selector: "app-user-card",
@@ -39,20 +39,23 @@ export class UserCardComponent implements OnInit {
   permissions$: Observable<Permission[]> = null;
   @Input() user: User;
   changedUser: User;
-  // changedUserChange: Subject<User> = new Subject<User>();
+  changedUserObservable = new Rx.Subject();
   @Input() isChosen: Boolean;
   @Output() chooseFunction = new EventEmitter();
   @Output() removeFunction = new EventEmitter();
   @Output() deleteFunction = new EventEmitter();
   @Output() updateFunction = new EventEmitter();
   isEditMode: boolean = false;
-  isNeedSave: boolean = false;
+  isNeedSave: boolean = true;
+  isNamesDiffer: boolean = false;
 
   editItemForm: FormGroup;
 
+  nameControl = new FormControl(Validators.minLength(1));
   rolesControl = new FormControl();
   permissionsControl = new FormControl();
 
+  changeNameError: string = null;
   addRoleError: string = null;
   addPermissionsError: string = null;
 
@@ -66,13 +69,15 @@ export class UserCardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store$: Store<RootStoreState.State>
   ) {
+    this.changedUserObservable.subscribe(() => this.checkIsSafeNeeded());
+
     // this.changedUserChange.subscribe(value => {
     //   this.changedUser = value;
     // });
 
-    this.editItemForm = this.formBuilder.group({
-      name: new FormControl("", [Validators.required])
-    });
+    // this.editItemForm = this.formBuilder.group({
+    //   name: new FormControl("", [Validators.required])
+    // });
 
     this.rolesControl.valueChanges
       .pipe(startWith(""))
@@ -85,7 +90,7 @@ export class UserCardComponent implements OnInit {
           )
           .pipe(
             map(item => {
-              let userRolesIds = this.user.roles.map(item => item.id);
+              let userRolesIds = this.changedUser.roles.map(item => item.id);
               return item.filter(item => -1 === userRolesIds.indexOf(item.id));
             })
           );
@@ -104,7 +109,7 @@ export class UserCardComponent implements OnInit {
           )
           .pipe(
             map(item => {
-              let userPermissionsIds = this.user.permissions.map(
+              let userPermissionsIds = this.changedUser.permissions.map(
                 item => item.id
               );
               return item.filter(
@@ -114,19 +119,20 @@ export class UserCardComponent implements OnInit {
           );
       });
 
-    // this.changedUser
+    this.nameControl.valueChanges
+      .pipe(startWith(""))
+      .subscribe((newName: string) => {
+        if (newName != "") {
+          this.isNamesDiffer = this.user.name != newName;
+          this.changedUserObservable.next();
+        } else {
+          this.isNamesDiffer = false;
+        }
+      });
   }
 
   ngOnInit() {
-    this.changedUser = {
-      id: this.user.id,
-      name: this.user.name,
-      roles: this.user.roles,
-      permissions: this.user.permissions
-    };
-    // this.changedUser.name = this.user.name;
-    // this.changedUser.roles = this.user.roles;
-    // this.changedUser.permissions = this.user.permissions;
+    this.changedUser = Object.assign({}, this.user);
   }
 
   addRole() {
@@ -135,9 +141,12 @@ export class UserCardComponent implements OnInit {
         let roleToAdd = r[0] as Role;
         if (this.changedUser.roles.find(x => x.id == roleToAdd.id)) {
           this.addRoleError = "roleAlreadyAdded";
-        } else this.changedUser.roles = [...this.changedUser.roles, roleToAdd];
-
-        // debugger;
+        } else {
+          this.addRoleError = null;
+          this.rolesControl.reset();
+          this.changedUser.roles = [...this.changedUser.roles, roleToAdd];
+          this.changedUserObservable.next();
+        }
       } else {
         this.addRoleError = "chooseRole";
       }
@@ -149,24 +158,21 @@ export class UserCardComponent implements OnInit {
       if (r.length === 1) {
         let permToAdd = r[0] as Permission;
         if (this.changedUser.permissions.find(x => x.id == permToAdd.id)) {
-          this.addRoleError = "permissionAlreadyAdded";
-        } else
+          this.addPermissionsError = "permissionAlreadyAdded";
+        } else {
+          this.addPermissionsError = null;
+          this.permissionsControl.reset();
           this.changedUser.permissions = [
             ...this.changedUser.permissions,
             permToAdd
           ];
-
-        // debugger;
+          this.changedUserObservable.next();
+        }
       } else {
-        this.addRoleError = "choosePermission";
+        this.addPermissionsError = "choosePermission";
       }
     });
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   debugger
-  //   // changes.prop contains the old and the new value...
-  // }
 
   RemoveFromUser(item: Role, user: User, typeOfItem: string) {
     if (typeOfItem == "role") {
@@ -193,14 +199,10 @@ export class UserCardComponent implements OnInit {
         this.changedUser.permissions = [...this.changedUser.permissions, item];
       }
     }
+    this.changedUserObservable.next();
   }
 
   isDeletedInChangedUser(item: Role, typeOfItem: string) {
-    // [ngClass]="{
-    //   isAddedInChangedUser(item, 'permission'),
-    //   isDeletedInChangedUser(item, 'permission'),
-    // }"
-    // 'roles__box--removed'
     if (typeOfItem == "role") {
       let itemInChangedUser = this.changedUser.roles.find(x => x.id == item.id);
       let itemInUser = this.user.roles.find(x => x.id == item.id);
@@ -218,16 +220,11 @@ export class UserCardComponent implements OnInit {
   }
 
   isAddedInChangedUser(item: Role, typeOfItem: string) {
-    // 'roles__box--added'
     if (typeOfItem == "role") {
     }
     if (typeOfItem == "permission") {
     }
     return "";
-  }
-
-  chooseUser() {
-    this.chooseFunction.emit(this.user);
   }
 
   deleteItem() {
@@ -236,38 +233,38 @@ export class UserCardComponent implements OnInit {
 
   switchEditMode() {
     this.isEditMode = !this.isEditMode;
-    if (this.isEditMode) {
-      this.editItemForm.setValue({
-        name: this.changedUser.name
-      });
-    }
+    this.changedUser = Object.assign({}, this.user);
   }
 
   checkIsSafeNeeded() {
-    let isNamesDiffer = this.user.name != this.changedUser.name;
-    let isRolesDiffer = this.user.roles != this.changedUser.roles;
+    let isRolesDiffer =
+      this.user.roles.sort(e => e.id) != this.changedUser.roles.sort(e => e.id);
     let isPermissionsDiffer =
-      this.user.permissions != this.changedUser.permissions;
+      this.user.permissions.sort(e => e.id) !=
+      this.changedUser.permissions.sort(e => e.id);
+
+    // console.log(
+    //   "name: ",
+    //   this.isNamesDiffer,
+    //   "role: ",
+    //   isRolesDiffer,
+    //   "perm: ",
+    //   isPermissionsDiffer
+    // );
     // debugger;
 
-    if (isNamesDiffer || isRolesDiffer || isPermissionsDiffer) {
-      debugger;
+    if (this.isNamesDiffer || isRolesDiffer || isPermissionsDiffer) {
+      // debugger;
       this.isNeedSave = true;
     } else {
-      debugger;
+      // debugger;
 
       this.isNeedSave = false;
     }
   }
 
-  changeItemName(name: User) {
-    // let asd = name.name;
-    this.changedUser.name = name.name;
-
-    // debugger;
-    // this.user.userName = name.name;
-    // this.user.name = name.name;
-    // this.updateFunction.emit(this.user);
-    this.checkIsSafeNeeded();
-  }
+  // changeItemName(name: User) {
+  //   this.changedUser.name = name.name;
+  //   this.changedUserObservable.next();
+  // }
 }
