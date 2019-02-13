@@ -39,9 +39,6 @@ export class UserCardComponent implements OnInit {
   permissions$: Observable<Permission[]> = null;
   @Input() user: User;
   changedUser: User;
-  changedUserObservable = new Rx.Subject();
-  @Input() isChosen: Boolean;
-  @Output() chooseFunction = new EventEmitter();
   @Output() removeFunction = new EventEmitter();
   @Output() deleteFunction = new EventEmitter();
   @Output() updateFunction = new EventEmitter();
@@ -69,12 +66,6 @@ export class UserCardComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store$: Store<RootStoreState.State>
   ) {
-    this.changedUserObservable.subscribe(() => this.checkIsSafeNeeded());
-
-    // this.changedUserChange.subscribe(value => {
-    //   this.changedUser = value;
-    // });
-
     // this.editItemForm = this.formBuilder.group({
     //   name: new FormControl("", [Validators.required])
     // });
@@ -124,7 +115,6 @@ export class UserCardComponent implements OnInit {
       .subscribe((newName: string) => {
         if (newName != "") {
           this.isNamesDiffer = this.user.name != newName;
-          this.changedUserObservable.next();
         } else {
           this.isNamesDiffer = false;
         }
@@ -145,7 +135,6 @@ export class UserCardComponent implements OnInit {
           this.addRoleError = null;
           this.rolesControl.reset();
           this.changedUser.roles = [...this.changedUser.roles, roleToAdd];
-          this.changedUserObservable.next();
         }
       } else {
         this.addRoleError = "chooseRole";
@@ -166,7 +155,6 @@ export class UserCardComponent implements OnInit {
             ...this.changedUser.permissions,
             permToAdd
           ];
-          this.changedUserObservable.next();
         }
       } else {
         this.addPermissionsError = "choosePermission";
@@ -199,7 +187,6 @@ export class UserCardComponent implements OnInit {
         this.changedUser.permissions = [...this.changedUser.permissions, item];
       }
     }
-    this.changedUserObservable.next();
   }
 
   isDeletedInChangedUser(item: Role, typeOfItem: string) {
@@ -228,7 +215,13 @@ export class UserCardComponent implements OnInit {
   }
 
   deleteItem() {
-    this.deleteFunction.emit(this.user);
+    this.store$.dispatch(
+      new UsersActions.RemoveUserRequest(this.changedUser.id)
+    );
+  }
+
+  changeItem() {
+    this.store$.dispatch(new UsersActions.UpdateUserRequest(this.changedUser));
   }
 
   switchEditMode() {
@@ -262,9 +255,4 @@ export class UserCardComponent implements OnInit {
       this.isNeedSave = false;
     }
   }
-
-  // changeItemName(name: User) {
-  //   this.changedUser.name = name.name;
-  //   this.changedUserObservable.next();
-  // }
 }

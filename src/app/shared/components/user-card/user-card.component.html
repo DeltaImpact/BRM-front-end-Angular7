@@ -155,7 +155,12 @@
 
   <!-- -----------------------   save changes button   ----------------------- -->
 
-  <button mat-raised-button class="save__user__button" *ngIf="isEditMode">
+  <button
+    mat-raised-button
+    class="save__user__button"
+    *ngIf="isEditMode"
+    (click)="changeItem()"
+  >
     {{ "saveChanges" | translate }}
   </button>
   <!-- [disabled]="isNeedSave" -->
