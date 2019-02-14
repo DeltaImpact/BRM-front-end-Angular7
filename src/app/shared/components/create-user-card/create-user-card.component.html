@@ -32,52 +32,129 @@
           {{ "fieldRequired" | translate }}
         </mat-error>
       </mat-form-field>
-      <button
-        mat-raised-button
-        type="submit"
-        [disabled]="userForm.submitted && !newUserForm.valid"
-      >
-        {{ "create" | translate }}
-      </button>
+
       <div *ngIf="error">{{ error | translate }}</div>
-    </form>
-  </div>
-  {{ addItemToCreateNewUserForm | json }}
-  <div>
-    <div id="left">
-      <div *ngIf="user.roles.length !== 0">
-        <mat-card-subtitle>{{ "Roles" | translate }}:</mat-card-subtitle>
+    </div>
+    {{ addItemToCreateNewUserForm | json }}
+    <!-- -----------------------   user roles and permissions block   ----------------------- -->
+    <div>
+      <div id="left">
+        <!-- -----------------------   list of user roles   ----------------------- -->
+        <div *ngIf="user.roles.length !== 0">
+          <mat-card-subtitle class="items__group__header"
+            >{{ "Roles" | translate }}:</mat-card-subtitle
+          >
+          <div class="roles__list" *ngFor="let role of user.roles">
+            <div class="roles__box">
+              <mat-card-title>{{ role.name }}</mat-card-title>
+              <mat-card-content> ID: {{ role.id }}</mat-card-content>
 
-        <div class="roles__list" *ngFor="let role of user.roles">
+              <mat-icon
+                class="icon__like--green"
+                (click)="RemoveFromUser(role, user, 'role')"
+                >clear</mat-icon
+              >
+            </div>
+          </div>
+        </div>
+        <!-- -----------------------   add role to user form   ----------------------- -->
+        <div class="roles__list">
+          <mat-error *ngIf="addRoleError">
+            {{ addRoleError | translate }}
+          </mat-error>
           <div class="roles__box">
-            <mat-card-title>{{ role.name }}</mat-card-title>
-            <mat-card-content> ID: {{ role.id }}</mat-card-content>
-
-            <mat-icon
-              class="icon__like--green"
-              (click)="RemoveFromUser(role, user, 'role')"
-              >clear</mat-icon
+            <input
+              type="text"
+              placeholder="{{ 'addRoleToUser' | translate }}"
+              aria-label="Role choose"
+              matInput
+              [formControl]="rolesControl"
+              [matAutocomplete]="autoCUR"
+            />
+            <mat-icon class="icon__like--green" (click)="addRole()"
+              >add</mat-icon
             >
+
+            <mat-autocomplete autoActiveFirstOption #autoCUR="matAutocomplete">
+              <mat-option
+                *ngFor="let option of (filteredRoles | async)"
+                [value]="option.name"
+              >
+                <span>{{ option.name }}</span> |
+                <small>ID: {{ option.id }}</small>
+              </mat-option>
+            </mat-autocomplete>
           </div>
         </div>
       </div>
-    </div>
-    <div id="right">
-      <div *ngIf="user.permissions.length !== 0">
-        <mat-card-subtitle> {{ "Permissions" | translate }}:</mat-card-subtitle>
-        <div class="roles__list" *ngFor="let permission of user.permissions">
+      <div id="right">
+        <!-- -----------------------   list of user permissions   ----------------------- -->
+        <div *ngIf="user.permissions.length !== 0">
+          <mat-card-subtitle class="items__group__header">
+            {{ "Permissions" | translate }}:</mat-card-subtitle
+          >
+          <div class="roles__list" *ngFor="let permission of user.permissions">
+            <div class="roles__box">
+              <mat-card-title>{{ permission.name }}</mat-card-title>
+              <mat-card-content> ID: {{ permission.id }}</mat-card-content>
+              <mat-icon
+                class="icon__like--green"
+                (click)="RemoveFromUser(permission, user, 'permission')"
+                >clear</mat-icon
+              >
+            </div>
+          </div>
+        </div>
+        <!-- -----------------------   add permission to user form   ----------------------- -->
+        <div class="roles__list">
+          <mat-error *ngIf="addPermissionsError">
+            {{ addPermissionsError | translate }}
+          </mat-error>
           <div class="roles__box">
-            <mat-card-title>{{ permission.name }}</mat-card-title>
-            <mat-card-content> ID: {{ permission.id }}</mat-card-content>
-            <mat-icon
-              class="icon__like--green"
-              (click)="RemoveFromUser(permission, user, 'permission')"
-              >clear</mat-icon
+            <input
+              type="text"
+              placeholder="{{ 'addPermissionToUser' | translate }}"
+              aria-label="Permission choose"
+              matInput
+              [formControl]="permissionsControl"
+              [matAutocomplete]="autoCUP"
+            />
+            <mat-icon class="icon__like--green" (click)="addPermission()"
+              >add</mat-icon
             >
+
+            <mat-autocomplete autoActiveFirstOption #autoCUP="matAutocomplete">
+              <mat-option
+                *ngFor="let option of (filteredPermissions | async)"
+                [value]="option.name"
+              >
+                <span>{{ option.name }}</span> |
+                <small>ID: {{ option.id }}</small>
+              </mat-option>
+            </mat-autocomplete>
           </div>
         </div>
       </div>
+      <div class="clear"></div>
     </div>
-    <div class="clear"></div>
-  </div>
+
+    <!-- -----------------------   save changes button   ----------------------- -->
+
+    <button
+      mat-raised-button
+      class="save__user__button"
+      type="submit"
+      [disabled]="newUserForm.valid.submitted && !newUserForm.valid"
+    >
+      {{ "create" | translate }}
+    </button>
+  </form>
+
+  <!-- <pre>
+{{ filteredRoles | async | json }}
+  </pre>
+  <pre>
+{{ filteredPermissions | async | json }}
+    </pre
+  > -->
 </mat-card>
