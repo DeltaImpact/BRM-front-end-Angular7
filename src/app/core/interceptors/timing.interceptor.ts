@@ -14,7 +14,7 @@ export class TimingInterceptor implements HttpInterceptor {
         tap(event => {
           if (event instanceof HttpResponse) {
             const elapsed = Date.now() - started;
-            LoggerService.log(`Request for ${req.urlWithParams} took ${elapsed} ms.`);
+            LoggerService.log(`${req.method} request for ${req.urlWithParams} took ${elapsed} ms.`);
           }
         }));
   }
