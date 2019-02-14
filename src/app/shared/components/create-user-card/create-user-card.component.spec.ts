@@ -5,7 +5,6 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {APP_BASE_HREF} from '@angular/common';
 import {TestsModule} from '../../modules/tests.module';
 import {TranslateModule} from '@ngx-translate/core';
-import { UserService } from 'src/app/modules/services/shared/user.service';
 
 describe('CreateUserCardComponent', () => {
   let component: CreateUserCardComponent;

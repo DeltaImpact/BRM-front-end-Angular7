@@ -7,8 +7,9 @@ import {
   SimpleChanges,
   ViewChild
 } from "@angular/core";
+import { map, startWith } from "rxjs/operators";
 import { AppConfig } from "../../../configs/app.config";
-import { Role, User } from "../../../models";
+import { Role, User, Permission } from "../../../models";
 import { UserService } from "../../../services";
 import { Router } from "@angular/router";
 import {
@@ -24,18 +25,10 @@ import {
   styleUrls: ["./create-user-card.component.scss"]
 })
 export class CreateUserCardComponent implements OnInit {
-  user: User = null;
-
-  @Input() isChosen: Boolean;
-  @Input() addItemToCreateNewUserForm: any;
-  @Output() chooseFunction = new EventEmitter();
-  @Output() createFunction = new EventEmitter();
-  isEditMode: boolean = false;
   newUserForm: FormGroup;
   @ViewChild("userForm") userForm;
   constructor(
     private formBuilder: FormBuilder,
-    private UserService: UserService
   ) {
     this.user = { id: 0, name: "", roles: [], permissions: [] };
 
@@ -45,32 +38,11 @@ export class CreateUserCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.user = this.UserService.newUser;
-    // this.UserService.newUserChanged.subscribe(data => {
-    //   this.user = data;
-    // });
-
     this.newUserForm.valueChanges.subscribe(changes => {
       if (changes.name) {
         this.user.name = changes.name;
-
-        // debugger;
-
-        // this.UserService.changeNicknameOfNewUser(changes.name);
       }
     });
-  }
-
-  RemoveFromUser(role: Role, user: User, typeOfItem: string) {
-    if (typeOfItem == "role") {
-      debugger;
-      // this.user = this.UserService.deleteRoleFromUserObject(user, role);
-    }
-    if (typeOfItem == "permission") {
-      debugger;
-
-      // this.user = this.UserService.deletePermissionFromUserObject(user, role);
-    }
   }
 
   createNewUser(newUser: any) {
@@ -84,7 +56,5 @@ export class CreateUserCardComponent implements OnInit {
     }
   }
 
-  chooseUser() {
-    this.chooseFunction.emit(-1);
   }
 }

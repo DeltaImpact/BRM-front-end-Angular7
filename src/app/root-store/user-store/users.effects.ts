@@ -94,18 +94,4 @@ export class UsersEffects {
       return of({ type: "noop" });
     })
   );
-
-  @Effect()
-  addRoleToUser$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.ADD_ROLE_TO_USER_REQUEST),
-    map((action: UserActions.AddRoleToUserRequest) => action.payload),
-    exhaustMap((item: { user: User; role: Role }) =>
-      this.RoleService.addRoleToUser(item.user.id, item.role.id).pipe(
-        map(item => {
-          return new UserActions.AddRoleToUserSuccess(item);
-        }),
-        catchError(error => of(new UserActions.AddRoleToUserFailure(error)))
-      )
-    )
-  );
 }

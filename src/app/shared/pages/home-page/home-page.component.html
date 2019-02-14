@@ -7,20 +7,11 @@
       <div fxFlex="30">
         <h1 class="header__title">{{ "UsersList" | translate }}</h1>
         <app-create-user-card
-          [isChosen]="chosenUserId == -1 ? true : false"
-          (chooseFunction)="ChooseUserOnViewById(-1)"
-          (addItemToCreateNewUserForm)="addItemToCreateNewUserForm($event)"
-          (createFunction)="createNewUser($event)"
         ></app-create-user-card>
         <div *ngIf="(users$ | async)">
           <ng-container *ngFor="let user of (users$ | async)">
             <app-user-card
               [user]="user"
-              [isChosen]="chosenUserId == user.id ? true : false"
-              (chooseFunction)="ChooseUserOnViewById(user.id)"
-              (removeFunction)="RemoveRoleFrom($event)"
-              (updateFunction)="UpdateUser($event)"
-              (deleteFunction)="RemoveUser($event)"
             ></app-user-card>
           </ng-container>
         </div>

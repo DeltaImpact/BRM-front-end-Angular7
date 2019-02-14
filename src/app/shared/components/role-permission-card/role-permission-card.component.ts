@@ -18,7 +18,6 @@ import {
 export class RoleAndPermissionCardComponent implements OnInit {
   @Input() item: Role;
   @Input() typeOfItem: String;
-  @Output() addFunction = new EventEmitter();
   @Output() deleteFunction = new EventEmitter();
   @Output() updateFunction = new EventEmitter();
   isEditMode: boolean = false;
@@ -35,10 +34,6 @@ export class RoleAndPermissionCardComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  addToUser() {
-    this.addFunction.emit({ typeOfItem: this.typeOfItem, item: this.item });
-  }
 
   deleteItem() {
     this.deleteFunction.emit({ typeOfItem: this.typeOfItem, item: this.item });

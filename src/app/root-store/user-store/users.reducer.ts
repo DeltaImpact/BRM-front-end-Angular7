@@ -122,52 +122,6 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
 
-    case ActionTypes.ADD_ROLE_TO_USER_REQUEST: {
-      // const newUser: User = action.payload;
-      return {
-        ...state,
-        errorAddUser: null
-      };
-    }
-    case ActionTypes.ADD_ROLE_TO_USER_SUCCESS: {
-      const newUser: { user: User; role: Role } = action.payload;
-      debugger
-      // return {
-      //   ...state,
-      //   users: [...state.users, newUser]
-      // };
-    }
-    case ActionTypes.ADD_ROLE_TO_USER_FAILURE: {
-      const error: HttpErrorResponse = action.payload;
-      return {
-        ...state,
-        errorAddUser: error
-      };
-    }
-
-    case ActionTypes.ADD_PERMISSION_TO_USER_REQUEST: {
-      // const newUser: User = action.payload;
-      return {
-        ...state,
-        errorAddUser: null
-      };
-    }
-    case ActionTypes.ADD_PERMISSION_TO_USER_SUCCESS: {
-      const newUser: { user: User; permission: Permission } = action.payload;
-      debugger
-      // return {
-      //   ...state,
-      //   users: [...state.users, newUser]
-      // };
-    }
-    case ActionTypes.ADD_PERMISSION_TO_USER_FAILURE: {
-      const error: HttpErrorResponse = action.payload;
-      return {
-        ...state,
-        errorAddUser: error
-      };
-    }
-
     default:
       return state;
   }

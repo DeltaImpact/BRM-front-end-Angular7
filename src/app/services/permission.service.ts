@@ -17,7 +17,10 @@ import { processErrorResponse } from "./utils.service";
   providedIn: "root"
 })
 export class PermissionService {
-  constructor(private http: HttpClient,  private permissionAdapter: PermissionAdapter) {}
+  constructor(
+    private http: HttpClient,
+    private permissionAdapter: PermissionAdapter
+  ) {}
 
   getPermissions(): Observable<Permission[]> {
     return <Observable<Permission[]>>(
@@ -28,12 +31,11 @@ export class PermissionService {
   addPermission(item: string): Observable<Permission> {
     let Url = `${AppConfig.apiUrl}/permission/AddPermission`;
     return <Observable<Permission>>(
-      this.http
-        .post(
-          Url,
-          this.permissionAdapter.toPermissionAddDto(item),
-          httpOptions
-        )
+      this.http.post(
+        Url,
+        this.permissionAdapter.toPermissionAddDto(item),
+        httpOptions
+      )
     );
   }
 
@@ -41,39 +43,11 @@ export class PermissionService {
     let Url = `${
       AppConfig.apiUrl
     }/permission/deletePermission?Id=${permissionId}`;
-    return <Observable<Permission>>this.http.delete(Url, httpOptions)
+    return <Observable<Permission>>this.http.delete(Url, httpOptions);
   }
 
   updatePermission(permission: Permission) {
     let Url = `${AppConfig.apiUrl}/permission/updatePermission`;
-    return <Observable<Permission>>(
-      this.http.put(Url, permission, httpOptions)
-    );
-  }
-
-  addPermissionToUser(userId: number, permissionId: number) {
-    let Url = `${AppConfig.apiUrl}/permission/addPermissionToUser`;
-    return <Observable<Permission>>this.http
-      .post(
-        Url,
-        {
-          UserId: userId,
-          PermissionOrPermissionId: permissionId
-        },
-        httpOptions
-      )
-  }
-
-  deletePermissionFromUser(userId: number, permissionId: number) {
-    let Url = `${AppConfig.apiUrl}/permission/deletePermissionFromUser`;
-    return <Observable<Permission>>this.http
-      .post(
-        Url,
-        {
-          UserId: userId,
-          PermissionOrPermissionId: permissionId
-        },
-        httpOptions
-      )
+    return <Observable<Permission>>this.http.put(Url, permission, httpOptions);
   }
 }

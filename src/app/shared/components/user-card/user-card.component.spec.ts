@@ -32,9 +32,4 @@ describe("UserCardComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it('should change isChosen to true', (() => {
-    expect(component.isChosen).toBeUndefined();
-    component.isChosen = true;
-    expect(component.isChosen).toBe(true);
-  }));
 });

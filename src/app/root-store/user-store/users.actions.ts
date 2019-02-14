@@ -14,13 +14,7 @@ export enum ActionTypes {
   REMOVE_USER_FAILURE = "[Users] Delete user failure",
   UPDATE_USER_REQUEST = "[Users] Update user request",
   UPDATE_USER_SUCCESS = "[Users] Update user success",
-  UPDATE_USER_FAILURE = "[Users] Update user failure",
-  ADD_ROLE_TO_USER_REQUEST = "[Users] Add role to user request",
-  ADD_ROLE_TO_USER_SUCCESS = "[Users] Add role to user success",
-  ADD_ROLE_TO_USER_FAILURE = "[Users] Add role to user failure",
-  ADD_PERMISSION_TO_USER_REQUEST = "[Users] Add permission to user request",
-  ADD_PERMISSION_TO_USER_SUCCESS = "[Users] Add permission to user success",
-  ADD_PERMISSION_TO_USER_FAILURE = "[Users] Add permission to user failure"
+  UPDATE_USER_FAILURE = "[Users] Update user failure"
 }
 
 export class SelectUser implements Action {
@@ -100,42 +94,6 @@ export class UpdateUserFailure implements Action {
   constructor(public payload: any) {}
 }
 
-export class AddRoleToUserRequest implements Action {
-  readonly type = ActionTypes.ADD_ROLE_TO_USER_REQUEST;
-
-  constructor(public payload: { user: User; role: Role }) {}
-}
-
-export class AddRoleToUserSuccess implements Action {
-  readonly type = ActionTypes.ADD_ROLE_TO_USER_SUCCESS;
-
-  constructor(public payload: { user: User; role: Role }) {}
-}
-
-export class AddRoleToUserFailure implements Action {
-  readonly type = ActionTypes.ADD_ROLE_TO_USER_FAILURE;
-
-  constructor(public payload: any) {}
-}
-
-export class AddPermissionToUserRequest implements Action {
-  readonly type = ActionTypes.ADD_PERMISSION_TO_USER_REQUEST;
-
-  constructor(public payload: { user: User; permission: Permission }) {}
-}
-
-export class AddPermissionToUserSuccess implements Action {
-  readonly type = ActionTypes.ADD_PERMISSION_TO_USER_SUCCESS;
-
-  constructor(public payload: { user: User; permission: Permission }) {}
-}
-
-export class AddPermissionToUserFailure implements Action {
-  readonly type = ActionTypes.ADD_PERMISSION_TO_USER_FAILURE;
-
-  constructor(public payload: any) {}
-}
-
 export type Action =
   | SelectUser
   | LoadUsersRequest
@@ -149,10 +107,4 @@ export type Action =
   | RemoveUserFailure
   | UpdateUserRequest
   | UpdateUserSuccess
-  | UpdateUserFailure
-  | AddRoleToUserRequest
-  | AddRoleToUserSuccess
-  | AddRoleToUserFailure
-  | AddPermissionToUserRequest
-  | AddPermissionToUserSuccess
-  | AddPermissionToUserFailure;
+  | UpdateUserFailure;
