@@ -42,7 +42,7 @@
   <div>
     <div id="left">
       <!-- -----------------------   list of user roles   ----------------------- -->
-      <div *ngIf="user.roles.length !== 0">
+      <div *ngIf="changedUser.roles.length !== 0 || user.roles.length !== 0">
         <mat-card-subtitle class="items__group__header"
           >{{ "Roles" | translate }}:</mat-card-subtitle
         >
@@ -96,10 +96,15 @@
     </div>
     <div id="right">
       <!-- -----------------------   list of user permissions   ----------------------- -->
-      <div *ngIf="user.permissions.length !== 0">
+      <div
+        *ngIf="
+          changedUser.permissions.length !== 0 || user.permissions.length !== 0
+        "
+      >
         <mat-card-subtitle class="items__group__header">
           {{ "Permissions" | translate }}:</mat-card-subtitle
         >
+
         <div
           class="roles__list"
           *ngFor="
