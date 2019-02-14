@@ -44,8 +44,12 @@ export class UserService {
     return <Observable<User>>this.http.delete(Url, httpOptions);
   }
 
-  updateUser(user: User) {
-    let Url = `${AppConfig.apiUrl}/user/updateUser`;
-    return <Observable<User>>this.http.put(Url, user, httpOptions);
+  updateUser(item: User) {
+    let Url = `${AppConfig.apiUrl}/users/user`;
+    return <Observable<User>>(
+      this.http
+        .put(Url, this.userAdapter.toUserUpdateDto(item), httpOptions)
+        .pipe(map((data: User) => this.userAdapter.adapt(data)))
+    );
   }
 }

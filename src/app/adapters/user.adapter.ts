@@ -23,6 +23,16 @@ export class UserAdapter implements Adapter<User> {
     };
   }
 
+  
+  toUserUpdateDto(input: User): any {
+    return {
+      Id: input.id,
+      UserName: input.name,
+      RolesId: input.roles.map(item => item.id) || [],
+      PermissionsId: input.permissions.map(item => item.id) || []
+    };
+  }
+
   toUserOrUserUpdateDto(input: User): any {
     return { UserName: input.name };
   }
