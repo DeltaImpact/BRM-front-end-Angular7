@@ -25,12 +25,12 @@
   <!-- -----------------------   input username   ----------------------- -->
   <div class="roles__list" *ngIf="isEditMode">
     <mat-error *ngIf="changeNameError">
-      {{ changeNameError | translate }}
+      {{ "changeNameError" | translate }}
     </mat-error>
     <div class="roles__box">
       <input
         type="text"
-        placeholder="{{ changeNickname | translate }}"
+        placeholder="{{ 'changeNickname' | translate }}"
         aria-label="New nickname input"
         matInput
         [(ngModel)]="changedUser.name"
@@ -38,6 +38,7 @@
       />
     </div>
   </div>
+  <!-- -----------------------   user roles and permissions block   ----------------------- -->
   <div>
     <div id="left">
       <!-- -----------------------   list of user roles   ----------------------- -->
@@ -73,7 +74,7 @@
         <div class="roles__box">
           <input
             type="text"
-            placeholder="{{ addRoleToUser | translate }}"
+            placeholder="{{ 'addRoleToUser' | translate }}"
             aria-label="Role choose"
             matInput
             [formControl]="rolesControl"
@@ -115,6 +116,7 @@
             <mat-icon
               class="icon__like--green"
               (click)="RemoveFromUser(permission, user, 'permission')"
+              *ngIf="isEditMode"
               >clear</mat-icon
             >
           </div>
@@ -122,13 +124,13 @@
       </div>
       <!-- -----------------------   add permission to user form   ----------------------- -->
       <div class="roles__list" *ngIf="isEditMode">
-        <mat-error *ngIf="addRoleError">
-          {{ addRoleError | translate }}
+        <mat-error *ngIf="addPermissionsError">
+          {{ addPermissionsError | translate }}
         </mat-error>
         <div class="roles__box">
           <input
             type="text"
-            placeholder="{{ addPermissionToUser | translate }}"
+            placeholder="{{ 'addPermissionToUser' | translate }}"
             aria-label="Permission choose"
             matInput
             [formControl]="permissionsControl"

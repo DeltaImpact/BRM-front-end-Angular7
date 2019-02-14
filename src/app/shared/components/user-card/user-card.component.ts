@@ -74,7 +74,7 @@ export class UserCardComponent implements OnInit {
       .pipe(startWith(""))
       .subscribe((state: string) => {
         this.roleNameForFilter = state;
-
+        if (state == null) this.roleNameForFilter = "";
         this.filteredRoles = this.store$
           .select<Role[]>(
             RolesSelectors.selectSearchRoleByName(this.roleNameForFilter)
@@ -90,8 +90,8 @@ export class UserCardComponent implements OnInit {
     this.permissionsControl.valueChanges
       .pipe(startWith(""))
       .subscribe((state: string) => {
-        this.roleNameForFilter = state;
-
+        this.permissionNameForFilter = state;
+        if (state == null) this.permissionNameForFilter = "";
         this.filteredPermissions = this.store$
           .select<Permission[]>(
             PermissionsSelectors.selectSearchPermissionByName(
@@ -127,8 +127,8 @@ export class UserCardComponent implements OnInit {
 
   addRole() {
     this.filteredRoles.subscribe(r => {
-      if (r.length === 1) {
-        let roleToAdd = r[0] as Role;
+      let roleToAdd = r.find(x => x.name == this.roleNameForFilter);
+      if (roleToAdd) {
         if (this.changedUser.roles.find(x => x.id == roleToAdd.id)) {
           this.addRoleError = "roleAlreadyAdded";
         } else {
@@ -144,8 +144,8 @@ export class UserCardComponent implements OnInit {
 
   addPermission() {
     this.filteredPermissions.subscribe(r => {
-      if (r.length === 1) {
-        let permToAdd = r[0] as Permission;
+      let permToAdd = r.find(x => x.name == this.permissionNameForFilter);
+      if (permToAdd) {
         if (this.changedUser.permissions.find(x => x.id == permToAdd.id)) {
           this.addPermissionsError = "permissionAlreadyAdded";
         } else {
@@ -221,7 +221,10 @@ export class UserCardComponent implements OnInit {
   }
 
   changeItem() {
-    this.store$.dispatch(new UsersActions.UpdateUserRequest(this.changedUser));
+    this.store$.dispatch(
+      new UsersActions.UpdateUserRequest(this.changedUser)
+      // new UsersActions.UpdateUserRequest(this.changedUser, this.user)
+    );
   }
 
   switchEditMode() {
