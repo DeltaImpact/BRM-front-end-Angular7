@@ -23,7 +23,7 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return <Observable<User[]>>(
       this.http
-        .get(`${AppConfig.apiUrl}/user/users`)
+        .get(`${AppConfig.apiUrl}/users`)
         .pipe(
           map((data: any[]) => data.map(item => this.userAdapter.adapt(item)))
         )
@@ -31,7 +31,7 @@ export class UserService {
   }
 
   addUser(item: User): Observable<User> {
-    let Url = `${AppConfig.apiUrl}/user/register`;
+    let Url = `${AppConfig.apiUrl}/users/user`;
     return <Observable<User>>(
       this.http
         .post(Url, this.userAdapter.toUserAddDto(item), httpOptions)
@@ -40,7 +40,7 @@ export class UserService {
   }
 
   deleteUser(userId: number) {
-    let Url = `${AppConfig.apiUrl}/user/deleteUser?Id=${userId}`;
+    let Url = `${AppConfig.apiUrl}/users/user?Id=${userId}`;
     return <Observable<User>>this.http.delete(Url, httpOptions);
   }
 

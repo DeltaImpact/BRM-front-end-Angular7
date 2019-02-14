@@ -20,23 +20,23 @@ export class RoleService {
   constructor(private http: HttpClient, private roleAdapter: RoleAdapter) {}
 
   getRoles(): Observable<Role[]> {
-    return <Observable<Role[]>>this.http.get(`${AppConfig.apiUrl}/role/roles`);
+    return <Observable<Role[]>>this.http.get(`${AppConfig.apiUrl}/roles`);
   }
 
   addRole(item: string): Observable<Role> {
-    let Url = `${AppConfig.apiUrl}/role/AddRole`;
+    let Url = `${AppConfig.apiUrl}/roles/role`;
     return <Observable<Role>>(
       this.http.post(Url, this.roleAdapter.toRoleAddDto(item), httpOptions)
     );
   }
 
   deleteRole(roleId: number) {
-    let Url = `${AppConfig.apiUrl}/role/deleteRole?Id=${roleId}`;
+    let Url = `${AppConfig.apiUrl}/roles/role?Id=${roleId}`;
     return <Observable<Role>>this.http.delete(Url, httpOptions);
   }
 
   updateRole(role: Role) {
-    let Url = `${AppConfig.apiUrl}/role/updateRole`;
+    let Url = `${AppConfig.apiUrl}/roles/role`;
     return <Observable<Role>>this.http.put(Url, role, httpOptions);
   }
 }

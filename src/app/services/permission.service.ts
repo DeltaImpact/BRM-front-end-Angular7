@@ -24,12 +24,12 @@ export class PermissionService {
 
   getPermissions(): Observable<Permission[]> {
     return <Observable<Permission[]>>(
-      this.http.get(`${AppConfig.apiUrl}/permission/permissions`)
+      this.http.get(`${AppConfig.apiUrl}/permissions`)
     );
   }
 
   addPermission(item: string): Observable<Permission> {
-    let Url = `${AppConfig.apiUrl}/permission/AddPermission`;
+    let Url = `${AppConfig.apiUrl}/permissions/permission`;
     return <Observable<Permission>>(
       this.http.post(
         Url,
@@ -42,12 +42,12 @@ export class PermissionService {
   deletePermission(permissionId: number) {
     let Url = `${
       AppConfig.apiUrl
-    }/permission/deletePermission?Id=${permissionId}`;
+    }/permissions/permission?Id=${permissionId}`;
     return <Observable<Permission>>this.http.delete(Url, httpOptions);
   }
 
   updatePermission(permission: Permission) {
-    let Url = `${AppConfig.apiUrl}/permission/updatePermission`;
+    let Url = `${AppConfig.apiUrl}/permissions/permission`;
     return <Observable<Permission>>this.http.put(Url, permission, httpOptions);
   }
 }
