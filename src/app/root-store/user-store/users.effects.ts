@@ -64,7 +64,7 @@ export class UsersEffects {
     map((action: UserActions.RemoveUserRequest) => action.payload),
     exhaustMap((toDeleteId: number) =>
       this.UserService.deleteUser(toDeleteId).pipe(
-        map(DeletedId => new UserActions.RemoveUserSuccess(DeletedId)),
+        map(() => new UserActions.RemoveUserSuccess(toDeleteId)),
         catchError(error => of(new UserActions.RemoveUserFailure(error)))
       )
     )

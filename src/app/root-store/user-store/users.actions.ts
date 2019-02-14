@@ -73,7 +73,7 @@ export class RemoveUserRequest implements Action {
 export class RemoveUserSuccess implements Action {
   readonly type = ActionTypes.REMOVE_USER_SUCCESS;
 
-  constructor(public payload: User) {}
+  constructor(public payload: number) {}
 }
 
 export class RemoveUserFailure implements Action {
@@ -131,7 +131,7 @@ export class AddPermissionToUserSuccess implements Action {
 }
 
 export class AddPermissionToUserFailure implements Action {
-  readonly type = ActionTypes.ADD_PERMISSION_TO_USER_FAILURE ;
+  readonly type = ActionTypes.ADD_PERMISSION_TO_USER_FAILURE;
 
   constructor(public payload: any) {}
 }

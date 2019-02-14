@@ -79,11 +79,11 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
     case ActionTypes.REMOVE_USER_SUCCESS: {
-      const user: User = action.payload;
+      const user: number = action.payload;
       return {
         ...state,
         users: state.users.filter(curUser => {
-          return curUser.id !== user.id;
+          return curUser.id !== user;
         })
       };
     }
