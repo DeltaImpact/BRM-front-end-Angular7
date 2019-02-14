@@ -10,11 +10,11 @@ export class UserAdapter implements Adapter<User> {
     return {
       name: item.userName,
       id: item.id,
-      permissions: item.permissions,
-      roles: item.roles
+      permissions: item.permissions || [],
+      roles: item.roles || []
     } as User;
   }
-  
+
   toUserAddDto(input: User): any {
     return {
       Username: input.name,

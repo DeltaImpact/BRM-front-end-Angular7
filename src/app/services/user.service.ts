@@ -22,16 +22,20 @@ export class UserService {
 
   getUsers(): Observable<User[]> {
     return <Observable<User[]>>(
-      this.http.get(`${AppConfig.apiUrl}/user/users`).pipe(
-        map((data: any[]) => data.map(item => this.userAdapter.adapt(item)))
-      )
+      this.http
+        .get(`${AppConfig.apiUrl}/user/users`)
+        .pipe(
+          map((data: any[]) => data.map(item => this.userAdapter.adapt(item)))
+        )
     );
   }
 
   addUser(item: User): Observable<User> {
     let Url = `${AppConfig.apiUrl}/user/register`;
     return <Observable<User>>(
-      this.http.post(Url, this.userAdapter.toUserAddDto(item), httpOptions)
+      this.http
+        .post(Url, this.userAdapter.toUserAddDto(item), httpOptions)
+        .pipe(map((data: User) => this.userAdapter.adapt(data)))
     );
   }
 
