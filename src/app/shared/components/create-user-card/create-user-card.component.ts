@@ -162,4 +162,31 @@ export class CreateUserCardComponent implements OnInit {
       }
     });
   }
+
+  RemoveFromUser(item: Role, user: User, typeOfItem: string) {
+    if (typeOfItem == "role") {
+      let roleInNewUser = this.user.roles.find(x => x.id == item.id);
+      if (roleInNewUser) {
+        this.user.roles = this.user.roles.filter(roleInRoles => {
+          return roleInRoles.id != item.id;
+        });
+      } else {
+        this.user.roles = [...this.user.roles, item];
+      }
+    }
+    if (typeOfItem == "permission") {
+      let permissionInNewUser = this.user.permissions.find(
+        x => x.id == item.id
+      );
+      if (permissionInNewUser) {
+        this.user.permissions = this.user.permissions.filter(
+          permissionInPermissions => {
+            return permissionInPermissions.id != item.id;
+          }
+        );
+      } else {
+        this.user.permissions = [...this.user.permissions, item];
+      }
+    }
+  }
 }
