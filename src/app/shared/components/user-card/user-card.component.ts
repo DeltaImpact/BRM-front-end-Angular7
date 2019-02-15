@@ -39,11 +39,7 @@ export class UserCardComponent implements OnInit {
   permissions$: Observable<Permission[]> = null;
   @Input() user: User;
   changedUser: User;
-  @Output() removeFunction = new EventEmitter();
-  @Output() deleteFunction = new EventEmitter();
-  @Output() updateFunction = new EventEmitter();
   isEditMode: boolean = false;
-  isNeedSave: boolean = true;
   isNamesDiffer: boolean = false;
 
   editItemForm: FormGroup;

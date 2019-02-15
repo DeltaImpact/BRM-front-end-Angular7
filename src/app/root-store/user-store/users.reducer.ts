@@ -50,7 +50,6 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       };
     }
     case ActionTypes.ADD_USER_REQUEST: {
-      // const newUser: User = action.payload;
       return {
         ...state,
         errorAddUser: null

@@ -42,12 +42,12 @@
   <div>
     <div id="left">
       <!-- -----------------------   list of user roles   ----------------------- -->
-      <div *ngIf="changedUser.roles.length !== 0 || user.roles.length !== 0"> 
+      <div *ngIf="changedUser.roles.length !== 0 || user.roles.length !== 0">
         <mat-card-subtitle class="items__group__header"
           >{{ "Roles" | translate }}:</mat-card-subtitle
         >
         <div
-          class="roles__list" 
+          class="roles__list"
           *ngFor="let role of (user.roles | mergeById: changedUser.roles)"
         >
           <div
@@ -160,8 +160,6 @@
     <div class="clear"></div>
   </div>
 
-  <!-- -----------------------   save changes button   ----------------------- -->
-
   <button
     mat-raised-button
     class="save__user__button"
@@ -170,15 +168,4 @@
   >
     {{ "saveChanges" | translate }}
   </button>
-  <!-- [disabled]="isNeedSave" -->
-
-  <!-- {{ isNeedSave | json }} -->
-  <!-- <pre>
-      {{ user.roles | mergeById: changedUser.roles | json }}
-    </pre
-  > -->
-  <!-- {{ user | json }} -->
-  <!-- <pre> -->
-  <!-- {{ changedUser | json }}
-  </pre> -->
 </mat-card>
