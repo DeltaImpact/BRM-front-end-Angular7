@@ -127,10 +127,9 @@ pre {
   background: #ffeef0;
 }
 
-
 .items__group__header {
-  margin-top: 10px;
-  margin-bottom: 5px;
+  margin-top: 10px !important;
+  margin-bottom: 5px !important;
 }
 
 .icon__like--green {
@@ -143,13 +142,8 @@ pre {
 }
 
 .save__user__button {
-  width: 100%;
-  margin-top: 10px;
-}
-
-.items__group__header {
-  margin-top: 10px;
-  margin-bottom: 5px;
+  width: 100% !important;
+  margin-top: 10px !important;
 }
 
 // MATERIAL
