@@ -221,41 +221,11 @@ export class UserCardComponent implements OnInit {
   }
 
   changeItem() {
-    this.store$.dispatch(
-      new UsersActions.UpdateUserRequest(this.changedUser)
-      // new UsersActions.UpdateUserRequest(this.changedUser, this.user)
-    );
+    this.store$.dispatch(new UsersActions.UpdateUserRequest(this.changedUser));
   }
 
   switchEditMode() {
     this.isEditMode = !this.isEditMode;
     this.changedUser = Object.assign({}, this.user);
-  }
-
-  checkIsSafeNeeded() {
-    let isRolesDiffer =
-      this.user.roles.sort(e => e.id) != this.changedUser.roles.sort(e => e.id);
-    let isPermissionsDiffer =
-      this.user.permissions.sort(e => e.id) !=
-      this.changedUser.permissions.sort(e => e.id);
-
-    // console.log(
-    //   "name: ",
-    //   this.isNamesDiffer,
-    //   "role: ",
-    //   isRolesDiffer,
-    //   "perm: ",
-    //   isPermissionsDiffer
-    // );
-    // debugger;
-
-    if (this.isNamesDiffer || isRolesDiffer || isPermissionsDiffer) {
-      // debugger;
-      this.isNeedSave = true;
-    } else {
-      // debugger;
-
-      this.isNeedSave = false;
-    }
   }
 }
