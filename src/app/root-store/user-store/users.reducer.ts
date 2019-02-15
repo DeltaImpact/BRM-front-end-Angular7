@@ -105,10 +105,12 @@ export function userReducer(state = initialState, action: usersAction.Action) {
     }
     case ActionTypes.UPDATE_USER_SUCCESS: {
       const receivedUser: User = action.payload;
+
+      // debugger;
       return {
         ...state,
         users: state.users.map(function(item) {
-          if (item.id == receivedUser.id) item.name = receivedUser.name;
+          if (item.id == receivedUser.id) item = receivedUser;
           return item;
         })
       };
