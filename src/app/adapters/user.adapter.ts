@@ -18,8 +18,8 @@ export class UserAdapter implements Adapter<User> {
   toUserAddDto(input: User): any {
     return {
       Username: input.name,
-      RolesId: input.roles.map(item => item.id) || [],
-      PermissionsId: input.permissions.map(item => item.id) || []
+      RolesIds: input.roles.map(item => item.id) || [],
+      PermissionsIds: input.permissions.map(item => item.id) || []
     };
   }
 
@@ -28,8 +28,8 @@ export class UserAdapter implements Adapter<User> {
     return {
       Id: input.id,
       UserName: input.name,
-      RolesId: input.roles.map(item => item.id) || [],
-      PermissionsId: input.permissions.map(item => item.id) || []
+      RolesIds: input.roles.map(item => item.id) || [],
+      PermissionsIds: input.permissions.map(item => item.id) || []
     };
   }
 
