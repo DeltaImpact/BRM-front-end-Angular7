@@ -26,8 +26,9 @@ import { permissionReducer } from "../../../root-store/permission-store/permissi
 import { roleReducer } from "../../../root-store/roles-store/roles.reducer";
 import { userReducer } from "../../../root-store/user-store/users.reducer";
 import * as usersState from "../../../root-store/user-store/users.state";
-import *  as rolesState from "../../../root-store/roles-store/roles.state";
-import *  as permissionsState from "../../../root-store/permission-store/permissions.state";
+import * as rolesState from "../../../root-store/roles-store/roles.state";
+import * as permissionsState from "../../../root-store/permission-store/permissions.state";
+import { MergeByIdPipe } from "../../../pipes/merge-by-id.pipe";
 
 describe("HomePage", () => {
   let fixture: ComponentFixture<HomePageComponent>;
@@ -57,6 +58,10 @@ describe("HomePage", () => {
         {
           provide: Store,
           useValue: {
+            select: e => {
+              console.log(e);
+              return [];
+            },
             // dispatch: jest.fn(),
             roles: rolesState.initialState,
             permissions: permissionsState.initialState,
