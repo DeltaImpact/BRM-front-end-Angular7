@@ -76,13 +76,6 @@ export class HomePageComponent implements OnInit {
       PermissionsSelectors.getAllPermissions
     );
     this.users$ = this.store$.select<User[]>(UsersSelectors.getAllUsers);
-    // let asd = this.store$
-    //   .select<Role[]>(RolesSelectors.getAllRoles)
-    //   .subscribe(state => {
-    //     console.log(state);
-    //     debugger;
-    //   });
-    // this.permissionForm.resetForm();
   }
 
   createNewRole(newRoleForm: any) {
