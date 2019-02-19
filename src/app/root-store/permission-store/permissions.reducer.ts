@@ -97,10 +97,9 @@ export function permissionReducer(state = initialState, action: permissionsActio
     }
 
     case ActionTypes.UPDATE_PERMISSION_REQUEST: {
-      // const newPermission: number = action.payload;
       return {
         ...state,
-        errorRemovePermission: null
+        errorUpdatePermission: null
       };
     }
     case ActionTypes.UPDATE_PERMISSION_SUCCESS: {
@@ -118,7 +117,7 @@ export function permissionReducer(state = initialState, action: permissionsActio
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
-        errorRemovePermission: error
+        errorUpdatePermission: error
       };
     }
 

@@ -99,13 +99,12 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       // const newUser: number = action.payload;
       return {
         ...state,
-        errorRemoveUser: null
+        errorUpdateUser: null
       };
     }
     case ActionTypes.UPDATE_USER_SUCCESS: {
       const receivedUser: User = action.payload;
 
-      // debugger;
       return {
         ...state,
         users: state.users.map(function(item) {
@@ -119,7 +118,7 @@ export function userReducer(state = initialState, action: usersAction.Action) {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
-        errorRemoveUser: error
+        errorUpdateUser: error
       };
     }
 

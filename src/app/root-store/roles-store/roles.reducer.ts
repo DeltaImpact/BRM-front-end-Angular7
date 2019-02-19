@@ -100,7 +100,7 @@ export function roleReducer(state = initialState, action: roleAction.Action) {
       // const newRole: number = action.payload;
       return {
         ...state,
-        errorRemoveRole: null
+        errorUpdateRole: null
       };
     }
     case ActionTypes.UPDATE_ROLE_SUCCESS: {
@@ -118,7 +118,7 @@ export function roleReducer(state = initialState, action: roleAction.Action) {
       const error: HttpErrorResponse = action.payload;
       return {
         ...state,
-        errorRemoveRole: error
+        errorUpdateRole: error
       };
     }
 
